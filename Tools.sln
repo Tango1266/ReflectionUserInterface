@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.15
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUIConsole", "AutoUIConsole\AutoUIConsole.csproj", "{C2048B08-73D1-42A8-8CF8-8793B2AC9767}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternApp", "ExternApp\ExternApp.csproj", "{022C0B5E-8661-40D5-80F0-44CA030A3010}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{9A51E1D8-0820-4529-B51E-0C2D69209F53}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2048B08-73D1-42A8-8CF8-8793B2AC9767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2048B08-73D1-42A8-8CF8-8793B2AC9767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2048B08-73D1-42A8-8CF8-8793B2AC9767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2048B08-73D1-42A8-8CF8-8793B2AC9767}.Release|Any CPU.Build.0 = Release|Any CPU
+		{022C0B5E-8661-40D5-80F0-44CA030A3010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{022C0B5E-8661-40D5-80F0-44CA030A3010}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{022C0B5E-8661-40D5-80F0-44CA030A3010}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{022C0B5E-8661-40D5-80F0-44CA030A3010}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A51E1D8-0820-4529-B51E-0C2D69209F53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A51E1D8-0820-4529-B51E-0C2D69209F53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A51E1D8-0820-4529-B51E-0C2D69209F53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A51E1D8-0820-4529-B51E-0C2D69209F53}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{022C0B5E-8661-40D5-80F0-44CA030A3010}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ExternApp</RootNamespace>
+    <AssemblyName>ExternApp</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helpers.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="TestSuiten\Spezial\KF1EinSpeziellesFeature\UC1EinUseCase.cs" />
+    <Compile Include="TestSuiten\Spezial\KF1EinSpeziellesFeature\UC2EinAndererUseCase.cs" />
+    <Compile Include="TestSuiten\Spezial\KF2EinAnderesSpeziellesFeature\UC1EinUseCaseInKF2\TS1EineTestSuite.cs" />
+    <Compile Include="TestSuiten\Spezial\KF2EinAnderesSpeziellesFeature\UC1EinUseCaseInKF2\TS2EineAndereTestSuite.cs" />
+    <Compile Include="TestSuiten\Spezial\KF2EinAnderesSpeziellesFeature\UC2EinAndererUseCaseInKF2\TS1EineTestSuiteWoAnders.cs" />
+    <Compile Include="TestSuiten\Spezial\KF2EinAnderesSpeziellesFeature\UC2EinAndererUseCaseInKF2\TS2EineAndereTestSuiteWoAnders.cs" />
+    <Compile Include="TestSuiten\Spezial\KF3EinWeiteresSpeziellesFeature\KF3EinWeiteresSpeziellesFeature.cs" />
+    <Compile Include="TestSuiten\Zentral\KF1EinZentralesFeature\UC1EinKF1UseCase.cs" />
+    <Compile Include="TestSuiten\Zentral\KF1EinZentralesFeature\UC2EinAndererKF1UseCase.cs" />
+    <Compile Include="TestSuiten\Zentral\KF2EinAnderesZentralesFeature\UC1EinKFUseCase.cs" />
+    <Compile Include="TestSuiten\Zentral\KF2EinAnderesZentralesFeature\UC2EinAndererKFUseCase.cs" />
+    <Compile Include="Level1\Level2a\Level3a.cs" />
+    <Compile Include="Level1\Level2a\Level3b.cs" />
+    <Compile Include="Level1\Level2b\Level3a.cs" />
+    <Compile Include="Level1\Level2b\Level3b.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
