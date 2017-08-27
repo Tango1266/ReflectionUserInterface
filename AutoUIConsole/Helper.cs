@@ -1,3 +1,4 @@
+using AutoUIConsole.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text.RegularExpressions;
 using static AutoUIConsole.Config.RegexPattern;
 namespace AutoUIConsole
 {
-    internal class Helper
+    public class Helper
     {
         public static string MakeRegex(string PREFIX) => AnyChars + PREFIX + AnyChars;
 
@@ -18,9 +19,23 @@ namespace AutoUIConsole
 
         public static List<Type> GetTypesFromFullName(string seekedLevel)
         {
-            return Config.AssemblyWhereToLookUp.GetTypes()
-                .Where(x => x.FullName != null && Regex.IsMatch(x.FullName, MakeRegex(seekedLevel))).ToList();
+            return GetTypesFromFullName(seekedLevel, null);
         }
+
+        internal static List<Type> GetTypesFromFullName(SelectionOption options)
+        {
+            return GetTypesFromFullName(null, options);
+        }
+
+        internal static List<Type> GetTypesFromFullName(string seekedLevel, SelectionOption options)
+        {
+
+            var typeList = options?.previousOptions?.Classes ?? Config.AssemblyWhereToLookUp.GetTypes().ToList();
+
+            return typeList
+                .Where(x => x.FullName != null && Regex.IsMatch(x.FullName, MakeRegex(options?.Selection ?? seekedLevel))).ToList();
+        }
+
 
         public static List<Type> GetTypesFromFullNameRegex(string RegexPattern)
         {
@@ -40,28 +55,91 @@ namespace AutoUIConsole
             method.Invoke(Program.UserInterface.Commands, new object[] { });
         }
 
-        public static SortedSet<string> CreateMenuItems()
+
+        public static SortedSet<string> CreateMenuItems(SelectionOption selectionOptions)
         {
             var menuItems = new SortedSet<string>();
 
-            foreach (var type in Program.UserInterface.CurrentSelection.CurrentOptions)
+
+            foreach (var type in selectionOptions.Methods)
             {
-                string menuItem = type.FullName;
-                string NameSpaceEndsWithDefineLevel = Program.UserInterface.CurrentSelection.Selection;
+                string menuItem = type.DeclaringType?.FullName + "." + type.Name;
 
+                var dirLevels = GetDirStructure(selectionOptions.Selection, menuItem);
 
-                if (Regex.IsMatch(menuItem, NameSpaceEndsWithDefineLevel))
+                if (Regex.IsMatch(menuItem, dirLevels[1]))
                 {
-                    menuItems.Add(menuItem);
+                    var nextLevel = dirLevels[1];
+                    menuItems.Add(nextLevel);
                 }
             }
 
             return menuItems;
         }
 
-        public static List<MethodInfo> GetMethods(string selection)
+        //public static List<MethodInfo> GetMethods(string selection)
+        //{
+        //    return GetTypesFromFullName(selection)[0].GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public).ToList();
+        //}
+
+        public static List<MethodInfo> GetMethods(Type classType)
         {
-            return GetTypesFromFullName(selection)[0].GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public).ToList();
+            return classType.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public).ToList();
+        }
+
+        /// <param name="baseLevel">e.g. "level2"</param>
+        /// <param name="path">e.g. "levl0.level1.level2.level3.level4"</param>
+        public static List<string> GetDirStructure(string baseLevel, string path)
+        {
+            var dirLevels = new List<string>();
+
+            // e.g. DirLevels= {level2}
+
+            /*e.g. levels=
+             * 0    : level0
+             *     ...
+             * 4    : level4
+            */
+            var levels = path.Split('.');
+
+            if (baseLevel.Length > 0)
+            {
+                string pathWithoutBaseLevel = Regex.Replace(path, AnyChars + baseLevel + @"(\.|$)", "");
+                /*e.g. levels=
+                 * 0    : level3
+                 * 1    : level4
+                */
+                levels = pathWithoutBaseLevel.Split('.');
+            }
+
+
+            /* e.g. DirLevels= {level2}
+             * 0    : level2
+             * 1    : level3
+             * 2    : level4
+            */
+            dirLevels.Add(baseLevel);
+
+            foreach (string level in levels)
+            {
+                dirLevels.Add(level);
+            }
+
+            return dirLevels;
+        }
+
+        public static void InvokeMethod(SelectionOption options)
+        {
+            var method = options.previousOptions.Methods.Where(x => Regex.IsMatch(x.DeclaringType?.FullName + "." + x.Name, options.Selection)).ToList()[0];
+
+            var classType = method.DeclaringType;
+
+            if (classType != null)
+            {
+                var classInstance = Activator.CreateInstance(classType);
+
+                method.Invoke(Convert.ChangeType(classInstance, classInstance.GetType()), new object[] { });
+            }
         }
     }
 }

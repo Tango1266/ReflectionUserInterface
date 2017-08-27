@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace AutoUIConsole.Components.Abstracts
 {
-    public abstract class Menu : IMenu
+    public class Menu
     {
         public Menu PreviousMenu { get; set; }
         public SortedSet<string> MenuItems { get; set; }
         public SelectionOption SelectionOptions { get; set; }
-        public DirStructure Directory { get; set; }
+
 
         public Menu(Menu previousMenu, SelectionOption selectionOption)
         {
@@ -24,7 +24,10 @@ namespace AutoUIConsole.Components.Abstracts
             PrintMenu();
         }
 
-        public abstract SortedSet<string> GetMenuItems();
+        public SortedSet<string> GetMenuItems()
+        {
+            return Helper.CreateMenuItems(SelectionOptions);
+        }
 
         public void PrintMenu()
         {

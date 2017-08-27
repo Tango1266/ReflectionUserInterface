@@ -1,4 +1,4 @@
-﻿using AutoUIConsole.Components.Menus;
+﻿using AutoUIConsole.Components.Abstracts;
 
 namespace AutoUIConsole.Components
 {
@@ -7,7 +7,7 @@ namespace AutoUIConsole.Components
         public void GoBack()
         {
             var menu = Program.UserInterface.CurrentMenu;
-            Program.UserInterface.CurrentMenu = new SubMenu(menu.PreviousMenu, Program.UserInterface.CurrentSelection.Undo());
+            Program.UserInterface.CurrentMenu = new Menu(menu.PreviousMenu, Program.UserInterface.CurrentSelection.Undo());
         }
 
         public void b() => GoBack();

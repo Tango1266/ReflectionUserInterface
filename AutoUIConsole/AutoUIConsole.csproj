@@ -43,23 +43,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Commands\GoBack.cs" />
-    <Compile Include="Components\DirStructure.cs" />
-    <Compile Include="Components\Menus\LeafMenu.cs" />
-    <Compile Include="_Archive\Archive.cs" />
-    <Compile Include="AbstractsInterfaces\Abstracts\Menu.cs" />
+    <Compile Include="Components\Menu.cs" />
     <Compile Include="Components\Commands\StartAll.cs" />
     <Compile Include="Components\Commands\GoToMainMenu.cs" />
     <Compile Include="Components\Commands\CommandsSuper.cs" />
-    <Compile Include="Components\Menus\SubMenu.cs" />
-    <Compile Include="Components\Menus\MainMenu.cs" />
     <Compile Include="Components\UserInterface.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="AbstractsInterfaces\Interfaces\IMenu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Components\SelectionOption.cs" />
-    <Compile Include="_Archive\_DirStructure.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

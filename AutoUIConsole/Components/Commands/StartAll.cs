@@ -8,7 +8,7 @@ namespace AutoUIConsole.Components
         public void StartAll()
         {
             Console.WriteLine("Wechsle zu Main Menu");
-            var options = Program.UserInterface.CurrentSelection.CurrentOptions;
+            var options = Program.UserInterface.CurrentSelection.Classes;
 
             foreach (Type option in options)
             {

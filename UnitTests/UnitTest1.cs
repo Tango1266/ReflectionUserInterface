@@ -62,11 +62,11 @@ namespace UnitTests
             var selection = "ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinUseCaseInKF2";
             var expected = "ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinUseCaseInKF2.TS1EineTestSuite";
 
-            var dir = new DirStructure("", selection);
+            var dir = Helper.GetDirStructure("", selection);
 
 
-            Assert.AreEqual(dir.DirLevels[0], selection);
-            Assert.AreEqual(dir.DirLevels[1], expected);
+            Assert.AreEqual(dir[0], selection);
+            Assert.AreEqual(dir[1], expected);
 
         }
 
@@ -78,13 +78,13 @@ namespace UnitTests
             var Level2expected = "ExternApp.TestSuiten.Spezial.KF.*.UC";
             var expected = "ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinUseCaseInKF2.TS1EineTestSuite";
 
-            var dir = new DirStructure("", selection);
+            var dir = Helper.GetDirStructure("", selection);
 
 
-            Assert.AreEqual(dir.DirLevels[1], selection);
+            Assert.AreEqual(dir[1], selection);
 
-            Assert.AreEqual(dir.DirLevels[2], Level1expected);
-            Assert.AreEqual(dir.DirLevels[3], Level2expected);
+            Assert.AreEqual(dir[2], Level1expected);
+            Assert.AreEqual(dir[3], Level2expected);
         }
 
     }
