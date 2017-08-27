@@ -17,25 +17,15 @@ namespace AutoUIConsole
             return types.Where(x => x.Namespace != null && Regex.IsMatch(x.Namespace, MakeRegex(seekedLevel))).ToList();
         }
 
-        public static List<Type> GetTypesFromFullName(string seekedLevel)
-        {
-            return GetTypesFromFullName(seekedLevel, null);
-        }
 
         internal static List<Type> GetTypesFromFullName(SelectionOption options)
-        {
-            return GetTypesFromFullName(null, options);
-        }
-
-        internal static List<Type> GetTypesFromFullName(string seekedLevel, SelectionOption options)
         {
 
             var typeList = options?.previousOptions?.Classes ?? Config.AssemblyWhereToLookUp.GetTypes().ToList();
 
             return typeList
-                .Where(x => x.FullName != null && Regex.IsMatch(x.FullName, MakeRegex(options?.Selection ?? seekedLevel))).ToList();
+                .Where(x => x.FullName != null && Regex.IsMatch(x.FullName, MakeRegex(options?.Selection))).ToList();
         }
-
 
         public static List<Type> GetTypesFromFullNameRegex(string RegexPattern)
         {
@@ -65,7 +55,9 @@ namespace AutoUIConsole
             {
                 string menuItem = type.DeclaringType?.FullName + "." + type.Name;
 
-                var dirLevels = GetDirStructure(selectionOptions.Selection, menuItem);
+                //TODO: Die DirLevels muessen so flexibel sein, dass sie die nächste Ebene einer Zeichenfolge ausgeben
+                //var dirLevels = GetDirStructure(selectionOptions.Selection, menuItem);
+                var dirLevels = GetDirStructure(selectionOptions, menuItem);
 
                 if (Regex.IsMatch(menuItem, dirLevels[1]))
                 {
@@ -76,11 +68,6 @@ namespace AutoUIConsole
 
             return menuItems;
         }
-
-        //public static List<MethodInfo> GetMethods(string selection)
-        //{
-        //    return GetTypesFromFullName(selection)[0].GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public).ToList();
-        //}
 
         public static List<MethodInfo> GetMethods(Type classType)
         {
@@ -118,6 +105,38 @@ namespace AutoUIConsole
              * 1    : level3
              * 2    : level4
             */
+            dirLevels.Add(baseLevel);
+
+            foreach (string level in levels)
+            {
+                dirLevels.Add(level);
+            }
+
+            return dirLevels;
+        }
+
+        /// <param name="baseLevel">e.g. "level2"</param>
+        /// <param name="path">e.g. "levl0.level1.level2.level3.level4"</param>
+        public static List<string> GetDirStructure(SelectionOption options, string path)
+        {
+            var dirLevels = new List<string>();
+            var baseLevel = options.Selection.Split('*').Last();
+
+            var levels = path.Split('.');
+
+            if (levels.Length > 0)
+            {
+                string pathWithoutBaseLevel = Regex.Replace(path, AnyChars + options.Selection + @"(\.|$)", "");
+
+                if (path.Equals(pathWithoutBaseLevel))
+                {
+                    //ueberarbeiten
+                    pathWithoutBaseLevel = Regex.Replace(path, AnyChars + dot + baseLevel + AnyChars + @"?(\.|$)", "");
+                }
+
+                levels = pathWithoutBaseLevel.Split('.');
+            }
+
             dirLevels.Add(baseLevel);
 
             foreach (string level in levels)
