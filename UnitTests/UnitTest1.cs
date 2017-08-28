@@ -14,7 +14,7 @@ namespace UnitTests
         {
             string level = "TestSuiten";
 
-            new UserInterface(level);
+            new UserInterface(new SelectionOption(null, level));
 
             Assert.IsNull(Program.UserInterface.CurrentMenu.PreviousMenu);
 
@@ -26,7 +26,7 @@ namespace UnitTests
         {
             string level = "TestSuiten";
 
-            new UserInterface(level);
+            new UserInterface(new SelectionOption(null, level));
 
             Program.UserInterface.CurrentMenu.PrintMenu();
 

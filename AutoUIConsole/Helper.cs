@@ -21,7 +21,7 @@ namespace AutoUIConsole
         internal static List<Type> GetTypesFromFullName(SelectionOption options)
         {
 
-            var typeList = options?.previousOptions?.Classes ?? Config.AssemblyWhereToLookUp.GetTypes().ToList();
+            var typeList = options?.previousOptions?.Classes ?? Config.AssemblyWhereToLookUp.GetTypes().Where(x => Regex.IsMatch(x.FullName, options?.Selection + ".*")).ToList();
 
             return typeList
                 .Where(x => x.FullName != null && Regex.IsMatch(x.FullName, MakeRegex(options?.Selection))).ToList();
@@ -91,7 +91,7 @@ namespace AutoUIConsole
 
             if (baseLevel.Length > 0)
             {
-                string pathWithoutBaseLevel = Regex.Replace(path, AnyChars + baseLevel + @"(\.|$)", "");
+                string pathWithoutBaseLevel = Regex.Replace(path, AnyChars + @"(?=" + baseLevel + @").*(\.|$)", "");
                 /*e.g. levels=
                  * 0    : level3
                  * 1    : level4
@@ -120,7 +120,7 @@ namespace AutoUIConsole
         public static List<string> GetDirStructure(SelectionOption options, string path)
         {
             var dirLevels = new List<string>();
-            var baseLevel = options.Selection.Split('*').Last();
+            var targetLevel = options.Selection.Split('*').Last();
 
             var levels = path.Split('.');
 
@@ -131,13 +131,13 @@ namespace AutoUIConsole
                 if (path.Equals(pathWithoutBaseLevel))
                 {
                     //ueberarbeiten
-                    pathWithoutBaseLevel = Regex.Replace(path, AnyChars + dot + baseLevel + AnyChars + @"?(\.|$)", "");
+                    pathWithoutBaseLevel = Regex.Replace(path, @".*?(?=" + targetLevel + @")", "");
                 }
 
                 levels = pathWithoutBaseLevel.Split('.');
             }
 
-            dirLevels.Add(baseLevel);
+            dirLevels.Add(targetLevel);
 
             foreach (string level in levels)
             {

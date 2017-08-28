@@ -11,10 +11,14 @@ namespace AutoUIConsole.Components
         public Menu CurrentMenu;
         public SelectionOption CurrentSelection;
 
-        public UserInterface(string selection)
+        public UserInterface(SelectionOption selectionOption)
         {
             Commands = new Commands();
-            CurrentSelection = new SelectionOption(null, selection);
+            CurrentSelection = selectionOption;
+        }
+
+        public void ShowMenu()
+        {
             CurrentMenu = new Menu(null, CurrentSelection);
         }
 
@@ -40,9 +44,9 @@ namespace AutoUIConsole.Components
             return Regex.IsMatch(selection, Config.RegexPattern.ConsistOnlyOfDigits);
         }
 
-        public void HandleSelection(string selection)
+        public void HandleSelection(params string[] selection)
         {
-            CurrentSelection = new SelectionOption(CurrentSelection, selection);
+            CurrentSelection = new SelectionOption(CurrentSelection, selection[0]);
 
             if (CurrentSelection.Classes.Count == 1)
             {
