@@ -33,14 +33,13 @@ namespace AutoUIConsole.Components
                 Helper.InvokeCommand(typeof(Commands), Config.Commands.GoToPreviousnMenu.First());
             }
 
-
             else if (SelectionIsNumber(selection))
             {
                 HandleDigitSelection(selection);
             }
             else
             {
-                HandleSelection(selection);
+                HandleCustomeInput(selection);
             }
         }
 
@@ -49,7 +48,7 @@ namespace AutoUIConsole.Components
             return Regex.IsMatch(selection, Config.RegexPattern.ConsistOnlyOfDigits);
         }
 
-        public void HandleSelection(params string[] selection)
+        public void HandleCustomeInput(params string[] selection)
         {
             CurrentSelection = new SelectionOption(CurrentSelection, selection[0]);
 
@@ -59,18 +58,27 @@ namespace AutoUIConsole.Components
             }
             else if (CurrentSelection.Methods.Count > 1)
             {
-                var hirarchyLevels = selection[0].Split(new[] { ".*" }, StringSplitOptions.RemoveEmptyEntries);
-                var lastLevel = hirarchyLevels[hirarchyLevels.Length - 1];
+                Console.WriteLine("Die Anfrage liefert mehrere Ergebnisse - Sollen sie ausgegeben oder ausgefuehrt werden?" + "\n\n" +
+                                  "Bestätige mit {Enter} zum Ausgeben, ansonsten gib vorher \"s\" ein:");
 
-                CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
-
-                CurrentSelection.Selection = Regex.Replace(CurrentSelection.Selection, @"\.\*" + lastLevel, "");
+                var subSelection = Console.ReadLine();
+                if (subSelection.Equals(string.Empty))
+                {
+                    //CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
+                    ShowMenu();
+                    CurrentSelection.Selection = "";
+                }
+                else if (subSelection.Equals("s"))
+                {
+                    Helper.InvokeMethod(CurrentSelection);
+                }
             }
             else
             {
-                CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
-            }
+                ShowMenu();
 
+                //CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
+            }
         }
 
         public void HandleDigitSelection(string selection)
@@ -94,9 +102,16 @@ namespace AutoUIConsole.Components
                 }
                 else
                 {
-                    CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
+                    ShowMenu();
+                    //CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
                 }
             }
+        }
+
+        public void DirectStart(string[] args)
+        {
+            CurrentSelection = new SelectionOption(CurrentSelection, args[0]);
+            Helper.InvokeMethod(CurrentSelection);
         }
     }
 }
