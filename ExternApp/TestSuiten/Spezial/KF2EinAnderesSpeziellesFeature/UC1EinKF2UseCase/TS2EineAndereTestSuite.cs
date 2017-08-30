@@ -1,6 +1,6 @@
 ﻿using ExternApp.Level1.Level2a;
 
-namespace ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinUseCaseInKF2
+namespace ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinKF2UseCase
 {
     public class TS2EineAndereTestSuite
     {

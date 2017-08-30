@@ -135,7 +135,7 @@ namespace UnitTests
 
         private void TestMenuItemInstances(string selection, params string[] expTargetLevels)
         {
-            _userInterface.inputHandler.HandleCustomeInput(selection);
+            _userInterface.HandleCustomeInput(selection);
 
             foreach (string expTargetLevel in expTargetLevels)
             {
