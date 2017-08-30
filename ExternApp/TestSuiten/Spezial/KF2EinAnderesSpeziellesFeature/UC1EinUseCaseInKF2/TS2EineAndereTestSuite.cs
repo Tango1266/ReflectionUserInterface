@@ -1,5 +1,4 @@
 ﻿using ExternApp.Level1.Level2a;
-using System;
 
 namespace ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinUseCaseInKF2
 {
@@ -7,12 +6,12 @@ namespace ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinUseC
     {
         public void TC1()
         {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
+            Helpers.WriteMessage(this);
         }
 
         public void TC2()
         {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
+            Helpers.WriteMessage(this);
         }
 
     }

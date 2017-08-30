@@ -7,12 +7,12 @@ namespace ExternApp.TestSuiten.Zentral.KF2EinAnderesZentralesFeature
     {
         public void TC1()
         {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
+            Helpers.WriteMessage(this);
         }
 
         public void TC2()
         {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
+            Helpers.WriteMessage(this);
         }
 
 

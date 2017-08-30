@@ -7,7 +7,7 @@ namespace ExternApp.TestSuiten.Spezial.KF1EinSpeziellesFeature
     {
         public void TC1()
         {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
+            Helpers.WriteMessage(this);
         }
 
     }

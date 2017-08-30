@@ -8,7 +8,7 @@ namespace ExternApp.TestSuiten.Zentral.KF1EinZentralesFeature
 
         public void TC1()
         {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
+            Helpers.WriteMessage(this);
         }
 
     }
