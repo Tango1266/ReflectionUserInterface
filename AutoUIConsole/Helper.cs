@@ -48,15 +48,13 @@ namespace AutoUIConsole
 
         public static SortedSet<string> CreateMenuItems(SelectionOption selectionOptions)
         {
+            if (selectionOptions?.Methods == null) return null;
             var menuItems = new SortedSet<string>();
-
 
             foreach (var type in selectionOptions.Methods)
             {
                 string menuItem = type.DeclaringType?.FullName + "." + type.Name;
 
-                //TODO: Die DirLevels muessen so flexibel sein, dass sie die nächste Ebene einer Zeichenfolge ausgeben
-                //var dirLevels = GetDirStructure(selectionOptions.Selection, menuItem);
                 var dirLevels = GetDirStructure(selectionOptions, menuItem);
 
                 if (Regex.IsMatch(menuItem, dirLevels[1]))
@@ -69,9 +67,20 @@ namespace AutoUIConsole
             return menuItems;
         }
 
-        public static List<MethodInfo> GetMethods(Type classType)
+        internal static List<MethodInfo> GetMethods(string selection, params Type[] classes)
         {
-            return classType.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public).ToList();
+            return GetMethods(classes).Where(x => Regex.IsMatch(x.DeclaringType + @"\." + x.Name, selection)).ToList();
+        }
+
+        internal static List<MethodInfo> GetMethods(params Type[] classes)
+        {
+            var methods = new List<MethodInfo>();
+            foreach (Type option in classes)
+            {
+                methods.AddRange(option.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public));
+            }
+
+            return methods;
         }
 
         /// <param name="baseLevel">e.g. "level2"</param>
@@ -124,24 +133,26 @@ namespace AutoUIConsole
 
             var levels = path.Split('.');
 
+
             if (levels.Length > 0)
             {
                 string pathWithoutBaseLevel = Regex.Replace(path, AnyChars + options.Selection + @"(\.|$)", "");
 
+
                 if (path.Equals(pathWithoutBaseLevel))
                 {
+
                     //ueberarbeiten
-                    pathWithoutBaseLevel = Regex.Replace(path, @".*?(?=" + targetLevel + @")", "");
+                    pathWithoutBaseLevel = Regex.Replace(path, @".*?(?=\." + targetLevel + @")", "");
                 }
 
-                levels = pathWithoutBaseLevel.Split('.');
+                levels = pathWithoutBaseLevel.Split('.').Where(x => x.Length > 1).ToArray();
             }
 
             dirLevels.Add(targetLevel);
-
-            foreach (string level in levels)
+            for (var i = 0; i < levels.Length; i++)
             {
-                dirLevels.Add(level);
+                dirLevels.Add(levels[i]);
             }
 
             return dirLevels;
@@ -149,15 +160,17 @@ namespace AutoUIConsole
 
         public static void InvokeMethod(SelectionOption options)
         {
-            var method = options.previousOptions.Methods.Where(x => Regex.IsMatch(x.DeclaringType?.FullName + "." + x.Name, options.Selection)).ToList()[0];
-
-            var classType = method.DeclaringType;
-
-            if (classType != null)
+            var methods = options.previousOptions.Methods.Where(x => Regex.IsMatch(x.DeclaringType?.FullName + "." + x.Name, options.Selection)).ToList();
+            foreach (var method in methods)
             {
-                var classInstance = Activator.CreateInstance(classType);
+                var classType = method.DeclaringType;
 
-                method.Invoke(Convert.ChangeType(classInstance, classInstance.GetType()), new object[] { });
+                if (classType != null)
+                {
+                    var classInstance = Activator.CreateInstance(classType);
+
+                    method.Invoke(Convert.ChangeType(classInstance, classInstance.GetType()), new object[] { });
+                }
             }
         }
     }

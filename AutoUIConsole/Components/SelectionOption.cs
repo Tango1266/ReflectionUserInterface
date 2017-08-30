@@ -34,7 +34,7 @@ namespace AutoUIConsole.Components
             }
             else
             {
-                //Methods = Helper.GetMethods(Selection);
+                Methods = Helper.GetMethods(previousOptions?.Classes.ToArray());
             }
         }
 
