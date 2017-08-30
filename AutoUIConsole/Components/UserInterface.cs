@@ -90,7 +90,6 @@ namespace AutoUIConsole.Components
                 else
                 {
                     ShowMenu();
-                    //CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
                 }
             }
         }
