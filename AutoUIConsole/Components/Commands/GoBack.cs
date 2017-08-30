@@ -6,8 +6,8 @@ namespace AutoUIConsole.Components
     {
         public void GoBack()
         {
-            var menu = Program.UserInterface.CurrentMenu;
-            Program.UserInterface.CurrentMenu = new Menu(menu.PreviousMenu, Program.UserInterface.CurrentSelection.Undo());
+            var menu = InterfaceControl.UserInterface.CurrentMenu;
+            InterfaceControl.UserInterface.CurrentMenu = new Menu(menu.PreviousMenu, InterfaceControl.UserInterface.CurrentSelection.Undo());
         }
 
         public void b() => GoBack();

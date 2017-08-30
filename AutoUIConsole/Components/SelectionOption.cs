@@ -10,10 +10,8 @@ namespace AutoUIConsole.Components
         public List<Type> Classes { get; set; }
         public List<MethodInfo> Methods { get; set; }
 
-
         public string Selection { get; set; }
 
-        public bool NoOptionsLeft => Methods == null || Classes.Count == 0;
 
         public SelectionOption(SelectionOption options, string selection)
         {
@@ -34,7 +32,7 @@ namespace AutoUIConsole.Components
             }
             else
             {
-                Methods = Helper.GetMethods(previousOptions?.Classes.ToArray());
+                Methods = Helper.GetMethodsFiltered(Selection, previousOptions?.Classes.ToArray());
             }
         }
 

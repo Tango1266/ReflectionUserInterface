@@ -14,9 +14,9 @@ namespace UnitTests
         [TestInitialize]
         public void Testinit()
         {
-            Program.InitializeStartUpConfiguration();
+            InterfaceControl.InitializeStartUpConfiguration();
 
-            _userInterface = Program.UserInterface;
+            _userInterface = InterfaceControl.UserInterface;
         }
 
         [TestMethod]
@@ -135,7 +135,7 @@ namespace UnitTests
 
         private void TestMenuItemInstances(string selection, params string[] expTargetLevels)
         {
-            _userInterface.HandleSelection(selection);
+            _userInterface.inputHandler.HandleCustomeInput(selection);
 
             foreach (string expTargetLevel in expTargetLevels)
             {

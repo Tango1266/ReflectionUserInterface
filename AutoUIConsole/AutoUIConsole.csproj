@@ -50,6 +50,7 @@
     <Compile Include="Components\UserInterface.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Components\InterfaceControl.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Components\SelectionOption.cs" />

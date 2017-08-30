@@ -8,7 +8,7 @@ namespace AutoUIConsole.Components
         public void StartAll()
         {
             Console.WriteLine("Wechsle zu Main Menu");
-            var methodInfos = Helper.GetMethods(Program.UserInterface.CurrentSelection.Classes.ToArray());
+            var methodInfos = Helper.GetMethods(InterfaceControl.UserInterface.CurrentSelection.Classes.ToArray());
 
             foreach (MethodInfo methodInfo in methodInfos)
             {
@@ -26,8 +26,6 @@ namespace AutoUIConsole.Components
                                       "\n" + e.StackTrace);
                 }
             }
-
-
         }
 
         public void s() => StartAll();

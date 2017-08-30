@@ -6,11 +6,11 @@ namespace AutoUIConsole.Components
     {
         public void GoToMainMenu()
         {
-            Program.UserInterface = new UserInterface(new SelectionOption(null, Config.DirLevel0));
+            InterfaceControl.UserInterface = new UserInterface(new SelectionOption(null, Config.DirLevel0));
 
             Console.WriteLine("Wechsle zu Main Menu");
 
-            Program.UserInterface.ShowMenu();
+            InterfaceControl.UserInterface.ShowMenu();
         }
 
         public void main() => GoToMainMenu();
