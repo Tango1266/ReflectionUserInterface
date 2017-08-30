@@ -8,26 +8,25 @@ namespace AutoUIConsole.Components
         public void StartAll()
         {
             Console.WriteLine("Wechsle zu Main Menu");
-            var options = Program.UserInterface.CurrentSelection.Classes;
+            var methodInfos = Helper.GetMethods(Program.UserInterface.CurrentSelection.Classes.ToArray());
 
-            foreach (Type option in options)
+            foreach (MethodInfo methodInfo in methodInfos)
             {
-                foreach (MethodInfo methodInfo in option.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
-                {
 
-                    try
-                    {
-                        var classInstance = Activator.CreateInstance(option);
-                        methodInfo.Invoke(Convert.ChangeType(classInstance, classInstance.GetType()), new object[] { });
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(option.FullName +
-                                        "\n" + methodInfo.Name + " " +
-                                          "\n" + e.Message);
-                    }
+                try
+                {
+                    var classInstance = Activator.CreateInstance(methodInfo?.DeclaringType);
+                    methodInfo?.Invoke(Convert.ChangeType(classInstance, classInstance.GetType()), new object[] { });
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(methodInfo.DeclaringType.FullName +
+                                    "\n" + methodInfo.Name + " " +
+                                      "\n" + e.Message +
+                                      "\n" + e.StackTrace);
                 }
             }
+
 
         }
 
