@@ -6,10 +6,10 @@ namespace AutoUIConsole.Components.Abstracts
 {
     public class Menu
     {
+
         public Menu PreviousMenu { get; set; }
         public SortedSet<string> MenuItems { get; set; }
         public SelectionOption SelectionOptions { get; set; }
-
 
         public Menu(Menu previousMenu, SelectionOption selectionOption)
         {
@@ -31,6 +31,7 @@ namespace AutoUIConsole.Components.Abstracts
 
         public void PrintMenu()
         {
+            if (MenuItems == null) return;
             Console.Clear();
 
             Console.WriteLine($"\n { "Startet alle untergeordnete Methoden mit: \t" + Config.Commands.StartAllDisplayedTests.ToText()}");

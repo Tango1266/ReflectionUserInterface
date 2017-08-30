@@ -11,15 +11,15 @@ namespace AutoUIConsole
         {
             try
             {
+                InitializeStartUpConfiguration();
                 StartDirectOrMenu(args);
-
                 HandleUserInput();
             }
-            catch (Exception e)
+            catch (Exception ae)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(ae);
+                HandleUserInput();
             }
-
         }
 
         private static void HandleUserInput()
@@ -34,10 +34,6 @@ namespace AutoUIConsole
 
         private static void StartDirectOrMenu(string[] args)
         {
-            var startUpSelectionOption = new SelectionOption(null, Config.DirLevel0);
-
-            UserInterface = new UserInterface(startUpSelectionOption);
-
             if (args.Length > 0)
             {
                 UserInterface.HandleSelection(args);
@@ -46,6 +42,13 @@ namespace AutoUIConsole
             {
                 UserInterface.ShowMenu();
             }
+        }
+
+        public static void InitializeStartUpConfiguration()
+        {
+            var startUpSelectionOption = new SelectionOption(null, Config.DirLevel0);
+
+            UserInterface = new UserInterface(startUpSelectionOption);
         }
     }
 }
