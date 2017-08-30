@@ -19,7 +19,7 @@ namespace AutoUIConsole.Components
 
         public void ShowMenu()
         {
-            CurrentMenu = new Menu(null, CurrentSelection);
+            CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
         }
 
         public void ExecuteSelection(string selection)
@@ -28,6 +28,11 @@ namespace AutoUIConsole.Components
             {
                 Helper.InvokeCommand(typeof(Commands), selection);
             }
+            else if (selection.Equals(string.Empty))
+            {
+                Helper.InvokeCommand(typeof(Commands), Config.Commands.GoToPreviousnMenu.First());
+            }
+
 
             else if (SelectionIsNumber(selection))
             {
@@ -48,13 +53,24 @@ namespace AutoUIConsole.Components
         {
             CurrentSelection = new SelectionOption(CurrentSelection, selection[0]);
 
-            if (CurrentSelection.Classes.Count == 1)
+            if (CurrentSelection.Classes.Count == 0 && CurrentSelection.Methods.Count == 1)
             {
-                //TODO: Methoden sollen aufgelistet werden bzw ausgefuehrt, wenn eine Methode eingegeben wird
-                //hier ist es wohl angebracht, dass der Klassenname vorher angegeben wird
+                Helper.InvokeMethod(CurrentSelection);
+            }
+            else if (CurrentSelection.Methods.Count > 1)
+            {
+                var hirarchyLevels = selection[0].Split(new[] { ".*" }, StringSplitOptions.RemoveEmptyEntries);
+                var lastLevel = hirarchyLevels[hirarchyLevels.Length - 1];
+
+                CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
+
+                CurrentSelection.Selection = Regex.Replace(CurrentSelection.Selection, @"\.\*" + lastLevel, "");
+            }
+            else
+            {
+                CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
             }
 
-            CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
         }
 
         public void HandleDigitSelection(string selection)
@@ -63,7 +79,11 @@ namespace AutoUIConsole.Components
             {
                 key = key - 1;
                 if (key >= CurrentMenu.MenuItems.Count)
-                    throw new ArgumentException("Der Wert stellt keine Option dar.");
+                {
+                    ShowMenu();
+                    Console.WriteLine(($"\n Der Wert \"{key + 1}\" stellt keine Option dar."));
+                    return;
+                }
 
                 var currentItem = CurrentMenu.MenuItems.ElementAt(key);
                 CurrentSelection = new SelectionOption(CurrentSelection, currentItem);
