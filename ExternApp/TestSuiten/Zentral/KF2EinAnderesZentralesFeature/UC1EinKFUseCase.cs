@@ -15,9 +15,6 @@ namespace ExternApp.TestSuiten.Zentral.KF2EinAnderesZentralesFeature
             Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
         }
 
-        public void TC3()
-        {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
-        }
+
     }
 }

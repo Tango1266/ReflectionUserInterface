@@ -1,7 +1,7 @@
 ﻿using System;
 using ExternApp.Level1.Level2a;
 
-namespace ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC2EinAndererUseCaseInKF2
+namespace ExternApp.Level1.UC2EinAndererUseCaseInKF2
 {
     public class TS2EineAndereTestSuiteWoAnders
     {
@@ -15,9 +15,5 @@ namespace ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC2EinAnde
             Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
         }
 
-        public void TC3()
-        {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
-        }
-    }
+          }
 }

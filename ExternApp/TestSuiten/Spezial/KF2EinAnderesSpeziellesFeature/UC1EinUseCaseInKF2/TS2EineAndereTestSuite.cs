@@ -1,5 +1,5 @@
-﻿using System;
-using ExternApp.Level1.Level2a;
+﻿using ExternApp.Level1.Level2a;
+using System;
 
 namespace ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinUseCaseInKF2
 {
@@ -15,9 +15,5 @@ namespace ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinUseC
             Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
         }
 
-        public void TC3()
-        {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
-        }
     }
 }
