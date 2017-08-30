@@ -1,9 +1,8 @@
 ﻿using ExternApp.Level1.Level2a;
-using System;
 
-namespace ExternApp.TestSuiten.Zentral.KF2EinAnderesZentralesFeature
+namespace ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinKF2UseCase
 {
-    public class UC2EinAndererKFUseCase
+    public class TS2EineAndereTestSuite
     {
         public void TC1()
         {
@@ -14,7 +13,6 @@ namespace ExternApp.TestSuiten.Zentral.KF2EinAnderesZentralesFeature
         {
             Helpers.WriteMessage(this);
         }
-
 
     }
 }

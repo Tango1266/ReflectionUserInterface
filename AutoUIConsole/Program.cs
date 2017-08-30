@@ -5,25 +5,23 @@ namespace AutoUIConsole
 {
     public class Program
     {
-        public static UserInterface UserInterface;
+        //TODO: Feature1: merhre Befehle/Methoden uber commandline ausfuhren (eingabe von mehreren Argumenten mit leerzeichen getrennt)
+        //TODO: Feature2: Direktstart funktionalitaet implementieren ohne Menu
+        //TODO: Feature3: Dynamische Erstellung und initialisierung von Properties in den Command Klassen mittels Reflection und der Config
 
-        static void Main(string[] args)
+
+        public static void Main(string[] args)
         {
-            UserInterface = new UserInterface(Config.DirLevel0);
-
-            while (true)
+            try
             {
-                var selection = Console.ReadLine();
-
-                //TODO: Entferne Whitespaces und Zeichen aus selection
-                try
-                {
-                    UserInterface.ExecuteSelection(selection);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                InterfaceControl.InitializeStartUpConfiguration();
+                InterfaceControl.StartDirectOrMenu(args);
+                InterfaceControl.HandleUserInput();
+            }
+            catch (Exception ae)
+            {
+                Console.WriteLine(ae);
+                InterfaceControl.HandleUserInput();
             }
         }
     }

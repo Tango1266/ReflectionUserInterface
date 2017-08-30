@@ -6,43 +6,42 @@ namespace AutoUIConsole.Components
 {
     public class SelectionOption
     {
-        public SelectionOption previousSelectionOptions { get; set; }
-        public List<Type> CurrentOptions { get; set; }
-        public List<MethodInfo> CurrentMethodOptions { get; set; }
+        public SelectionOption previousOptions { get; set; }
+        public List<Type> Classes { get; set; }
+        public List<MethodInfo> Methods { get; set; }
 
         public string Selection { get; set; }
 
-        public bool NoOptionsLeft => CurrentMethodOptions != null || CurrentOptions.Count == 0;
 
-        public SelectionOption(SelectionOption selectionOptions, string selection)
+        public SelectionOption(SelectionOption options, string selection)
         {
-            previousSelectionOptions = selectionOptions;
-            Selection = selection;
+            previousOptions = options;
+            Selection = previousOptions?.Selection + ".*" + selection;
 
-            if (Program.UserInterface != null
-                && Program.UserInterface.CurrentMenu.Directory != null
-                && Program.UserInterface.CurrentMenu.Directory.IsLeaf)
+            Classes = new List<Type>();
+            Classes = Helper.GetTypesFromFullName(this);
+
+            Methods = new List<MethodInfo>();
+
+            if (Classes.Count > 0)
             {
-                CurrentOptions = Helper.GetTypesFromFullNameRegex("\\." + Selection + "$");
-                return;
+                foreach (Type classOption in Classes)
+                {
+                    Methods.AddRange(Helper.GetMethods(classOption));
+                }
             }
-
-            CurrentOptions = Helper.GetTypesFromFullName(Selection);
+            else
+            {
+                Methods = Helper.GetMethodsFiltered(Selection, previousOptions?.Classes.ToArray());
+            }
         }
 
         public SelectionOption Undo()
         {
-            CurrentOptions = previousSelectionOptions?.CurrentOptions;
-            Selection = previousSelectionOptions?.Selection;
-            CurrentMethodOptions = previousSelectionOptions?.CurrentMethodOptions;
-            previousSelectionOptions = previousSelectionOptions?.previousSelectionOptions;
-            return this;
-        }
-
-        public SelectionOption SelectMethods()
-        {
-            //CurrentOptions = null;
-            CurrentMethodOptions = Helper.GetMethods(Selection);
+            Classes = previousOptions?.Classes;
+            Selection = previousOptions?.Selection;
+            Methods = previousOptions?.Methods;
+            previousOptions = previousOptions?.previousOptions;
             return this;
         }
 

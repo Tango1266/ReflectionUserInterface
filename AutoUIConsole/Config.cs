@@ -1,6 +1,6 @@
-using ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinUseCaseInKF2;
 using System.Collections.Generic;
 using System.Reflection;
+using ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinKF2UseCase;
 
 namespace AutoUIConsole
 {

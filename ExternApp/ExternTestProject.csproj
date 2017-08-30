@@ -46,10 +46,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="TestSuiten\Spezial\KF1EinSpeziellesFeature\UC1EinUseCase.cs" />
     <Compile Include="TestSuiten\Spezial\KF1EinSpeziellesFeature\UC2EinAndererUseCase.cs" />
-    <Compile Include="TestSuiten\Spezial\KF2EinAnderesSpeziellesFeature\UC1EinUseCaseInKF2\TS1EineTestSuite.cs" />
-    <Compile Include="TestSuiten\Spezial\KF2EinAnderesSpeziellesFeature\UC1EinUseCaseInKF2\TS2EineAndereTestSuite.cs" />
-    <Compile Include="TestSuiten\Spezial\KF2EinAnderesSpeziellesFeature\UC2EinAndererUseCaseInKF2\TS1EineTestSuiteWoAnders.cs" />
-    <Compile Include="TestSuiten\Spezial\KF2EinAnderesSpeziellesFeature\UC2EinAndererUseCaseInKF2\TS2EineAndereTestSuiteWoAnders.cs" />
+    <Compile Include="TestSuiten\Spezial\KF2EinAnderesSpeziellesFeature\UC1EinKF2UseCase\TS1EineTestSuite.cs" />
+    <Compile Include="TestSuiten\Spezial\KF2EinAnderesSpeziellesFeature\UC1EinKF2UseCase\TS2EineAndereTestSuite.cs" />
+    <Compile Include="TestSuiten\Spezial\KF2EinAnderesSpeziellesFeature\UC2EinAndererKF2UseCaseIn\TS1EineTestSuiteWoAnders.cs" />
+    <Compile Include="TestSuiten\Spezial\KF2EinAnderesSpeziellesFeature\UC2EinAndererKF2UseCaseIn\TS2EineAndereTestSuiteWoAnders.cs" />
     <Compile Include="TestSuiten\Spezial\KF3EinWeiteresSpeziellesFeature\KF3EinWeiteresSpeziellesFeature.cs" />
     <Compile Include="TestSuiten\Zentral\KF1EinZentralesFeature\UC1EinKF1UseCase.cs" />
     <Compile Include="TestSuiten\Zentral\KF1EinZentralesFeature\UC2EinAndererKF1UseCase.cs" />

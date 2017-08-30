@@ -1,10 +1,7 @@
 ﻿using AutoUIConsole.Components.Abstracts;
-using AutoUIConsole.Components.Menus;
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
-using static AutoUIConsole.Config.RegexPattern;
 
 namespace AutoUIConsole.Components
 {
@@ -13,15 +10,16 @@ namespace AutoUIConsole.Components
         public Commands Commands;
         public Menu CurrentMenu;
         public SelectionOption CurrentSelection;
-        public SelectionOption CurrentMethodSelection;
 
-        public DirStructure CurrentDirStructure { get; set; }
-
-        public UserInterface(string selection)
+        public UserInterface(SelectionOption selectionOption)
         {
             Commands = new Commands();
-            CurrentSelection = new SelectionOption(null, selection);
-            CurrentMenu = new MainMenu(CurrentSelection);
+            CurrentSelection = selectionOption;
+        }
+
+        public void ShowMenu()
+        {
+            CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
         }
 
         public void ExecuteSelection(string selection)
@@ -30,6 +28,10 @@ namespace AutoUIConsole.Components
             {
                 Helper.InvokeCommand(typeof(Commands), selection);
             }
+            else if (selection.Equals(string.Empty))
+            {
+                Helper.InvokeCommand(typeof(Commands), Config.Commands.GoToPreviousnMenu.First());
+            }
 
             else if (SelectionIsNumber(selection))
             {
@@ -37,28 +39,33 @@ namespace AutoUIConsole.Components
             }
             else
             {
-                HandleSelection(selection);
+                HandleCustomeInput(selection);
             }
         }
 
         private static bool SelectionIsNumber(string selection)
         {
-            return Regex.IsMatch(selection, ConsistOnlyOfDigits);
+            return Regex.IsMatch(selection, Config.RegexPattern.ConsistOnlyOfDigits);
         }
 
-        public void HandleSelection(string selection)
+        public void HandleCustomeInput(params string[] selection)
         {
+            CurrentSelection = new SelectionOption(CurrentSelection, selection[0]);
 
-            CurrentMenu.Directory = new DirStructure(selection, Helper.GetTypesFromFullNameRegex(@".*" + selection + @"(\.|$)")[0].FullName);
-            CurrentSelection = new SelectionOption(CurrentSelection, selection);
-
-            if (CurrentSelection.CurrentOptions.Count == 1)
+            if (CurrentSelection.Classes.Count == 0 && CurrentSelection.Methods.Count == 1)
             {
-                //TODO: Methoden sollen aufgelistet werden bzw ausgefuehrt, wenn eine Methode eingegeben wird
-                //hier ist es wohl angebracht, dass der Klassenname vorher angegeben wird
+                Helper.InvokeMethod(CurrentSelection);
             }
+            else if (CurrentSelection.Methods.Count > 1)
+            {
+                ShowMenu();
 
-            CurrentMenu = new SubMenu(CurrentMenu, CurrentSelection);
+                CurrentSelection.Selection = "";
+            }
+            else
+            {
+                ShowMenu();
+            }
         }
 
         public void HandleDigitSelection(string selection)
@@ -67,43 +74,30 @@ namespace AutoUIConsole.Components
             {
                 key = key - 1;
                 if (key >= CurrentMenu.MenuItems.Count)
-                    throw new ArgumentException("Der Wert stellt keine Option dar.");
+                {
+                    ShowMenu();
+                    Console.WriteLine(($"\n Der Wert \"{key + 1}\" stellt keine Option dar."));
+                    return;
+                }
 
                 var currentItem = CurrentMenu.MenuItems.ElementAt(key);
                 CurrentSelection = new SelectionOption(CurrentSelection, currentItem);
 
-                if (CurrentSelection.previousSelectionOptions != null && CurrentSelection.previousSelectionOptions.NoOptionsLeft)
+                if (CurrentSelection.Classes.Count == 0)
                 {
-                    InvokeMethod(key);
-                }
-                else if (CurrentMenu.Directory.IsLeaf)
-                {
-                    CurrentMethodSelection = CurrentSelection.SelectMethods();
-                    CurrentMenu = new LeafMenu(CurrentMenu, CurrentMethodSelection);
+                    Helper.InvokeMethod(CurrentSelection);
                 }
                 else
                 {
-                    CurrentMenu = new SubMenu(CurrentMenu, CurrentSelection);
+                    ShowMenu();
                 }
             }
-
         }
 
-        private void InvokeMethod(int key)
+        public void DirectStart(string[] args)
         {
-            string className = CurrentMethodSelection.Selection;
-            var classTypes = Helper.GetTypesFromFullNameRegex("\\." + className + "$");
-
-            if (classTypes.Count <= 0)
-                throw new AggregateException("Fehler - Die Klasse zur Methode wurde nicht gefunden.");
-
-            Type classType = Helper.GetTypesFromFullNameRegex("\\." + className + "$")[0];
-
-            var classInstance = Activator.CreateInstance(classType);
-
-            classType.GetMethod(CurrentMethodSelection.CurrentMethodOptions[key].Name,
-                    BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public)
-                .Invoke(Convert.ChangeType(classInstance, classInstance.GetType()), new object[] { });
+            CurrentSelection = new SelectionOption(CurrentSelection, args[0]);
+            Helper.InvokeMethod(CurrentSelection);
         }
     }
 }

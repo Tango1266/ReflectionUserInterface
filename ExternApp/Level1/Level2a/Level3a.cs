@@ -7,17 +7,17 @@ namespace ExternApp.Level1.Level2a
 
         public void Level4a()
         {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
+            Helpers.WriteMessage(this);
         }
 
         public void Level4b()
         {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
+            Helpers.WriteMessage(this);
         }
 
         public void Level4c()
         {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
+            Helpers.WriteMessage(this);
         }
     }
 }

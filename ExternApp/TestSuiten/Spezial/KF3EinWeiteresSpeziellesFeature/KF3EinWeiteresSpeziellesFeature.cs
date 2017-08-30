@@ -1,5 +1,4 @@
 ﻿using ExternApp.Level1.Level2a;
-using System;
 
 namespace ExternApp.TestSuiten.Spezial.KF3EinWeiteresSpeziellesFeature
 {
@@ -8,17 +7,25 @@ namespace ExternApp.TestSuiten.Spezial.KF3EinWeiteresSpeziellesFeature
 
         public void TC1()
         {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
+            Helpers.WriteMessage(this);
+
         }
 
         public void TC2()
         {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
+            Helpers.WriteMessage(this);
         }
 
         public void TC3()
         {
-            Console.WriteLine(this.GetType().FullName + " - " + Helpers.ExecutedMethod);
+            Helpers.WriteMessage(this);
+
+        }
+
+        public void TCDasSollEineEindeutigDefinierteMethodeSein()
+        {
+            Helpers.WriteMessage(this);
+
         }
     }
 }
