@@ -58,26 +58,13 @@ namespace AutoUIConsole.Components
             }
             else if (CurrentSelection.Methods.Count > 1)
             {
-                Console.WriteLine("Die Anfrage liefert mehrere Ergebnisse - Sollen sie ausgegeben oder ausgefuehrt werden?" + "\n\n" +
-                                  "Bestätige mit {Enter} zum Ausgeben, ansonsten gib vorher \"s\" ein:");
+                ShowMenu();
 
-                var subSelection = Console.ReadLine();
-                if (subSelection.Equals(string.Empty))
-                {
-                    //CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
-                    ShowMenu();
-                    CurrentSelection.Selection = "";
-                }
-                else if (subSelection.Equals("s"))
-                {
-                    Helper.InvokeMethod(CurrentSelection);
-                }
+                CurrentSelection.Selection = "";
             }
             else
             {
                 ShowMenu();
-
-                //CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
             }
         }
 
