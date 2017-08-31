@@ -79,14 +79,14 @@ namespace AutoUIConsole
         {
             List<MethodInfo> methods = new List<MethodInfo>();
             foreach (Type option in classes)
-                methods.AddRange(option.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly |
-                                                   BindingFlags.Public));
+                methods.AddRange(option.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public));
 
             return methods;
         }
+
         internal static List<MethodInfo> GetMethodsFiltered(string selection, params Type[] classes)
         {
-            return GetMethods(classes).Where(x => Regex.IsMatch(x.DeclaringType + @"\." + x.Name, selection)).ToList();
+            return GetMethods(classes).Where(x => Regex.IsMatch(x.DeclaringType + "." + x.Name, selection)).ToList();
         }
 
         public static void InvokeMethod(SelectionOption options)

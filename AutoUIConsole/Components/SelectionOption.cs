@@ -10,12 +10,13 @@ namespace AutoUIConsole.Components
         public List<Type> Classes { get; set; }
         public List<MethodInfo> Methods { get; set; }
 
-        public string Selection { get; set; }
 
+        public string Selection { get; set; }
 
         public SelectionOption(SelectionOption options, string selection)
         {
             previousOptions = options;
+
             Selection = previousOptions?.Selection + ".*" + selection;
 
             Classes = new List<Type>();
@@ -35,15 +36,5 @@ namespace AutoUIConsole.Components
                 Methods = Helper.GetMethodsFiltered(Selection, previousOptions?.Classes.ToArray());
             }
         }
-
-        public SelectionOption Undo()
-        {
-            Classes = previousOptions?.Classes;
-            Selection = previousOptions?.Selection;
-            Methods = previousOptions?.Methods;
-            previousOptions = previousOptions?.previousOptions;
-            return this;
-        }
-
     }
 }

@@ -11,6 +11,7 @@ namespace AutoUIConsole.Components
         public Menu CurrentMenu;
         public SelectionOption CurrentSelection;
 
+
         public UserInterface(SelectionOption selectionOption)
         {
             Commands = new Commands();
@@ -24,6 +25,7 @@ namespace AutoUIConsole.Components
 
         public void ExecuteSelection(string selection)
         {
+
             if (Commands.AvailableCommands.Contains(selection))
             {
                 Helper.InvokeCommand(typeof(Commands), selection);
@@ -60,7 +62,7 @@ namespace AutoUIConsole.Components
             {
                 ShowMenu();
 
-                CurrentSelection.Selection = "";
+                //CurrentSelection.Selection = "";
             }
             else
             {
@@ -98,6 +100,12 @@ namespace AutoUIConsole.Components
         {
             CurrentSelection = new SelectionOption(CurrentSelection, args[0]);
             Helper.InvokeMethod(CurrentSelection);
+        }
+
+        public void StepBack()
+        {
+            CurrentMenu = CurrentMenu?.PreviousMenu;
+            CurrentSelection = CurrentSelection?.previousOptions;
         }
     }
 }
