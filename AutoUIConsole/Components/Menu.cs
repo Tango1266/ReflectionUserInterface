@@ -9,12 +9,12 @@ namespace AutoUIConsole.Components.Abstracts
 
         public Menu PreviousMenu { get; set; }
         public SortedSet<string> MenuItems { get; set; }
-        public SelectionOption SelectionOptions { get; set; }
+        public Options optionses { get; set; }
 
-        public Menu(Menu previousMenu, SelectionOption selectionOption)
+        public Menu(Menu previousMenu, Options options)
         {
             PreviousMenu = previousMenu;
-            SelectionOptions = selectionOption;
+            optionses = options;
             CreateMenu();
         }
 
@@ -26,7 +26,7 @@ namespace AutoUIConsole.Components.Abstracts
 
         public SortedSet<string> GetMenuItems()
         {
-            return Helper.CreateMenuItems(SelectionOptions);
+            return Helper.CreateMenuItems(optionses);
         }
 
         public void PrintMenu()

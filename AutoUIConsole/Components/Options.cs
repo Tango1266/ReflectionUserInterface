@@ -4,18 +4,19 @@ using System.Reflection;
 
 namespace AutoUIConsole.Components
 {
-    public class SelectionOption
+    public class Options
     {
-        public SelectionOption previousOptions { get; set; }
+        public Options previousOptions { get; set; }
         public List<Type> Classes { get; set; }
         public List<MethodInfo> Methods { get; set; }
 
+
         public string Selection { get; set; }
 
-
-        public SelectionOption(SelectionOption options, string selection)
+        public Options(Options options, string selection)
         {
             previousOptions = options;
+
             Selection = previousOptions?.Selection + ".*" + selection;
 
             Classes = new List<Type>();
@@ -35,15 +36,5 @@ namespace AutoUIConsole.Components
                 Methods = Helper.GetMethodsFiltered(Selection, previousOptions?.Classes.ToArray());
             }
         }
-
-        public SelectionOption Undo()
-        {
-            Classes = previousOptions?.Classes;
-            Selection = previousOptions?.Selection;
-            Methods = previousOptions?.Methods;
-            previousOptions = previousOptions?.previousOptions;
-            return this;
-        }
-
     }
 }

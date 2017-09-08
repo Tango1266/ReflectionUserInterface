@@ -1,103 +1,107 @@
 ﻿using AutoUIConsole.Components.Abstracts;
+using AutoUIConsole.Components.DataTypes;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace AutoUIConsole.Components
 {
     public class UserInterface
     {
-        public Commands Commands;
-        public Menu CurrentMenu;
-        public SelectionOption CurrentSelection;
+        public Commands Commands { get; set; }
+        public Menu CurrentMenu { get; set; }
+        public Options CurrentOptions { get; set; }
 
-        public UserInterface(SelectionOption selectionOption)
+
+        public UserInterface(Options options)
         {
             Commands = new Commands();
-            CurrentSelection = selectionOption;
+            CurrentOptions = options;
         }
 
-        public void ShowMenu()
+        public void ShowConsoleMenu()
         {
-            CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
+            CurrentMenu = new Menu(CurrentMenu, CurrentOptions);
         }
 
-        public void ExecuteSelection(string selection)
+        public void ExecuteSelection(UserInput input)
         {
-            if (Commands.AvailableCommands.Contains(selection))
-            {
-                Helper.InvokeCommand(typeof(Commands), selection);
-            }
-            else if (selection.Equals(string.Empty))
-            {
-                Helper.InvokeCommand(typeof(Commands), Config.Commands.GoToPreviousnMenu.First());
-            }
+            if (input.IsEmpty) Helper.InvokeCommand(typeof(Commands), Config.Commands.GoToPreviousnMenu.First());
 
-            else if (SelectionIsNumber(selection))
+            foreach (UserInput userInput in input.Arguments)
             {
-                HandleDigitSelection(selection);
-            }
-            else
-            {
-                HandleCustomeInput(selection);
+                if (userInput.IsCommand) Helper.InvokeCommand(typeof(Commands), userInput.Content);
+
+                else if (userInput.IsNumber) HandleMenuSelection(userInput.Content);
+
+                else HandleCustomeInput(userInput.Content);
             }
         }
 
-        private static bool SelectionIsNumber(string selection)
-        {
-            return Regex.IsMatch(selection, Config.RegexPattern.ConsistOnlyOfDigits);
-        }
 
         public void HandleCustomeInput(params string[] selection)
         {
-            CurrentSelection = new SelectionOption(CurrentSelection, selection[0]);
+            CurrentOptions = new Options(CurrentOptions, selection[0]);
 
-            if (CurrentSelection.Classes.Count == 0 && CurrentSelection.Methods.Count == 1)
+            if (CurrentOptions.Classes.Count == 0 && CurrentOptions.Methods.Count == 1)
             {
-                Helper.InvokeMethod(CurrentSelection);
+                Helper.InvokeMethod(CurrentOptions);
             }
-            else if (CurrentSelection.Methods.Count > 1)
+            else if (CurrentOptions.Methods.Count > 1)
             {
-                ShowMenu();
+                ShowConsoleMenu();
 
-                CurrentSelection.Selection = "";
+                CurrentOptions.Selection = "";
             }
             else
             {
-                ShowMenu();
+                ShowConsoleMenu();
             }
         }
 
-        public void HandleDigitSelection(string selection)
+        public void HandleMenuSelection(string selection)
         {
             if (int.TryParse(selection, out int key))
             {
                 key = key - 1;
                 if (key >= CurrentMenu.MenuItems.Count)
                 {
-                    ShowMenu();
+                    ShowConsoleMenu();
                     Console.WriteLine(($"\n Der Wert \"{key + 1}\" stellt keine Option dar."));
                     return;
                 }
 
                 var currentItem = CurrentMenu.MenuItems.ElementAt(key);
-                CurrentSelection = new SelectionOption(CurrentSelection, currentItem);
+                CurrentOptions = new Options(CurrentOptions, currentItem);
 
-                if (CurrentSelection.Classes.Count == 0)
+                if (CurrentOptions.Classes.Count == 0)
                 {
-                    Helper.InvokeMethod(CurrentSelection);
+                    Helper.InvokeMethod(CurrentOptions);
                 }
                 else
                 {
-                    ShowMenu();
+                    ShowConsoleMenu();
                 }
             }
         }
 
-        public void DirectStart(string[] args)
+        public void DirectStart(UserInput input)
         {
-            CurrentSelection = new SelectionOption(CurrentSelection, args[0]);
-            Helper.InvokeMethod(CurrentSelection);
+            foreach (UserInput argument in input.Arguments)
+            {
+
+                if (argument.IsEmpty) continue;
+
+                if (argument.IsCommand) Helper.InvokeCommand(typeof(Commands), argument.Content);
+
+                CurrentOptions = new Options(CurrentOptions, input.Content);
+                Helper.InvokeMethod(CurrentOptions);
+            }
+        }
+
+        public void StepBack()
+        {
+            CurrentMenu = CurrentMenu?.PreviousMenu;
+            CurrentOptions = CurrentOptions?.previousOptions;
         }
     }
 }
