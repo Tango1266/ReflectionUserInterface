@@ -25,15 +25,15 @@ namespace AutoUIConsole.Components
 
         public void ExecuteSelection(UserInput input)
         {
-            foreach (UserInput argument in input.Arguments)
+            if (input.IsEmpty) Helper.InvokeCommand(typeof(Commands), Config.Commands.GoToPreviousnMenu.First());
+
+            foreach (UserInput userInput in input.Arguments)
             {
-                if (argument.IsEmpty) Helper.InvokeCommand(typeof(Commands), Config.Commands.GoToPreviousnMenu.First());
+                if (userInput.IsCommand) Helper.InvokeCommand(typeof(Commands), userInput.Content);
 
-                else if (argument.IsCommand) Helper.InvokeCommand(typeof(Commands), argument.Content);
+                else if (userInput.IsNumber) HandleMenuSelection(userInput.Content);
 
-                else if (argument.IsNumber) HandleMenuSelection(argument.Content);
-
-                else HandleCustomeInput(argument.Content);
+                else HandleCustomeInput(userInput.Content);
             }
         }
 

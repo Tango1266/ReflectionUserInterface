@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AutoUIConsole.Components.DataTypes
 {
@@ -27,7 +28,7 @@ namespace AutoUIConsole.Components.DataTypes
 
         private void EvaluateArguments()
         {
-            IsEmpty = Content.Equals(string.Empty);
+            IsEmpty = Content.Equals(string.Empty) || Arguments.Count == 0;
             IsMultiArgument = Arguments.Count > 1;
 
             if (IsMultiArgument) return;
@@ -47,7 +48,19 @@ namespace AutoUIConsole.Components.DataTypes
 
             if (userInput.Length == 1)
             {
-                Arguments.Add(this);
+                var arguements = userInput[0].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (arguements.Length == 1)
+                {
+                    Arguments.Add(this);
+                    return;
+                }
+
+
+                foreach (string arguement in arguements)
+                {
+                    Arguments.Add(new UserInput(arguement));
+                }
                 return;
             }
 
