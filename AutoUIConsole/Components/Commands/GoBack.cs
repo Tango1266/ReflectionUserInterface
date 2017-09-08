@@ -4,9 +4,9 @@
     {
         public void GoBack()
         {
-            var userInterface = InterfaceControl.UserInterface;
+            var userInterface = Session.UserInterface;
             userInterface.StepBack();
-            userInterface.ShowMenu();
+            userInterface.ShowConsoleMenu();
         }
 
         public void b() => GoBack();

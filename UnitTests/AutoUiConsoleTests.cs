@@ -14,9 +14,9 @@ namespace UnitTests
         [TestInitialize]
         public void Testinit()
         {
-            InterfaceControl.InitializeStartUpConfiguration();
+            Session.InitializeStartUpConfiguration();
 
-            _userInterface = InterfaceControl.UserInterface;
+            _userInterface = Session.UserInterface;
         }
 
         [TestMethod]
@@ -24,12 +24,12 @@ namespace UnitTests
         {
             string level = "TestSuiten";
 
-            var uiInterface = new UserInterface(new SelectionOption(null, level));
-            uiInterface.ShowMenu();
+            var uiInterface = new UserInterface(new Options(null, level));
+            uiInterface.ShowConsoleMenu();
 
             Assert.IsNull(uiInterface.CurrentMenu.PreviousMenu);
 
-            Assert.AreEqual(".*" + level, uiInterface.CurrentSelection.Selection);
+            Assert.AreEqual(".*" + level, uiInterface.CurrentOptions.Selection);
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace UnitTests
         public void TestDirStructureGetsPath()
         {
             var selection = "TestSuiten";
-            var selectionOption = new SelectionOption(null, selection);
+            var selectionOption = new Options(null, selection);
             var path = "ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinUseCaseInKF2.TS1EineTestSuite";
 
             var dir = Helper.GetDirStructure(selectionOption, path);

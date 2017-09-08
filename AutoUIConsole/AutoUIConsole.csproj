@@ -50,10 +50,10 @@
     <Compile Include="Components\UserInterface.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="Components\InterfaceControl.cs" />
+    <Compile Include="Components\Session.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Components\SelectionOption.cs" />
+    <Compile Include="Components\Options.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

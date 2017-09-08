@@ -4,16 +4,16 @@ using System.Reflection;
 
 namespace AutoUIConsole.Components
 {
-    public class SelectionOption
+    public class Options
     {
-        public SelectionOption previousOptions { get; set; }
+        public Options previousOptions { get; set; }
         public List<Type> Classes { get; set; }
         public List<MethodInfo> Methods { get; set; }
 
 
         public string Selection { get; set; }
 
-        public SelectionOption(SelectionOption options, string selection)
+        public Options(Options options, string selection)
         {
             previousOptions = options;
 

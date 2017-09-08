@@ -7,20 +7,20 @@ namespace AutoUIConsole.Components
 {
     public class UserInterface
     {
-        public Commands Commands;
-        public Menu CurrentMenu;
-        public SelectionOption CurrentSelection;
+        public Commands Commands { get; set; }
+        public Menu CurrentMenu { get; set; }
+        public Options CurrentOptions { get; set; }
 
 
-        public UserInterface(SelectionOption selectionOption)
+        public UserInterface(Options options)
         {
             Commands = new Commands();
-            CurrentSelection = selectionOption;
+            CurrentOptions = options;
         }
 
-        public void ShowMenu()
+        public void ShowConsoleMenu()
         {
-            CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
+            CurrentMenu = new Menu(CurrentMenu, CurrentOptions);
         }
 
         public void ExecuteSelection(string selection)
@@ -52,21 +52,21 @@ namespace AutoUIConsole.Components
 
         public void HandleCustomeInput(params string[] selection)
         {
-            CurrentSelection = new SelectionOption(CurrentSelection, selection[0]);
+            CurrentOptions = new Options(CurrentOptions, selection[0]);
 
-            if (CurrentSelection.Classes.Count == 0 && CurrentSelection.Methods.Count == 1)
+            if (CurrentOptions.Classes.Count == 0 && CurrentOptions.Methods.Count == 1)
             {
-                Helper.InvokeMethod(CurrentSelection);
+                Helper.InvokeMethod(CurrentOptions);
             }
-            else if (CurrentSelection.Methods.Count > 1)
+            else if (CurrentOptions.Methods.Count > 1)
             {
-                ShowMenu();
+                ShowConsoleMenu();
 
-                //CurrentSelection.Selection = "";
+                CurrentOptions.Selection = "";
             }
             else
             {
-                ShowMenu();
+                ShowConsoleMenu();
             }
         }
 
@@ -77,35 +77,35 @@ namespace AutoUIConsole.Components
                 key = key - 1;
                 if (key >= CurrentMenu.MenuItems.Count)
                 {
-                    ShowMenu();
+                    ShowConsoleMenu();
                     Console.WriteLine(($"\n Der Wert \"{key + 1}\" stellt keine Option dar."));
                     return;
                 }
 
                 var currentItem = CurrentMenu.MenuItems.ElementAt(key);
-                CurrentSelection = new SelectionOption(CurrentSelection, currentItem);
+                CurrentOptions = new Options(CurrentOptions, currentItem);
 
-                if (CurrentSelection.Classes.Count == 0)
+                if (CurrentOptions.Classes.Count == 0)
                 {
-                    Helper.InvokeMethod(CurrentSelection);
+                    Helper.InvokeMethod(CurrentOptions);
                 }
                 else
                 {
-                    ShowMenu();
+                    ShowConsoleMenu();
                 }
             }
         }
 
         public void DirectStart(string[] args)
         {
-            CurrentSelection = new SelectionOption(CurrentSelection, args[0]);
-            Helper.InvokeMethod(CurrentSelection);
+            CurrentOptions = new Options(CurrentOptions, args[0]);
+            Helper.InvokeMethod(CurrentOptions);
         }
 
         public void StepBack()
         {
             CurrentMenu = CurrentMenu?.PreviousMenu;
-            CurrentSelection = CurrentSelection?.previousOptions;
+            CurrentOptions = CurrentOptions?.previousOptions;
         }
     }
 }
