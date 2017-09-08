@@ -14,7 +14,7 @@ namespace UnitTests
         [TestInitialize]
         public void Testinit()
         {
-            Session.InitializeStartUpConfiguration();
+            Program.CurrentSession.InitializeStartUpConfiguration();
 
             _userInterface = Session.UserInterface;
         }

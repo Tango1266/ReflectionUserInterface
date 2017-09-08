@@ -1,4 +1,5 @@
 using AutoUIConsole.Components;
+using AutoUIConsole.Components.DataTypes;
 using System;
 
 namespace AutoUIConsole
@@ -11,13 +12,16 @@ namespace AutoUIConsole
         {
             try
             {
+                var userInput = new UserInput(args);
+
                 InitializeStartUpConfiguration();
-                StartDirectOrMenu(args);
+                StartDirectOrMenu(userInput);
                 HandleUserInput();
             }
             catch (Exception ae)
             {
                 Console.WriteLine(ae);
+                HandleUserInput();
             }
         }
         public void InitializeStartUpConfiguration()
@@ -31,17 +35,16 @@ namespace AutoUIConsole
         {
             while (true)
             {
-                var selection = Console.ReadLine();
-                //TODO: Evtl: Entferne Whitespaces und Zeichen aus selection
-                UserInterface.ExecuteSelection(selection);
+                var userInput = new UserInput(Console.ReadLine());
+                UserInterface.ExecuteSelection(userInput);
             }
         }
 
-        public void StartDirectOrMenu(string[] args)
+        public void StartDirectOrMenu(UserInput userInput)
         {
-            if (args.Length > 0)
+            if (!userInput.IsEmpty)
             {
-                UserInterface.DirectStart(args);
+                UserInterface.DirectStart(userInput);
                 Environment.Exit(0);
             }
             else

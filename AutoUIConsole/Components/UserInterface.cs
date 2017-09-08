@@ -1,7 +1,7 @@
 ﻿using AutoUIConsole.Components.Abstracts;
+using AutoUIConsole.Components.DataTypes;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace AutoUIConsole.Components
 {
@@ -23,32 +23,20 @@ namespace AutoUIConsole.Components
             CurrentMenu = new Menu(CurrentMenu, CurrentOptions);
         }
 
-        public void ExecuteSelection(string selection)
+        public void ExecuteSelection(UserInput input)
         {
+            foreach (UserInput argument in input.Arguments)
+            {
+                if (argument.IsEmpty) Helper.InvokeCommand(typeof(Commands), Config.Commands.GoToPreviousnMenu.First());
 
-            if (Commands.AvailableCommands.Contains(selection))
-            {
-                Helper.InvokeCommand(typeof(Commands), selection);
-            }
-            else if (selection.Equals(string.Empty))
-            {
-                Helper.InvokeCommand(typeof(Commands), Config.Commands.GoToPreviousnMenu.First());
-            }
+                else if (argument.IsCommand) Helper.InvokeCommand(typeof(Commands), argument.Content);
 
-            else if (SelectionIsNumber(selection))
-            {
-                HandleDigitSelection(selection);
-            }
-            else
-            {
-                HandleCustomeInput(selection);
+                else if (argument.IsNumber) HandleMenuSelection(argument.Content);
+
+                else HandleCustomeInput(argument.Content);
             }
         }
 
-        private static bool SelectionIsNumber(string selection)
-        {
-            return Regex.IsMatch(selection, Config.RegexPattern.ConsistOnlyOfDigits);
-        }
 
         public void HandleCustomeInput(params string[] selection)
         {
@@ -70,7 +58,7 @@ namespace AutoUIConsole.Components
             }
         }
 
-        public void HandleDigitSelection(string selection)
+        public void HandleMenuSelection(string selection)
         {
             if (int.TryParse(selection, out int key))
             {
@@ -96,10 +84,18 @@ namespace AutoUIConsole.Components
             }
         }
 
-        public void DirectStart(string[] args)
+        public void DirectStart(UserInput input)
         {
-            CurrentOptions = new Options(CurrentOptions, args[0]);
-            Helper.InvokeMethod(CurrentOptions);
+            foreach (UserInput argument in input.Arguments)
+            {
+
+                if (argument.IsEmpty) continue;
+
+                if (argument.IsCommand) Helper.InvokeCommand(typeof(Commands), argument.Content);
+
+                CurrentOptions = new Options(CurrentOptions, input.Content);
+                Helper.InvokeMethod(CurrentOptions);
+            }
         }
 
         public void StepBack()

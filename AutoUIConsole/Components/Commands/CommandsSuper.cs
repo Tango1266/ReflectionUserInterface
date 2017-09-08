@@ -5,12 +5,14 @@ namespace AutoUIConsole.Components
 {
     public partial class Commands
     {
-        public static List<string> AvailableCommands { get; private set; }
+        public static List<string> AvailableCommands { get; } = GenerateAvailableCommands();
 
-        public Commands()
+        private static List<string> GenerateAvailableCommands()
         {
-            AvailableCommands = new List<string>();
-            GetType().GetMethods().ToList().ForEach(x => AvailableCommands.Add(x.Name));
+            var availableCommands = new List<string>();
+            typeof(Commands).GetMethods().ToList().ForEach(x => availableCommands.Add(x.Name));
+
+            return availableCommands;
         }
     }
 }

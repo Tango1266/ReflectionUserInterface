@@ -118,5 +118,9 @@ namespace AutoUIConsole
                 .Where(x => Regex.IsMatch(x.FullName, optionses?.Selection + ".*")).ToList();
         }
 
+        public static bool CheckIsNumber(string selection)
+        {
+            return Regex.IsMatch(selection, Config.RegexPattern.ConsistOnlyOfDigits);
+        }
     }
 }

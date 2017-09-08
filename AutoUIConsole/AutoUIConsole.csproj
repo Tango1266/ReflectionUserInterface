@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Commands\GoBack.cs" />
+    <Compile Include="Components\DataTypes\UserInput.cs" />
     <Compile Include="Components\Menu.cs" />
     <Compile Include="Components\Commands\StartAll.cs" />
     <Compile Include="Components\Commands\GoToMainMenu.cs" />
