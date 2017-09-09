@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace AutoUIConsole.Components.DataTypes
 {
@@ -10,9 +11,7 @@ namespace AutoUIConsole.Components.DataTypes
         public string Content { get; }
 
         public bool IsEmpty { get; private set; }
-
         public bool IsMultiArgument { get; private set; }
-
         public bool IsCommand { get; private set; }
         public bool IsNumber { get; private set; }
 
@@ -21,7 +20,7 @@ namespace AutoUIConsole.Components.DataTypes
         {
             ExtractArguments(arguements);
 
-            Content = ToString(arguements);
+            Content = arguements.ToText();
 
             EvaluateArguments();
         }
@@ -35,11 +34,7 @@ namespace AutoUIConsole.Components.DataTypes
 
             IsCommand = CheckIsCommand(Content);
 
-            if (!IsCommand)
-            {
-                IsNumber = Helper.CheckIsNumber(Content);
-            }
-
+            if (!IsCommand) IsNumber = Regex.IsMatch(Content, @"\b\d+$");
         }
 
         private void ExtractArguments(string[] userInput)
@@ -74,18 +69,6 @@ namespace AutoUIConsole.Components.DataTypes
         private bool CheckIsCommand(string content)
         {
             return Commands.AvailableCommands.Contains(content);
-        }
-
-        public string ToString(params string[] stringArray)
-        {
-            string res = "";
-
-            foreach (string userInput in stringArray)
-            {
-                res = userInput + " ";
-            }
-
-            return res.TrimEnd();
         }
     }
 }

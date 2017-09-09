@@ -1,64 +1,17 @@
 using AutoUIConsole.Components;
-using AutoUIConsole.Components.DataTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using static AutoUIConsole.Config.RegexPattern;
 
 namespace AutoUIConsole
 {
-    public class Helper
+    public static class Helper
     {
-        public static List<string> GetDirStructure(Selection optionses, string path)
+        public static Assembly GetLookUpAssembly(Type anyTypeOfTheTargetAssembly)
         {
-            List<string> dirLevels = new List<string>();
-            string targetLevel = optionses.Query.Split('*').Last();
-
-            string[] levels = path.Split('.');
-
-
-            if (levels.Length > 0)
-            {
-                string pathWithoutBaseLevel = Regex.Replace(path, AnyChars + optionses.Query + @"(\.|$)", "");
-
-
-                if (path.Equals(pathWithoutBaseLevel))
-                    pathWithoutBaseLevel = Regex.Replace(path, @".*?(?=\." + targetLevel + @")", "");
-
-                levels = pathWithoutBaseLevel.Split('.').Where(x => x.Length > 1).ToArray();
-            }
-
-            dirLevels.Add(targetLevel);
-            for (int i = 0; i < levels.Length; i++)
-                dirLevels.Add(levels[i]);
-
-            return dirLevels;
-        }
-
-        public static SortedSet<string> CreateMenuItems(Selection selection)
-        {
-            if (selection?.Options?.Methods == null) return null;
-
-            SortedSet<string> menuItems = new SortedSet<string>();
-
-            foreach (MethodInfo methodInfo in selection.Options.Methods)
-            {
-                string fullPathMethodName = methodInfo.DeclaringType?.FullName + "." + methodInfo.Name;
-                PathLevel pathLevel = new PathLevel(fullPathMethodName, selection.Content);
-
-                if (pathLevel.IsLeafOrIncomplete) menuItems.Add(pathLevel.baseLevel);
-
-                else if (pathLevel.IsValidOrTop) menuItems.Add(pathLevel.nextLevel);
-            }
-
-            return menuItems;
-        }
-
-        public static Assembly GetLookUpAssembly(Type AnyTypeOfTheTargetAssembly)
-        {
-            return Assembly.GetAssembly(AnyTypeOfTheTargetAssembly);
+            return Assembly.GetAssembly(anyTypeOfTheTargetAssembly);
         }
         internal static List<Type> GetTypesFromFullName(Selection optionses)
         {
@@ -111,9 +64,23 @@ namespace AutoUIConsole
                 .Where(x => Regex.IsMatch(x.FullName, optionses?.Query + ".*")).ToList();
         }
 
-        public static bool CheckIsNumber(string selection)
+        public static string ToText(this object[] array)
         {
-            return Regex.IsMatch(selection, Config.RegexPattern.ConsistOnlyOfDigits);
+            string res = "";
+
+            foreach (object userInput in array)
+            {
+                res = userInput + " ";
+            }
+
+            return res.TrimEnd();
+        }
+
+        public static string ToText(this List<string> list)
+        {
+            string res = "{";
+            list.ForEach(x => res += x + ", ");
+            return res.Substring(0, res.Length - 2) + "}";
         }
     }
 }

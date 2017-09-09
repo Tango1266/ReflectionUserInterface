@@ -67,21 +67,6 @@ namespace UnitTests
 
 
         [TestMethod]
-        public void TestDirStructureGetsPath()
-        {
-            var selection = "TestSuiten";
-            var selectionOption = new Selection(null, selection);
-            var path = "ExternApp.TestSuiten.Spezial.KF2EinAnderesSpeziellesFeature.UC1EinUseCaseInKF2.TS1EineTestSuite";
-
-            var dir = Helper.GetDirStructure(selectionOption, path);
-
-
-            Assert.AreEqual(selection, dir[0]);
-            Assert.AreEqual("Spezial", dir[1]);
-        }
-
-
-        [TestMethod]
         public void TestMenuItemsSpezialKF1()
         {
             string selection = "Spezial.*KF1";

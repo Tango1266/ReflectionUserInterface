@@ -46,7 +46,7 @@ namespace AutoUIConsole.Components
             {
                 Helper.InvokeMethod(currentSelection);
             }
-            else if (currentSelection.Options.Methods.Count > 1)
+            else if (currentSelection.Options.Methods.Count >= 1)
             {
                 ShowConsoleMenu();
 
