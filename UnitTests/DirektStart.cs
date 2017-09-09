@@ -53,5 +53,11 @@ namespace UnitTests
         {
             Program.Main(new[] { "TCDasSollEineEindeutigDefinierteMethodeSein" });
         }
+
+        [TestMethod]
+        public void MultiplyArguments()
+        {
+            Program.Main(new[] { "KF3 KF1.*UC1" });
+        }
     }
 }

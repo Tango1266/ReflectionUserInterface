@@ -45,7 +45,7 @@ namespace AutoUIConsole
             if (!userInput.IsEmpty)
             {
                 UserInterface.DirectStart(userInput);
-                Environment.Exit(0);
+                UserInterface.Commands.ExitApplication();
             }
             else
             {
