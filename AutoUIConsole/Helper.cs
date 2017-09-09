@@ -36,52 +36,25 @@ namespace AutoUIConsole
 
             return dirLevels;
         }
-        //TODO: Bug: Wenn per Nummer zu einer Methode navigiert und ausgefuert wird und darauffolgend eine weitere oder die gleiche ausgewaehlt wird, dann gibt es eine Exception
+
         public static SortedSet<string> CreateMenuItems(Selection selection)
         {
             if (selection?.Options?.Methods == null) return null;
 
             SortedSet<string> menuItems = new SortedSet<string>();
 
-            foreach (MethodInfo type in selection.Options.Methods)
+            foreach (MethodInfo methodInfo in selection.Options.Methods)
             {
-                string fullPathMethodName = type.DeclaringType?.FullName + "." + type.Name;
-                PathLevel currentPath = new PathLevel(fullPathMethodName, selection.Content);
-                menuItems.Add(currentPath.nextLevel);
+                string fullPathMethodName = methodInfo.DeclaringType?.FullName + "." + methodInfo.Name;
+                PathLevel pathLevel = new PathLevel(fullPathMethodName, selection.Content);
+
+                if (pathLevel.IsLeafOrIncomplete) menuItems.Add(pathLevel.baseLevel);
+
+                else if (pathLevel.IsValidOrTop) menuItems.Add(pathLevel.nextLevel);
             }
 
             return menuItems;
         }
-
-        /*          public static SortedSet<string> CreateMenuItems(Selection selection)
-        {
-            if (selection?.Options?.Methods == null) return null;
-
-            SortedSet<string> menuItems = new SortedSet<string>();
-
-            foreach (MethodInfo type in selection.Options.Methods)
-            {
-                string menuItem = type.DeclaringType?.FullName + "." + type.Name;
-
-                if (Regex.IsMatch(menuItem, selection.Content))
-                {
-                    List<string> dirLevels = GetDirStructure(selection, menuItem);
-
-                    string nextLevel = "";
-
-                    if (dirLevels.Count > 1)
-                        nextLevel = dirLevels[1];
-                    else if (dirLevels.Count == 1)
-                        nextLevel = menuItem;
-
-                    if (Regex.IsMatch(menuItem, nextLevel)) menuItems.Add(nextLevel);
-
-                }
-            }
-
-            return menuItems;
-        }
-        */
 
         public static Assembly GetLookUpAssembly(Type AnyTypeOfTheTargetAssembly)
         {
