@@ -9,18 +9,18 @@ namespace AutoUIConsole.Components
     {
         public Commands Commands { get; set; }
         public Menu CurrentMenu { get; set; }
-        public Options CurrentOptions { get; set; }
+        public Selection currentSelection { get; set; }
 
 
-        public UserInterface(Options options)
+        public UserInterface(Selection selection)
         {
             Commands = new Commands();
-            CurrentOptions = options;
+            currentSelection = selection;
         }
 
         public void ShowConsoleMenu()
         {
-            CurrentMenu = new Menu(CurrentMenu, CurrentOptions);
+            CurrentMenu = new Menu(CurrentMenu, currentSelection);
         }
 
         public void ExecuteSelection(UserInput input)
@@ -40,17 +40,17 @@ namespace AutoUIConsole.Components
 
         public void HandleCustomeInput(params string[] selection)
         {
-            CurrentOptions = new Options(CurrentOptions, selection[0]);
+            currentSelection = new Selection(currentSelection, selection[0]);
 
-            if (CurrentOptions.Classes.Count == 0 && CurrentOptions.Methods.Count == 1)
+            if (currentSelection.Options.Classes.Count == 0 && currentSelection.Options.Methods.Count == 1)
             {
-                Helper.InvokeMethod(CurrentOptions);
+                Helper.InvokeMethod(currentSelection);
             }
-            else if (CurrentOptions.Methods.Count > 1)
+            else if (currentSelection.Options.Methods.Count > 1)
             {
                 ShowConsoleMenu();
 
-                CurrentOptions.Selection = "";
+                currentSelection.Query = "";
             }
             else
             {
@@ -71,11 +71,11 @@ namespace AutoUIConsole.Components
                 }
 
                 var currentItem = CurrentMenu.MenuItems.ElementAt(key);
-                CurrentOptions = new Options(CurrentOptions, currentItem);
+                currentSelection = new Selection(currentSelection, currentItem);
 
-                if (CurrentOptions.Classes.Count == 0)
+                if (currentSelection.Options.Classes.Count == 0)
                 {
-                    Helper.InvokeMethod(CurrentOptions);
+                    Helper.InvokeMethod(currentSelection);
                 }
                 else
                 {
@@ -93,15 +93,15 @@ namespace AutoUIConsole.Components
 
                 if (argument.IsCommand) Helper.InvokeCommand(typeof(Commands), argument.Content);
 
-                CurrentOptions = new Options(CurrentOptions, input.Content);
-                Helper.InvokeMethod(CurrentOptions);
+                currentSelection = new Selection(currentSelection, input.Content);
+                Helper.InvokeMethod(currentSelection);
             }
         }
 
         public void StepBack()
         {
             CurrentMenu = CurrentMenu?.PreviousMenu;
-            CurrentOptions = CurrentOptions?.previousOptions;
+            currentSelection = currentSelection?.previousSelection;
         }
     }
 }

@@ -1,4 +1,5 @@
 using AutoUIConsole.Components;
+using AutoUIConsole.Components.DataTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +11,17 @@ namespace AutoUIConsole
 {
     public class Helper
     {
-        public static List<string> GetDirStructure(Options optionses, string path)
+        public static List<string> GetDirStructure(Selection optionses, string path)
         {
             List<string> dirLevels = new List<string>();
-            string targetLevel = optionses.Selection.Split('*').Last();
+            string targetLevel = optionses.Query.Split('*').Last();
 
             string[] levels = path.Split('.');
 
 
             if (levels.Length > 0)
             {
-                string pathWithoutBaseLevel = Regex.Replace(path, AnyChars + optionses.Selection + @"(\.|$)", "");
+                string pathWithoutBaseLevel = Regex.Replace(path, AnyChars + optionses.Query + @"(\.|$)", "");
 
 
                 if (path.Equals(pathWithoutBaseLevel))
@@ -36,18 +37,35 @@ namespace AutoUIConsole
             return dirLevels;
         }
         //TODO: Bug: Wenn per Nummer zu einer Methode navigiert und ausgefuert wird und darauffolgend eine weitere oder die gleiche ausgewaehlt wird, dann gibt es eine Exception
-        public static SortedSet<string> CreateMenuItems(Options optionses)
+        public static SortedSet<string> CreateMenuItems(Selection selection)
         {
-            if (optionses?.Methods == null) return null;
+            if (selection?.Options?.Methods == null) return null;
+
             SortedSet<string> menuItems = new SortedSet<string>();
 
-            foreach (MethodInfo type in optionses.Methods)
+            foreach (MethodInfo type in selection.Options.Methods)
+            {
+                string fullPathMethodName = type.DeclaringType?.FullName + "." + type.Name;
+                PathLevel currentPath = new PathLevel(fullPathMethodName, selection.Content);
+                menuItems.Add(currentPath.nextLevel);
+            }
+
+            return menuItems;
+        }
+
+        /*          public static SortedSet<string> CreateMenuItems(Selection selection)
+        {
+            if (selection?.Options?.Methods == null) return null;
+
+            SortedSet<string> menuItems = new SortedSet<string>();
+
+            foreach (MethodInfo type in selection.Options.Methods)
             {
                 string menuItem = type.DeclaringType?.FullName + "." + type.Name;
 
-                if (Regex.IsMatch(menuItem, optionses.Selection))
+                if (Regex.IsMatch(menuItem, selection.Content))
                 {
-                    List<string> dirLevels = GetDirStructure(optionses, menuItem);
+                    List<string> dirLevels = GetDirStructure(selection, menuItem);
 
                     string nextLevel = "";
 
@@ -63,18 +81,20 @@ namespace AutoUIConsole
 
             return menuItems;
         }
+        */
 
         public static Assembly GetLookUpAssembly(Type AnyTypeOfTheTargetAssembly)
         {
             return Assembly.GetAssembly(AnyTypeOfTheTargetAssembly);
         }
-        internal static List<Type> GetTypesFromFullName(Options optionses)
+        internal static List<Type> GetTypesFromFullName(Selection optionses)
         {
-            List<Type> typeList = optionses?.previousOptions?.Classes ?? GetTypeFromAssembly(optionses);
+            List<Type> typeList = optionses?.previousSelection?.Options?.Classes ?? GetTypeFromAssembly(optionses);
 
             return typeList
-                .Where(x => x.FullName != null && Regex.IsMatch(x.FullName, ".*" + optionses?.Selection + ".*")).ToList();
+                .Where(x => x.FullName != null && Regex.IsMatch(x.FullName, ".*" + optionses?.Query + ".*")).ToList();
         }
+
         internal static List<MethodInfo> GetMethods(params Type[] classes)
         {
             List<MethodInfo> methods = new List<MethodInfo>();
@@ -89,10 +109,10 @@ namespace AutoUIConsole
             return GetMethods(classes).Where(x => Regex.IsMatch(x.DeclaringType + "." + x.Name, selection)).ToList();
         }
 
-        public static void InvokeMethod(Options optionses)
+        public static void InvokeMethod(Selection optionses)
         {
-            List<MethodInfo> methods = optionses.previousOptions.Methods
-                .Where(x => Regex.IsMatch(x.DeclaringType?.FullName + "." + x.Name, optionses.Selection)).ToList();
+            List<MethodInfo> methods = optionses.previousSelection.Options.Methods
+                .Where(x => Regex.IsMatch(x.DeclaringType?.FullName + "." + x.Name, optionses.Query)).ToList();
             foreach (MethodInfo method in methods)
             {
                 Type classType = method.DeclaringType;
@@ -112,10 +132,10 @@ namespace AutoUIConsole
             method.Invoke(Session.UserInterface.Commands, new object[] { });
         }
 
-        private static List<Type> GetTypeFromAssembly(Options optionses)
+        private static List<Type> GetTypeFromAssembly(Selection optionses)
         {
             return Config.AssemblyWhereToLookUp.GetTypes()
-                .Where(x => Regex.IsMatch(x.FullName, optionses?.Selection + ".*")).ToList();
+                .Where(x => Regex.IsMatch(x.FullName, optionses?.Query + ".*")).ToList();
         }
 
         public static bool CheckIsNumber(string selection)

@@ -51,6 +51,7 @@
     <Compile Include="AutoUiConsoleTests.cs" />
     <Compile Include="DirektStart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

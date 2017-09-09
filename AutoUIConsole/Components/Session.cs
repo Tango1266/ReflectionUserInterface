@@ -26,7 +26,7 @@ namespace AutoUIConsole
         }
         public void InitializeStartUpConfiguration()
         {
-            var startUpSelectionOption = new Options(null, Config.DirLevel0);
+            var startUpSelectionOption = new Selection(null, Config.DirLevel0);
 
             UserInterface = new UserInterface(startUpSelectionOption);
         }

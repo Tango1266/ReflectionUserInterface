@@ -9,12 +9,12 @@ namespace AutoUIConsole.Components.Abstracts
 
         public Menu PreviousMenu { get; set; }
         public SortedSet<string> MenuItems { get; set; }
-        public Options optionses { get; set; }
+        public Selection optionses { get; set; }
 
-        public Menu(Menu previousMenu, Options options)
+        public Menu(Menu previousMenu, Selection selection)
         {
             PreviousMenu = previousMenu;
-            optionses = options;
+            optionses = selection;
             CreateMenu();
         }
 

@@ -2,25 +2,28 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace AutoUIConsole.Components
+namespace AutoUIConsole.Components.DataTypes
 {
     public class Options
     {
-        public Options previousOptions { get; set; }
+        public Selection Selection { get; set; }
+
         public List<Type> Classes { get; set; }
         public List<MethodInfo> Methods { get; set; }
 
+        public bool IsEmpty { get; set; }
 
-        public string Selection { get; set; }
-
-        public Options(Options options, string selection)
+        public Options(Selection selection)
         {
-            previousOptions = options;
+            Selection = selection;
 
-            Selection = previousOptions?.Selection + ".*" + selection;
+            GenerateOptions(selection);
+        }
 
+        private void GenerateOptions(Selection selection)
+        {
             Classes = new List<Type>();
-            Classes = Helper.GetTypesFromFullName(this);
+            Classes = Helper.GetTypesFromFullName(selection);
 
             Methods = new List<MethodInfo>();
 
@@ -33,8 +36,10 @@ namespace AutoUIConsole.Components
             }
             else
             {
-                Methods = Helper.GetMethodsFiltered(Selection, previousOptions?.Classes.ToArray());
+                Methods = Helper.GetMethodsFiltered(selection.Query, selection.previousSelection?.Options?.Classes.ToArray());
             }
+
+            IsEmpty = Classes.Count == 0 && Methods.Count == 0;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace AutoUIConsole.Components
     {
         public void GoToMainMenu()
         {
-            Session.UserInterface = new UserInterface(new Options(null, Config.DirLevel0));
+            Session.UserInterface = new UserInterface(new Selection(null, Config.DirLevel0));
 
             Console.WriteLine("Wechsle zu Main Menu");
 
