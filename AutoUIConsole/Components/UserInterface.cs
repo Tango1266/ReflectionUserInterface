@@ -91,10 +91,14 @@ namespace AutoUIConsole.Components
 
                 if (argument.IsEmpty) continue;
 
+                currentSelection = new Selection(currentSelection, argument.Content);
+
+                //TODO: Evaluieren ob notwendig
                 if (argument.IsCommand) Helper.InvokeCommand(typeof(Commands), argument.Content);
 
-                currentSelection = new Selection(currentSelection, input.Content);
                 Helper.InvokeMethod(currentSelection);
+
+                Commands.GoBack(false);
             }
         }
 

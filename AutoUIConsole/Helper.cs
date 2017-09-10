@@ -35,22 +35,20 @@ namespace AutoUIConsole
             return GetMethods(classes).Where(x => Regex.IsMatch(x.DeclaringType + "." + x.Name, selection)).ToList();
         }
 
-        public static void InvokeMethod(Selection optionses)
+        public static void InvokeMethod(Selection selection)
         {
-            List<MethodInfo> methods = optionses.previousSelection.Options.Methods
-                .Where(x => Regex.IsMatch(x.DeclaringType?.FullName + "." + x.Name, optionses.Query)).ToList();
+            List<MethodInfo> methods = selection.previousSelection.Options.Methods
+                .Where(x => Regex.IsMatch(x.DeclaringType?.FullName + "." + x.Name, selection.Query)).ToList();
             foreach (MethodInfo method in methods)
             {
                 Type classType = method.DeclaringType;
+                if (classType is null) return;
 
-                if (classType != null)
-                {
-                    object classInstance = Activator.CreateInstance(classType);
-
-                    method.Invoke(Convert.ChangeType(classInstance, classInstance.GetType()), new object[] { });
-                }
+                object classInstance = Activator.CreateInstance(classType);
+                method.Invoke(Convert.ChangeType(classInstance, classInstance.GetType()), new object[] { });
             }
         }
+
         public static void InvokeCommand(Type type, string selection)
         {
             MethodInfo method = type.GetMethod(selection,
@@ -70,7 +68,7 @@ namespace AutoUIConsole
 
             foreach (object userInput in array)
             {
-                res = userInput + " ";
+                res = res + userInput + " ";
             }
 
             return res.TrimEnd();

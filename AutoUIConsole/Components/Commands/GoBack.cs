@@ -1,17 +1,16 @@
-﻿using System;
-
-namespace AutoUIConsole.Components
+﻿namespace AutoUIConsole.Components
 {
     public partial class Commands
     {
-        public void GoBack()
+        public void GoBack(bool showMenu = true)
         {
             var userInterface = Session.UserInterface;
 
-            if (userInterface.CurrentMenu.IsMain) return;
+            if (userInterface.CurrentMenu?.IsMain ?? false) return;
 
             userInterface.StepBack();
-            userInterface.ShowConsoleMenu();
+
+            if (showMenu) userInterface.ShowConsoleMenu();
         }
 
         public void b() => GoBack();

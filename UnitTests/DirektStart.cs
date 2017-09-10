@@ -57,7 +57,7 @@ namespace UnitTests
         [TestMethod]
         public void MultiplyArguments()
         {
-            Program.Main(new[] { "KF3 KF1.*UC1" });
+            Program.Main(new[] { "KF3", "KF1.*UC1" });
         }
     }
 }
