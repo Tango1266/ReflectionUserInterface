@@ -13,12 +13,12 @@ namespace AutoUIConsole
         {
             return Assembly.GetAssembly(anyTypeOfTheTargetAssembly);
         }
-        internal static List<Type> GetTypesFromFullName(Selection optionses)
+        internal static List<Type> GetTypesFromFullName(Selection selection)
         {
-            List<Type> typeList = optionses?.previousSelection?.Options?.Classes ?? GetTypeFromAssembly(optionses);
+            List<Type> typeList = selection?.previousSelection?.Options?.Classes ?? GetTypeFromAssembly(selection);
 
             return typeList
-                .Where(x => x.FullName != null && Regex.IsMatch(x.FullName, ".*" + optionses?.Query + ".*")).ToList();
+                .Where(x => x.FullName != null && Regex.IsMatch(x.FullName, ".*" + selection?.Query + ".*")).ToList();
         }
 
         internal static List<MethodInfo> GetMethods(params Type[] classes)
@@ -56,10 +56,10 @@ namespace AutoUIConsole
             method.Invoke(Session.UserInterface.Commands, new object[] { });
         }
 
-        private static List<Type> GetTypeFromAssembly(Selection optionses)
+        private static List<Type> GetTypeFromAssembly(Selection selection)
         {
             return Config.AssemblyWhereToLookUp.GetTypes()
-                .Where(x => Regex.IsMatch(x.FullName, optionses?.Query + ".*")).ToList();
+                .Where(x => Regex.IsMatch(x.FullName, selection?.Query + ".*")).ToList();
         }
 
         public static string ToText(this object[] array)

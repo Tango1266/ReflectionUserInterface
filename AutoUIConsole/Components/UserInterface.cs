@@ -66,7 +66,7 @@ namespace AutoUIConsole.Components
                 if (key >= CurrentMenu.MenuItems.Count)
                 {
                     ShowConsoleMenu();
-                    Console.WriteLine(($"\n Der Wert \"{key + 1}\" stellt keine Option dar."));
+                    Console.WriteLine(Environment.NewLine + $"Der Wert \"{key + 1}\" stellt keine Option dar.");
                     return;
                 }
 
@@ -88,7 +88,6 @@ namespace AutoUIConsole.Components
         {
             foreach (UserInput argument in input.Arguments)
             {
-
                 if (argument.IsEmpty) continue;
 
                 currentSelection = new Selection(currentSelection, argument.Content);

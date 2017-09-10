@@ -20,10 +20,10 @@ namespace AutoUIConsole.Components
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(methodInfo.DeclaringType.FullName +
-                                    "\n" + methodInfo.Name + " " +
-                                      "\n" + e.Message +
-                                      "\n" + e.StackTrace);
+                    Console.WriteLine(methodInfo.DeclaringType.FullName + Environment.NewLine +
+                                         methodInfo.Name + " " + Environment.NewLine +
+                                         e.Message + Environment.NewLine +
+                                         e.StackTrace);
                 }
             }
         }

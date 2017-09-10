@@ -49,13 +49,13 @@ namespace AutoUIConsole.Components.Abstracts
 
             if (MenuItems.Count == 0)
             {
-                Console.WriteLine($"\n Deine Auswahl erzielte keine Treffer. " +
-                                  $"\n Gebe {Config.Commands.GoToMainMenu.ToText()} ein und bestätige mit <Enter> um in das Hauptmenu zu gelangen." +
-                                  $"\n Oder bestätige jetzt mit <Enter> um zurück zu gelanden");
+                Console.WriteLine(Environment.NewLine + $"Deine Auswahl erzielte keine Treffer. " +
+                                  Environment.NewLine + $"Gebe {Config.Commands.GoToMainMenu.ToText()} ein und bestätige mit <Enter> um in das Hauptmenu zu gelangen." +
+                                  Environment.NewLine + $"Oder bestätige jetzt mit <Enter> um zurück zu gelanden");
                 return;
             }
 
-            Console.WriteLine($"\n { "Startet alle untergeordnete Methoden mit: \t" + Config.Commands.StartAllDisplayedTests.ToText()}");
+            Console.WriteLine(Environment.NewLine + $"{ "Startet alle untergeordnete Methoden mit: \t" + Config.Commands.StartAllDisplayedTests.ToText()}");
 
             int pos = 1;
             foreach (var item in MenuItems)

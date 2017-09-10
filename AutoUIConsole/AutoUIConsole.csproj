@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Commands\ExitApplication.cs" />
+    <Compile Include="Components\Commands\SaveMethodsOfCurrentOptions.cs" />
     <Compile Include="Components\Commands\GoBack.cs" />
     <Compile Include="Components\Commands\Help.cs" />
     <Compile Include="Components\DataTypes\PathLevel.cs" />
