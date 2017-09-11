@@ -1,10 +1,7 @@
-using AutoUIConsole.Components.DataTypes;
 using System;
-using System.IO;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static AutoUIConsole.Helper;
 
 namespace AutoUIConsole.Components
 {
@@ -13,83 +10,36 @@ namespace AutoUIConsole.Components
         private Task _savingTask;
         private CancellationTokenSource _cts;
 
+        //TODO: Filename durch UserInput bestimmen
         public void SaveMethodsOfCurrentOptions()
         {
-            CSVFile csvFile = new CSVFile(Session.UserInterface.currentSelection);
-
-            var filePath = Path.Combine(Environment.CurrentDirectory, "AvailableMethods.csv");
-
-            if (!_savingTask?.IsCompleted ?? false)
-            {
-                _cts.Cancel();
-
-                while (!_savingTask.IsCanceled || !_savingTask.IsCanceled) { }
-            }
-            _cts = new CancellationTokenSource();
-            _savingTask = Task.Factory.StartNew(() => csvFile.Save(filePath), _cts.Token);
-
-            Console.WriteLine(Environment.NewLine + $"Die Datei {filePath} wird erstellt.");
-            Console.Write(Environment.NewLine + "Es wird gespeichert");
-
-            while (!_savingTask.IsCompleted)
-            {
-                Console.Write(". ");
-                Task.Delay(250).Wait();
-            }
-
-            Console.WriteLine("Datei wurde erfolgreich gespeichert.");
+            CSVFile csvFile = new CSVFile(Session.UserInterface.currentSelection, "AvailableMethods.csv");
+            csvFile.CreateHeaderLine("Menu Item", "Method Name", "Namespace");
+            SaveInNewTask(csvFile);
         }
 
         public void save() => SaveMethodsOfCurrentOptions();
-    }
 
-    public class CSVFile
-    {
-        private readonly Assembly assembly;
-        private readonly string dirLevel0;
-        private Selection selection;
-        private StringBuilder csvFile;
-        public char Seperator { get; set; } = ';';
-
-        public CSVFile(Assembly assembly, string dirLevel0)
+        private void SaveInNewTask(CSVFile csvFile)
         {
-            this.assembly = assembly;
-            this.dirLevel0 = dirLevel0;
-            this.selection = new Selection(selection, dirLevel0);
-        }
-
-        public CSVFile(Selection currentSelection)
-        {
-            selection = currentSelection;
-            csvFile = new StringBuilder();
-        }
-
-        public void Save(string fileName)
-        {
-            AddLine("MenuItem", "Method", "Full Path");
-
-            foreach (var methodInfo in selection.Options.Methods)
+            if (!_savingTask?.IsCompleted ?? false)
             {
-                var fullName = methodInfo.DeclaringType?.FullName + methodInfo.Name;
-
-                //TODO: MenuItems als SelectionContent
-                PathLevel pathLevel = new PathLevel(fullName, selection.Content);
-
-                AddLine(pathLevel.nextLevel, methodInfo.Name, methodInfo.DeclaringType?.FullName);
+                _cts.Cancel();
+                while (!_savingTask.IsCanceled || !_savingTask.IsCanceled)
+                {
+                }
             }
 
-            File.WriteAllText(fileName, csvFile.ToString());
-        }
+            _cts = new CancellationTokenSource();
+            _savingTask = Task.Factory.StartNew(csvFile.Save, _cts.Token);
 
-        private void AddLine(params string[] columnns)
-        {
-            var row = string.Empty;
-            foreach (string columnn in columnns)
+            Write(Environment.NewLine + "Es wird gespeichert");
+            while (!_savingTask.IsCompleted)
             {
-                row += columnn + Seperator;
+                Write(". ");
+                Task.Delay(1000).Wait();
             }
-
-            csvFile.AppendLine(row.Substring(0, row.Length - 1));
+            Write(Environment.NewLine);
         }
     }
 }

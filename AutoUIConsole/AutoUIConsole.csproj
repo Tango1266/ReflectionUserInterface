@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\CSVFile.cs" />
     <Compile Include="Components\Commands\ExitApplication.cs" />
     <Compile Include="Components\Commands\SaveMethodsOfCurrentOptions.cs" />
     <Compile Include="Components\Commands\GoBack.cs" />

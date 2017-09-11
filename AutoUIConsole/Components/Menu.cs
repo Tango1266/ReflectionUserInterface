@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using static AutoUIConsole.Helper;
 
 
 namespace AutoUIConsole.Components.Abstracts
@@ -12,7 +13,7 @@ namespace AutoUIConsole.Components.Abstracts
         public Menu PreviousMenu { get; set; }
         public SortedSet<string> MenuItems { get; set; }
 
-        public bool IsMain { get; private set; }
+        public bool IsMain => PathLevel.LastIsTop;
 
         public Menu(Menu previousMenu, Selection selection)
         {
@@ -21,7 +22,7 @@ namespace AutoUIConsole.Components.Abstracts
             PrintMenu();
         }
 
-        public SortedSet<string> CreateMenuItems(Options options, string selectionContent)
+        public static SortedSet<string> CreateMenuItems(Options options, string selectionContent)
         {
             if (options?.Methods == null) return null;
 
@@ -35,8 +36,6 @@ namespace AutoUIConsole.Components.Abstracts
                 if (pathLevel.IsLeafOrIncomplete) menuItems.Add(pathLevel.baseLevel);
 
                 else if (pathLevel.IsValidOrTop) menuItems.Add(pathLevel.nextLevel);
-
-                IsMain = pathLevel.IsTop;
             }
 
             return menuItems;
@@ -49,21 +48,21 @@ namespace AutoUIConsole.Components.Abstracts
 
             if (MenuItems.Count == 0)
             {
-                Console.WriteLine(Environment.NewLine + $"Deine Auswahl erzielte keine Treffer. " +
+                WriteLine(Environment.NewLine + $"Deine Auswahl erzielte keine Treffer. " +
                                   Environment.NewLine + $"Gebe {Config.Commands.GoToMainMenu.ToText()} ein und bestätige mit <Enter> um in das Hauptmenu zu gelangen." +
                                   Environment.NewLine + $"Oder bestätige jetzt mit <Enter> um zurück zu gelanden");
                 return;
             }
 
-            Console.WriteLine(Environment.NewLine + $"{ "Startet alle untergeordnete Methoden mit: \t" + Config.Commands.StartAllDisplayedTests.ToText()}");
+            WriteLine(Environment.NewLine + $"{ "Startet alle untergeordnete Methoden mit: \t" + Config.Commands.StartAllDisplayedTests.ToText()}");
 
             int pos = 1;
             foreach (var item in MenuItems)
             {
-                Console.WriteLine($"  {pos++} \t : " + item);
+                WriteLine($"  {pos++} \t : " + item);
             }
 
-            Console.WriteLine(Config.MenuTexts.InputNotefication);
+            WriteLine(Config.MenuTexts.InputNotefication);
         }
 
     }

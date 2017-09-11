@@ -13,12 +13,20 @@ namespace AutoUIConsole.Components
         public Selection(Selection selection, string input)
         {
             previousSelection = selection;
-
             Content = input;
-
             Query = previousSelection?.Query + ".*" + input;
-
             Options = new Options(this);
+        }
+
+        public Selection Clone()
+        {
+            var cloneSelection = new Selection(null, "");
+            cloneSelection.previousSelection = this.previousSelection;
+            cloneSelection.Options = this.Options;
+            cloneSelection.Content = this.Content;
+            cloneSelection.Query = this.Query;
+
+            return cloneSelection;
         }
     }
 }

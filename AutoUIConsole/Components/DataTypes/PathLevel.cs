@@ -21,6 +21,8 @@ namespace AutoUIConsole.Components.DataTypes
         public bool IsLeafOrIncomplete => IsLeaf || IsIncomplete;
         public bool IsValidOrTop => IsValid || IsTop;
 
+        public static bool LastIsTop { get; set; }
+
         public PathLevel(string fullPath, string targetLevel)
         {
             _fullPath = fullPath;
@@ -37,6 +39,7 @@ namespace AutoUIConsole.Components.DataTypes
             string[] levelsUntilBase = levels.Except(levelsWithBase).ToArray();
 
             EvaluateLevel(levels, levelsWithBase, levelsUntilBase);
+            LastIsTop = IsTop;
         }
 
         private void EvaluateLevel(List<string> levels, string[] levelsWithBase, string[] levelsUntilBase)

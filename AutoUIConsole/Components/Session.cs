@@ -20,7 +20,7 @@ namespace AutoUIConsole
             }
             catch (Exception ae)
             {
-                Console.WriteLine(ae);
+                Helper.WriteLine(ae.ToString());
                 HandleUserInput();
             }
         }

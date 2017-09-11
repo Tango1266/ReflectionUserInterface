@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AutoUIConsole.Components
+﻿namespace AutoUIConsole.Components
 {
     public partial class Commands
     {
@@ -8,7 +6,7 @@ namespace AutoUIConsole.Components
         {
             Session.UserInterface = new UserInterface(new Selection(null, Config.DirLevel0));
 
-            Console.WriteLine("Wechsle zu Main Menu");
+            Helper.WriteLine("Wechsle zu Main Menu");
 
             Session.UserInterface.ShowConsoleMenu();
         }

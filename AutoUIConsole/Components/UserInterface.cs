@@ -66,7 +66,7 @@ namespace AutoUIConsole.Components
                 if (key >= CurrentMenu.MenuItems.Count)
                 {
                     ShowConsoleMenu();
-                    Console.WriteLine(Environment.NewLine + $"Der Wert \"{key + 1}\" stellt keine Option dar.");
+                    Helper.WriteLine(Environment.NewLine + $"Der Wert \"{key + 1}\" stellt keine Option dar.");
                     return;
                 }
 

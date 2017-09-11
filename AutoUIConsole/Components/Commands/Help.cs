@@ -7,7 +7,7 @@ namespace AutoUIConsole.Components
         public void help()
         {
             Console.Clear();
-            Console.WriteLine(Config.MenuTexts.HelpText);
+            Helper.WriteLine(Config.MenuTexts.HelpText);
         }
 
         public void h() => help();

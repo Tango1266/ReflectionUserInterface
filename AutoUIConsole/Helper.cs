@@ -80,5 +80,33 @@ namespace AutoUIConsole
             list.ForEach(x => res += x + ", ");
             return res.Substring(0, res.Length - 2) + "}";
         }
+
+        public static void WriteLine(string message, Exception ex = null)
+        {
+            Write(message, true, ex);
+        }
+
+        public static void Write(string message, bool newLine = false, Exception ex = null)
+        {
+
+            if (newLine) Console.WriteLine(message);
+            else Console.Write(message);
+
+            if (!(ex is null))
+            {
+                Console.WriteLine
+                    (
+                    Environment.NewLine +
+                    "Fehlerinhalt:" + Environment.NewLine +
+                    nameof(ex.Message) + ": " + Environment.NewLine +
+                    "\t" + ex.Message + Environment.NewLine +
+                    nameof(ex.InnerException) + ": " + Environment.NewLine +
+                    "\t" + ex.InnerException + Environment.NewLine +
+                    nameof(ex.StackTrace) + ": " + Environment.NewLine +
+                    "\t" + ex.StackTrace
+                    + Environment.NewLine
+                    );
+            }
+        }
     }
 }

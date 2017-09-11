@@ -7,7 +7,7 @@ namespace AutoUIConsole.Components
     {
         public void StartAll()
         {
-            Console.WriteLine("Wechsle zu Main Menu");
+            Helper.WriteLine("Wechsle zu Main Menu");
             var methodInfos = Helper.GetMethods(Session.UserInterface.currentSelection.Options.Classes.ToArray());
 
             foreach (MethodInfo methodInfo in methodInfos)
@@ -20,7 +20,7 @@ namespace AutoUIConsole.Components
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(methodInfo.DeclaringType.FullName + Environment.NewLine +
+                    Helper.WriteLine(methodInfo.DeclaringType.FullName + Environment.NewLine +
                                          methodInfo.Name + " " + Environment.NewLine +
                                          e.Message + Environment.NewLine +
                                          e.StackTrace);
