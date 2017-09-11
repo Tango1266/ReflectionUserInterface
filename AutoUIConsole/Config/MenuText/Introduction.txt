@@ -1,0 +1,12 @@
+﻿Das ist die Einleitung zu dieser Anwendung.
+Sie hat zeilen in neuen Absätzen und Umlaute.
+
+Es gibt auch leere Absätze
+
+	Tabstopps
+
+		Weitere Tabstopps
+
+Variablen Deklarationen {Config.Commands.GetHelp.ToText()}
+
+EndeEnde

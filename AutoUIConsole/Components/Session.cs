@@ -49,6 +49,9 @@ namespace AutoUIConsole
             }
             else
             {
+                Helper.WriteLine(Config.MenuTexts.Introduction);
+                Console.Read();
+
                 UserInterface.ShowConsoleMenu();
             }
         }

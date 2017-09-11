@@ -54,7 +54,7 @@ namespace AutoUIConsole.Components.Abstracts
                 return;
             }
 
-            WriteLine(Environment.NewLine + $"{ "Startet alle untergeordnete Methoden mit: \t" + Config.Commands.StartAllDisplayedTests.ToText()}");
+            WriteLine(Environment.NewLine + $"{ "Startet alle untergeordnete Methoden mit: \t" + Config.Commands.StartAllMethods.ToText()}");
 
             int pos = 1;
             foreach (var item in MenuItems)

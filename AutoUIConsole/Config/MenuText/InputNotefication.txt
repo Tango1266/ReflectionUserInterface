@@ -1,0 +1,4 @@
+﻿
+
+Triff eine Auswahl und bestätige mit <Enter>.
+Mit "help" kannst du dir weitere Befehle anzeigen lassen.

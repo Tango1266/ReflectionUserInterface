@@ -9,10 +9,6 @@ namespace AutoUIConsole
 {
     public static class Helper
     {
-        public static Assembly GetLookUpAssembly(Type anyTypeOfTheTargetAssembly)
-        {
-            return Assembly.GetAssembly(anyTypeOfTheTargetAssembly);
-        }
         internal static List<Type> GetTypesFromFullName(Selection selection)
         {
             List<Type> typeList = selection?.previousSelection?.Options?.Classes ?? GetTypeFromAssembly(selection);

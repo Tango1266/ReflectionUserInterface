@@ -6,7 +6,11 @@
         {
             var userInterface = Session.UserInterface;
 
-            if (userInterface.CurrentMenu?.IsMain ?? false) return;
+            if (userInterface.CurrentMenu?.IsMain ?? false)
+            {
+                userInterface.CurrentMenu.PrintMenu();
+                return;
+            }
 
             userInterface.StepBack();
 

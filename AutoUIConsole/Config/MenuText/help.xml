@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Table Name="help">
+  <header>
+    <column Name="Befehle"/>
+    <column Name="Beschreibung"/>
+  </header>
+
+  <listItems>
+    <item
+      Befehle="GoToMainMenu"
+      Beschreibung="Zurück zum Hauptmenü"
+      />
+    <item
+      Befehle="ShowManual"
+      Beschreibung="Anleitung anzeigen"
+      />
+    <item
+      Befehle="GoToPreviousnMenu"
+      Beschreibung="Zurück zum vorherigen Menü"
+      />
+    <item
+      Befehle="ExitApplication"
+      Beschreibung="Anwendung Verlassen"
+      />
+    <item
+      Befehle="StartAllMethods"
+      Beschreibung="Alle Methode auf der aktuellen Hirarchiestufe starten"
+      />
+    <item
+      Befehle="SaveMethodsOfCurrentOptions"
+      Beschreibung="Alle Methode auf der aktuellen Hirarchiestufe speichern"
+      />
+  </listItems>
+</Table>
