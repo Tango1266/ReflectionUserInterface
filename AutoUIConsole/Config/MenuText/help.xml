@@ -25,11 +25,11 @@
       />
     <item
       Befehle="StartAllMethods"
-      Beschreibung="Alle Methode auf der aktuellen Hirarchiestufe starten"
+      Beschreibung="Alle Methoden auf der aktuellen Hirarchiestufe starten"
       />
     <item
       Befehle="SaveMethodsOfCurrentOptions"
-      Beschreibung="Alle Methode auf der aktuellen Hirarchiestufe speichern"
+      Beschreibung="Alle Methoden auf der aktuellen Hirarchiestufe speichern"
       />
   </listItems>
 </Table>

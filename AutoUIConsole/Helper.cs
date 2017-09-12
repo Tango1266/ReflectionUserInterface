@@ -72,9 +72,9 @@ namespace AutoUIConsole
 
         public static string ToText(this List<string> list)
         {
-            string res = "{";
+            string res = "";
             list.ForEach(x => res += x + ", ");
-            return res.Substring(0, res.Length - 2) + "}";
+            return res.Substring(0, res.Length - 2) + "";
         }
 
         public static void WriteLine(string message, Exception ex = null)

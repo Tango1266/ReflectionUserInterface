@@ -10,8 +10,7 @@ namespace AutoUIConsole.Components
         public void help()
         {
             Console.Clear();
-            Helper.WriteLine(Config.MenuTexts.HelpText);
-
+            //Helper.WriteLine(Config.MenuTexts.HelpText);
 
             GenerateTable();
         }
@@ -29,14 +28,26 @@ namespace AutoUIConsole.Components
             tableRows.AddRange(RowItems(helpDoc, "listItems", headerLineItems));
 
             var lines = new List<string>();
-            lines.Add(GenerateLine(headerLineItems));
+            List<(string column1, string column2)> columns = new List<(string column1, string column2)>();
 
             foreach (List<string> tableRow in tableRows)
             {
                 var firstColumn = ((List<string>)typeof(Config.Commands).GetField(tableRow.First()).GetValue(null)).ToText();
                 var secondColumn = tableRow[1];
-                lines.Add(GenerateLine(firstColumn, secondColumn));
+
+                columns.Add((firstColumn, secondColumn));
             }
+
+            int maxWidthColumn1 = columns.Max(x => x.column1.Length) + 1;
+            int maxWidthColumn2 = columns.Max(x => x.column2.Length) + 2;
+
+            string offset = string.Format($"{" ".PadLeft(maxWidthColumn1 / 2)}");
+
+            lines.Add(string.Format($"_{"".PadLeft(maxWidthColumn1, '_') }") + "_" + string.Format($"{"".PadLeft(maxWidthColumn2, '_') }"));
+            lines.Add(GenerateLine(maxWidthColumn1, offset + headerLineItems[0], offset + headerLineItems[1]));
+            lines.Add(string.Format($"-{"".PadLeft(maxWidthColumn1, '-') }") + "-" + string.Format($"{"".PadLeft(maxWidthColumn2, '-') }"));
+
+            columns.ForEach(x => lines.Add(GenerateLine(maxWidthColumn1, x.column1, x.column2)));
 
             lines.ForEach(x => Helper.WriteLine(x));
         }
@@ -63,14 +74,16 @@ namespace AutoUIConsole.Components
 
         public void h() => help();
 
-        private string GenerateLine(params string[] columnns)
+        private string GenerateLine(int witdh1, params string[] columnns)
         {
-            var line = string.Empty;
+            var line = " ";
+
             foreach (string columnn in columnns)
             {
-                line += columnn + "\t";
+                line = line + string.Format($"{columnn.PadRight(witdh1, ' ')}| ");
             }
-            return line.Length < 1 ? string.Empty : line.Substring(0, line.Length - 1);
+            return line.Length < 1 ? string.Empty : line.Substring(0, line.Length - 2);
+
         }
     }
 }
