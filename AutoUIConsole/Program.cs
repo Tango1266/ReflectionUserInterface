@@ -1,4 +1,7 @@
-﻿namespace AutoUIConsole
+﻿using AutoUIConsole.Components;
+using AutoUIConsole.OSS;
+
+namespace AutoUIConsole
 {
     public class Program
     {
@@ -8,6 +11,7 @@
 
         public static void Main(string[] args)
         {
+            var xml = new XMLDocComment(typeof(Commands), "q");
             CurrentSession = new Session(args);
         }
     }
