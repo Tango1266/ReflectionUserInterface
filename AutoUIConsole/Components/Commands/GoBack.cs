@@ -1,9 +1,15 @@
-﻿namespace AutoUIConsole.Components
+﻿namespace AutoUIConsole.Components.Commands
 {
-    public partial class Commands
+    public class GoBack : SuperCommand
     {
-        public void GoBack(bool showMenu = true)
+        public void b() => Execute();
+
+        public void back() => Execute();
+
+        public override void Execute(object parameter = null)
         {
+            var showMenu = parameter is null ? true : (bool)parameter;
+
             var userInterface = Session.UserInterface;
 
             if (userInterface.CurrentMenu?.IsMain ?? false)
@@ -16,11 +22,5 @@
 
             if (showMenu) userInterface.ShowConsoleMenu();
         }
-
-        public void b() => GoBack();
-
-        public void back() => GoBack();
     }
-
-
 }

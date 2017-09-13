@@ -1,24 +1,18 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using static AutoUIConsole.Helper;
 
-namespace AutoUIConsole.Components
+namespace AutoUIConsole.Components.Commands
 {
-    public partial class Commands
+    public partial class SaveMethodsOfCurrentOptions : SuperCommand
     {
         private Task _savingTask;
         private CancellationTokenSource _cts;
 
         //TODO: Filename durch UserInput bestimmen
-        public void SaveMethodsOfCurrentOptions()
-        {
-            CSVFile csvFile = new CSVFile(Session.UserInterface.currentSelection, "AvailableMethods.csv");
-            csvFile.CreateHeaderLine("Menu Item", "Method Name", "Namespace");
-            SaveInNewTask(csvFile);
-        }
 
-        public void save() => SaveMethodsOfCurrentOptions();
+
+        public void save() => Execute();
 
         private void SaveInNewTask(CSVFile csvFile)
         {
@@ -33,13 +27,20 @@ namespace AutoUIConsole.Components
             _cts = new CancellationTokenSource();
             _savingTask = Task.Factory.StartNew(csvFile.Save, _cts.Token);
 
-            Write(Environment.NewLine + "Es wird gespeichert");
+            Helper.Write(Environment.NewLine + "Es wird gespeichert");
             while (!_savingTask.IsCompleted)
             {
-                Write(". ");
+                Helper.Write(". ");
                 Task.Delay(1000).Wait();
             }
-            Write(Environment.NewLine);
+            Helper.Write(Environment.NewLine);
+        }
+
+        public override void Execute(object parameter = null)
+        {
+            CSVFile csvFile = new CSVFile(Session.UserInterface.currentSelection, "AvailableMethods.csv");
+            csvFile.CreateHeaderLine("Menu Item", "Method Name", "Namespace");
+            SaveInNewTask(csvFile);
         }
     }
 }

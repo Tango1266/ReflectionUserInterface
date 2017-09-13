@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoUIConsole.Components.Commands;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -68,7 +69,7 @@ namespace AutoUIConsole.Components.DataTypes
 
         private bool CheckIsCommand(string content)
         {
-            return Commands.AvailableCommands.Contains(content);
+            return SuperCommand.AvailableCommands.Contains(content);
         }
     }
 }

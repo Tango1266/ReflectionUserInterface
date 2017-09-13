@@ -1,4 +1,4 @@
-﻿using AutoUIConsole.Components;
+﻿using AutoUIConsole.Components.Commands;
 using AutoUIConsole.OSS;
 
 namespace AutoUIConsole
@@ -11,7 +11,7 @@ namespace AutoUIConsole
 
         public static void Main(string[] args)
         {
-            var xml = new XMLDocComment(typeof(Commands), "q");
+            var xml = new XMLDocComment(typeof(ExitApplication), "q");
             CurrentSession = new Session(args);
         }
     }

@@ -1,9 +1,11 @@
 using AutoUIConsole.Components;
+using AutoUIConsole.Components.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Windows.Input;
 
 namespace AutoUIConsole
 {
@@ -45,11 +47,30 @@ namespace AutoUIConsole
             }
         }
 
-        public static void InvokeCommand(Type type, string selection)
+        //public static void InvokeCommand2(Type type, string selection)
+        //{
+        //    MethodInfo method = type.GetMethod(selection,
+        //        BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
+        //    method.Invoke(Session.UserInterface.Commands, new object[] { });
+        //}
+
+        public static void InvokeCommand(string selection)
         {
-            MethodInfo method = type.GetMethod(selection,
-                BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
-            method.Invoke(Session.UserInterface.Commands, new object[] { });
+            var filteredCommandTypes = SuperCommand.CommandTypeMethods.Keys.Where(x => x.GetType().Name.Equals(selection)).ToList();
+            if (filteredCommandTypes.Count < 1)
+            {
+                foreach (ICommand command in SuperCommand.CommandTypeMethods.Keys)
+                {
+                    var isMatch = SuperCommand.CommandTypeMethods[command].Any(x => x.Name.Equals(selection));
+
+                    if (isMatch)
+                    {
+                        ICommand com = (ICommand)Activator.CreateInstance(command.GetType(), new object[] { });
+                        com.Execute(null);
+                    }
+                }
+            }
+            else filteredCommandTypes.First().Execute(null);
         }
 
         private static List<Type> GetTypeFromAssembly(Selection selection)

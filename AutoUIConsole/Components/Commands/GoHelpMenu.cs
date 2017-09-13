@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 
-namespace AutoUIConsole.Components
+namespace AutoUIConsole.Components.Commands
 {
-    public partial class Commands
+    public class GoHelpMenu : SuperCommand
     {
-        public void help()
+        public override void Execute(object parameter = null)
         {
             Console.Clear();
             var tableLines = GenerateTable();
             tableLines.ForEach(x => Helper.WriteLine(x));
         }
+
 
         //TODO: Just Proof of work, need massive refactoring
         private List<string> GenerateTable()
@@ -85,7 +86,8 @@ namespace AutoUIConsole.Components
             return items;
         }
 
-        public void h() => help();
+        public void h() => Execute();
+        public void help() => Execute();
 
         private string GenerateLine(int witdh1, params string[] columnns)
         {
@@ -97,5 +99,7 @@ namespace AutoUIConsole.Components
             }
             return line.Length < 1 ? string.Empty : line.Substring(0, line.Length - 2);
         }
+
+
     }
 }

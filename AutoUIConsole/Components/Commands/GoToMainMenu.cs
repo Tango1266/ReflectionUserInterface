@@ -1,8 +1,14 @@
-﻿namespace AutoUIConsole.Components
+﻿namespace AutoUIConsole.Components.Commands
 {
-    public partial class Commands
+    public class GoToMainMenu : SuperCommand
     {
-        public void GoToMainMenu()
+
+        public void main() => Execute();
+
+        public void home() => Execute();
+
+        public void m() => Execute();
+        public override void Execute(object parameter = null)
         {
             Session.UserInterface = new UserInterface(new Selection(null, Config.DirLevel0));
 
@@ -10,11 +16,5 @@
 
             Session.UserInterface.ShowConsoleMenu();
         }
-
-        public void main() => GoToMainMenu();
-
-        public void home() => GoToMainMenu();
-
-        public void m() => GoToMainMenu();
     }
 }

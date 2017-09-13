@@ -1,12 +1,12 @@
-﻿namespace AutoUIConsole.Components
+﻿namespace AutoUIConsole.Components.Commands
 {
-    public partial class Commands
+    public partial class ShowManual : SuperCommand
     {
-        public void ShowManual()
+        public void manual() => Execute();
+        public override void Execute(object parameter = null)
         {
             Helper.WriteLine(Config.MenuTexts.Manual);
-        }
 
-        public void manual() => ShowManual();
+        }
     }
 }

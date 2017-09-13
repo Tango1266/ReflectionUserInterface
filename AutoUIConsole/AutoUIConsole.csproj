@@ -59,14 +59,14 @@
     <Compile Include="Components\Commands\ExitApplication.cs" />
     <Compile Include="Components\Commands\SaveMethodsOfCurrentOptions.cs" />
     <Compile Include="Components\Commands\GoBack.cs" />
-    <Compile Include="Components\Commands\Help.cs" />
+    <Compile Include="Components\Commands\GoHelpMenu.cs" />
     <Compile Include="Components\DataTypes\PathLevel.cs" />
     <Compile Include="Components\DataTypes\Options.cs" />
     <Compile Include="Components\DataTypes\UserInput.cs" />
     <Compile Include="Components\Menu.cs" />
     <Compile Include="Components\Commands\StartAll.cs" />
     <Compile Include="Components\Commands\GoToMainMenu.cs" />
-    <Compile Include="Components\Commands\CommandsSuper.cs" />
+    <Compile Include="Components\Commands\SuperCommand.cs" />
     <Compile Include="Components\UserInterface.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Helper.cs" />

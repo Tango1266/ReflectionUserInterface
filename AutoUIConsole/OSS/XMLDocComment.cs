@@ -35,6 +35,8 @@ namespace AutoUIConsole.OSS
 
         private void MethodSummary()
         {
+            if (_methodName == null || _methodName.Equals(string.Empty)) return;
+
             XElement methodDocElement = Documentation.Root.Element("members").Elements("member")
                 .FirstOrDefault(e => Regex.IsMatch(e.Attribute("name").Value + ".*", _methodName));
             if (methodDocElement != null)
@@ -44,11 +46,14 @@ namespace AutoUIConsole.OSS
         private void Init(Type @class, string methodName)
         {
             _type = @class;
-            _method = Helper.GetMethodsFiltered(methodName, @class).First();
+            _method = Helper.GetMethodsFiltered(methodName, @class)?.FirstOrDefault();
 
             _typeName = "T:" + _type.FullName;
+
+            if (_method == null) return;
+
             _methodName = "M:" + _type.FullName + "." + _method.Name + "(" +
-                         string.Join(",", _method.GetParameters().Select(p => p.ParameterType.FullName).ToArray()) + ")";
+                     string.Join(",", _method.GetParameters().Select(p => p.ParameterType.FullName).ToArray()) + ")";
         }
 
         private void ClassSummary()

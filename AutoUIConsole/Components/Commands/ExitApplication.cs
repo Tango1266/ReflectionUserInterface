@@ -1,26 +1,22 @@
 ﻿using System;
 
-namespace AutoUIConsole.Components
+namespace AutoUIConsole.Components.Commands
 {
     /// <summary>
     /// This is a command
     /// </summary>
-    public partial class Commands
+    public class ExitApplication : SuperCommand
     {
         /// <summary>
         /// Anwendung wird verlassen
         /// </summary>
-        public void ExitApplication()
+        public override void Execute(object parameter = null)
         {
             Environment.Exit(0);
         }
 
-        /// <summary>
-        /// <see cref="ExitApplication"/>
-        /// </summary>
-        public void q() => ExitApplication();
-
-        public void quit() => ExitApplication();
-        public void exit() => ExitApplication();
+        public void q() => Execute();
+        public void quit() => Execute();
+        public void exit() => Execute();
     }
 }

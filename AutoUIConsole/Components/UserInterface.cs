@@ -1,4 +1,5 @@
 ﻿using AutoUIConsole.Components.Abstracts;
+using AutoUIConsole.Components.Commands;
 using AutoUIConsole.Components.DataTypes;
 using System;
 using System.Linq;
@@ -7,14 +8,12 @@ namespace AutoUIConsole.Components
 {
     public class UserInterface
     {
-        public Commands Commands { get; set; }
         public Menu CurrentMenu { get; set; }
         public Selection currentSelection { get; set; }
 
 
         public UserInterface(Selection selection)
         {
-            Commands = new Commands();
             currentSelection = selection;
         }
 
@@ -25,11 +24,11 @@ namespace AutoUIConsole.Components
 
         public void ExecuteSelection(UserInput input)
         {
-            if (input.IsEmpty) Helper.InvokeCommand(typeof(Commands), Config.Commands.GoToPreviousnMenu.First());
+            if (input.IsEmpty) Helper.InvokeCommand("GoBack");
 
             foreach (UserInput userInput in input.Arguments)
             {
-                if (userInput.IsCommand) Helper.InvokeCommand(typeof(Commands), userInput.Content);
+                if (userInput.IsCommand) Helper.InvokeCommand(userInput.Content);
 
                 else if (userInput.IsNumber) HandleMenuSelection(userInput.Content);
 
@@ -93,11 +92,11 @@ namespace AutoUIConsole.Components
                 currentSelection = new Selection(currentSelection, argument.Content);
 
                 //TODO: Evaluieren ob notwendig
-                if (argument.IsCommand) Helper.InvokeCommand(typeof(Commands), argument.Content);
+                if (argument.IsCommand) Helper.InvokeCommand(argument.Content);
 
                 Helper.InvokeMethod(currentSelection);
 
-                Commands.GoBack(false);
+                new GoBack().Execute(false);
             }
         }
 

@@ -1,4 +1,5 @@
 using AutoUIConsole.Components;
+using AutoUIConsole.Components.Commands;
 using AutoUIConsole.Components.DataTypes;
 using System;
 
@@ -28,6 +29,7 @@ namespace AutoUIConsole
         {
             var startUpSelectionOption = new Selection(null, Config.DirLevel0);
 
+            SuperCommand.init();
             UserInterface = new UserInterface(startUpSelectionOption);
         }
 
@@ -45,7 +47,7 @@ namespace AutoUIConsole
             if (!userInput.IsEmpty)
             {
                 UserInterface.DirectStart(userInput);
-                UserInterface.Commands.ExitApplication();
+                new ExitApplication().Execute();
             }
             else
             {

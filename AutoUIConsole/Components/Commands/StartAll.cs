@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Reflection;
 
-namespace AutoUIConsole.Components
+namespace AutoUIConsole.Components.Commands
 {
-    public partial class Commands
+    public partial class StartAll : SuperCommand
     {
-        public void StartAll()
+        public void s() => Execute();
+
+        public void start() => Execute();
+        public override void Execute(object parameter = null)
         {
             Helper.WriteLine("Wechsle zu Main Menu");
             var methodInfos = Helper.GetMethods(Session.UserInterface.currentSelection.Options.Classes.ToArray());
@@ -21,15 +24,11 @@ namespace AutoUIConsole.Components
                 catch (Exception e)
                 {
                     Helper.WriteLine(methodInfo.DeclaringType.FullName + Environment.NewLine +
-                                         methodInfo.Name + " " + Environment.NewLine +
-                                         e.Message + Environment.NewLine +
-                                         e.StackTrace);
+                                     methodInfo.Name + " " + Environment.NewLine +
+                                     e.Message + Environment.NewLine +
+                                     e.StackTrace);
                 }
             }
         }
-
-        public void s() => StartAll();
-
-        public void start() => StartAll();
     }
 }
