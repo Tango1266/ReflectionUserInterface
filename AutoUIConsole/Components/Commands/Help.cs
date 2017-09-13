@@ -10,13 +10,12 @@ namespace AutoUIConsole.Components
         public void help()
         {
             Console.Clear();
-            //Helper.WriteLine(Config.MenuTexts.HelpText);
-
-            GenerateTable();
+            var tableLines = GenerateTable();
+            tableLines.ForEach(x => Helper.WriteLine(x));
         }
 
         //TODO: Just Proof of work, need massive refactoring
-        private void GenerateTable()
+        private List<string> GenerateTable()
         {
             XmlDocument helpDoc = new XmlDocument();
             helpDoc.Load(Config.MenuTexts.Storage("help.xml"));
@@ -40,16 +39,30 @@ namespace AutoUIConsole.Components
 
             int maxWidthColumn1 = columns.Max(x => x.column1.Length) + 1;
             int maxWidthColumn2 = columns.Max(x => x.column2.Length) + 2;
+            string headerOffsetColumn1 = string.Format($"{" ".PadLeft((maxWidthColumn1 - headerLineItems[0].Length) / 2)}");
+            string headerOffsetColumn2 = string.Format($"{" ".PadLeft((maxWidthColumn2 - headerLineItems[1].Length) / 2)}");
 
-            string offset = string.Format($"{" ".PadLeft(maxWidthColumn1 / 2)}");
-
-            lines.Add(string.Format($"_{"".PadLeft(maxWidthColumn1, '_') }") + "_" + string.Format($"{"".PadLeft(maxWidthColumn2, '_') }"));
-            lines.Add(GenerateLine(maxWidthColumn1, offset + headerLineItems[0], offset + headerLineItems[1]));
             lines.Add(string.Format($"-{"".PadLeft(maxWidthColumn1, '-') }") + "-" + string.Format($"{"".PadLeft(maxWidthColumn2, '-') }"));
-
+            lines.Add(GenerateLine(maxWidthColumn1, headerOffsetColumn1 + headerLineItems[0], headerOffsetColumn2 + headerLineItems[1]));
+            lines.Add(string.Format($"-{"".PadLeft(maxWidthColumn1, '-') }") + "-" + string.Format($"{"".PadLeft(maxWidthColumn2, '-') }"));
             columns.ForEach(x => lines.Add(GenerateLine(maxWidthColumn1, x.column1, x.column2)));
 
-            lines.ForEach(x => Helper.WriteLine(x));
+            string header = "Help Menu";
+
+            if (header.Length > lines[0].Length) throw new IndexOutOfRangeException("Die Ueberschrifft ist zu lang");
+
+            int lengthHeaderBox = (lines[0].Length - header.Length) / 2;
+            string innerOffset = string.Format($"{"".PadLeft(lengthHeaderBox / 2)}");
+
+
+            string outerOffset = string.Format($"{"".PadLeft((lines[0].Length - (lengthHeaderBox + header.Length)) / 2)}");
+
+            Helper.WriteLine(string.Format(outerOffset + $"*{"".PadLeft(innerOffset.Length * 2 + header.Length, '*') }*"));
+            Helper.WriteLine(string.Format(outerOffset + "|" + innerOffset + $"{header}" + innerOffset + "|"));
+            Helper.WriteLine(string.Format(outerOffset + $"*{"".PadLeft(innerOffset.Length * 2 + header.Length, '*') }*" + Environment.NewLine));
+
+
+            return lines;
         }
 
         private List<List<string>> RowItems(XmlDocument helpDoc, string xmlNodeName, params string[] attributNames)
@@ -83,7 +96,6 @@ namespace AutoUIConsole.Components
                 line = line + string.Format($"{columnn.PadRight(witdh1, ' ')}| ");
             }
             return line.Length < 1 ? string.Empty : line.Substring(0, line.Length - 2);
-
         }
     }
 }
