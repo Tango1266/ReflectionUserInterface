@@ -57,7 +57,13 @@ namespace UnitTests
         [TestMethod]
         public void MultiplyArguments()
         {
-            Program.Main(new[] { "KF3", "KF1.*UC1" });
+            Program.Main(new[] { "Spezial.*KF1.*UC1.*TC1", "KF2.*UC2.*TS2.*TC2" });
+        }
+
+        [TestMethod]
+        public void MultiplyArgumentsDevidedBySpace()
+        {
+            Program.Main(new[] { "Spezial.*KF1.*UC1.*TC1 KF2.*UC2.*TS2.*TC2" });
         }
     }
 }

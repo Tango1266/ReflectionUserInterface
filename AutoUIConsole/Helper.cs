@@ -1,5 +1,6 @@
 using AutoUIConsole.Components;
 using AutoUIConsole.Components.Commands;
+using AutoUIConsole.Components.DataTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,7 @@ namespace AutoUIConsole
         {
             List<Type> typeList = selection?.previousSelection?.Options?.Classes ?? GetTypeFromAssembly(selection);
 
-            return typeList
-                .Where(x => x.FullName != null && Regex.IsMatch(x.FullName, ".*" + selection?.Query + ".*")).ToList();
+            return typeList.Where(x => x.FullName != null && Regex.IsMatch(x.FullName, ".*" + selection?.Query + ".*")).ToList();
         }
 
         internal static List<MethodInfo> GetMethods(params Type[] classes)
@@ -46,31 +46,28 @@ namespace AutoUIConsole
                 method.Invoke(Convert.ChangeType(classInstance, classInstance.GetType()), new object[] { });
             }
         }
-
-        //public static void InvokeCommand2(Type type, string selection)
-        //{
-        //    MethodInfo method = type.GetMethod(selection,
-        //        BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
-        //    method.Invoke(Session.UserInterface.Commands, new object[] { });
-        //}
-
-        public static void InvokeCommand(string selection)
+        public static void InvokeCommand(string requestedCommand, UserInput[] parameter = null)
         {
-            var filteredCommandTypes = SuperCommand.CommandTypeMethods.Keys.Where(x => x.GetType().Name.Equals(selection)).ToList();
+            var filteredCommandTypes = SuperCommand.CommandTypeMethods.Keys.Where(x => x.GetType().Name.Equals(requestedCommand)).ToList();
             if (filteredCommandTypes.Count < 1)
             {
                 foreach (ICommand command in SuperCommand.CommandTypeMethods.Keys)
                 {
-                    var isMatch = SuperCommand.CommandTypeMethods[command].Any(x => x.Name.Equals(selection));
+                    var isMatch = SuperCommand.CommandTypeMethods[command].Any(x => x.Name.Equals(requestedCommand));
 
                     if (isMatch)
                     {
                         ICommand com = (ICommand)Activator.CreateInstance(command.GetType(), new object[] { });
-                        com.Execute(null);
+                        com.Execute(parameter);
                     }
                 }
             }
-            else filteredCommandTypes.First().Execute(null);
+            else filteredCommandTypes.First().Execute(parameter);
+        }
+
+        public static void InvokeCommand(UserInput userInput)
+        {
+            InvokeCommand(userInput.Content, userInput.Arguments.ToArray());
         }
 
         private static List<Type> GetTypeFromAssembly(Selection selection)

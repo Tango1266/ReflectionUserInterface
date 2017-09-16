@@ -10,6 +10,9 @@ namespace AutoUIConsole.Components
         public string Content { get; set; }
         public string Query { get; set; }
 
+        public bool HasJustOneOption => (Options.Classes.Count == 0 && Options.Methods.Count == 1);
+        public bool HasOptions => (Options.Classes.Count >= 0 && Options.Methods.Count >= 1);
+
         public Selection(Selection selection, string input)
         {
             previousSelection = selection;

@@ -26,34 +26,33 @@ namespace AutoUIConsole.Components
         {
             if (input.IsEmpty) Helper.InvokeCommand("GoBack");
 
-            foreach (UserInput userInput in input.Arguments)
-            {
-                if (userInput.IsCommand) Helper.InvokeCommand(userInput.Content);
+            else if (input.IsCommand) Helper.InvokeCommand(input);
 
-                else if (userInput.IsNumber) HandleMenuSelection(userInput.Content);
+            else if (input.IsNumber) HandleMenuSelection(input.Content);
 
-                else HandleCustomeInput(userInput.Content);
-            }
+            else HandleCustomeInput(input);
         }
 
 
-        public void HandleCustomeInput(params string[] selection)
+        public void HandleCustomeInput(UserInput userInput)
         {
-            currentSelection = new Selection(currentSelection, selection[0]);
+            //userInput.Arguments.AddFirst(userInput);
 
-            if (currentSelection.Options.Classes.Count == 0 && currentSelection.Options.Methods.Count == 1)
+            foreach (UserInput userInputArgument in userInput.Arguments)
             {
-                Helper.InvokeMethod(currentSelection);
-            }
-            else if (currentSelection.Options.Methods.Count >= 1)
-            {
-                ShowConsoleMenu();
+                currentSelection = new Selection(currentSelection, userInputArgument.Content);
 
-                currentSelection.Query = "";
-            }
-            else
-            {
-                ShowConsoleMenu();
+                if (currentSelection.HasJustOneOption) Helper.InvokeMethod(currentSelection);
+
+                else if (currentSelection.HasOptions)
+                {
+                    ShowConsoleMenu();
+                    currentSelection.Query = "";
+                }
+                else
+                {
+                    ShowConsoleMenu();
+                }
             }
         }
 
@@ -85,6 +84,8 @@ namespace AutoUIConsole.Components
 
         public void DirectStart(UserInput input)
         {
+            //input.Arguments.AddFirst(input);
+
             foreach (UserInput argument in input.Arguments)
             {
                 if (argument.IsEmpty) continue;

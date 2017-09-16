@@ -11,8 +11,10 @@ namespace AutoUIConsole
     public static class Config
     {
         //public static Assembly AssemblyWhereToLookUp = Helper.GetLookUpAssembly(typeof(TS1EineTestSuite));
-        public static Assembly AssemblyWhereToLookUp = Assembly.LoadFrom(GetValueFromAppConfig(nameof(AssemblyWhereToLookUp)));
-        public static string DirLevel0 = GetValueFromAppConfig(nameof(DirLevel0));
+        public static Assembly AssemblyWhereToLookUp = LoadAssemblyFromConfig();
+        public static string DirLevel0 = DefineDirLevel0();
+
+
 
         public struct Commands
         {
@@ -62,6 +64,19 @@ namespace AutoUIConsole
             if (!appSettings.AllKeys.Contains(key)) throw new KeyNotFoundException($"Das Configurationsitem \"{key}\" wurde nicht in {AppDomain.CurrentDomain.SetupInformation.ConfigurationFile} gefunden");
 
             return ConfigurationManager.AppSettings[key];
+        }
+        private static Assembly LoadAssemblyFromConfig()
+        {
+            var path = GetValueFromAppConfig(nameof(AssemblyWhereToLookUp));
+            return Assembly.LoadFrom(path);
+        }
+        private static string DefineDirLevel0()
+        {
+            var dirLevel0 = GetValueFromAppConfig(nameof(DirLevel0));
+
+            if (dirLevel0.Equals(string.Empty)) dirLevel0 = AssemblyWhereToLookUp.GetName().Name;
+
+            return dirLevel0;
         }
     }
 }

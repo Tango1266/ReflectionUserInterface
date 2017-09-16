@@ -13,6 +13,9 @@ namespace AutoUIConsole.Components.DataTypes
 
         public bool IsEmpty { get; set; }
 
+
+
+
         public Options(Selection selection)
         {
             Selection = selection;

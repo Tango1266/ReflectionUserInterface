@@ -1,5 +1,6 @@
 ﻿using AutoUIConsole;
 using AutoUIConsole.Components;
+using AutoUIConsole.Components.DataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -50,9 +51,7 @@ namespace UnitTests
         {
             var expected = "GoToMainMenu";
 
-            new Commands();
 
-            Assert.IsTrue(Commands.AvailableCommands.Contains(expected));
         }
 
         [TestMethod]
@@ -60,9 +59,7 @@ namespace UnitTests
         {
             var expected = "StartAll";
 
-            new Commands();
 
-            Assert.IsTrue(Commands.AvailableCommands.Contains(expected));
         }
 
 
@@ -120,7 +117,7 @@ namespace UnitTests
 
         private void TestMenuItemInstances(string selection, params string[] expTargetLevels)
         {
-            _userInterface.HandleCustomeInput(selection);
+            _userInterface.HandleCustomeInput(new UserInput(selection));
 
             foreach (string expTargetLevel in expTargetLevels)
             {

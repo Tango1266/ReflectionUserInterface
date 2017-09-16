@@ -7,28 +7,41 @@ namespace AutoUIConsole.Components.DataTypes
 {
     public class UserInput
     {
-        public List<UserInput> Arguments { get; set; }
+        public LinkedList<UserInput> Arguments { get; set; }
 
-        public string Content { get; }
+        public string Content { get; set; }
 
         public bool IsEmpty { get; private set; }
         public bool IsMultiArgument { get; private set; }
         public bool IsCommand { get; private set; }
         public bool IsNumber { get; private set; }
 
+        private bool _firstCall = true;
 
-        public UserInput(params string[] arguements)
+        public UserInput(params string[] input)
         {
-            ExtractArguments(arguements);
+            input = SplitInput(input);
+            Content = input.Length > 0 ? input[0] : string.Empty;
 
-            Content = arguements.ToText();
+            Arguments = ExtractArguments(input);
 
-            EvaluateArguments();
+            if (!_firstCall && !IsEmpty && !IsCommand) Arguments.AddFirst(this);
+            EvaluateInput();
+
+            if (_firstCall) _firstCall = false;
+
         }
 
-        private void EvaluateArguments()
+        private string[] SplitInput(string[] input)
         {
-            IsEmpty = Content.Equals(string.Empty) || Arguments.Count == 0;
+            if (input.Length == 1) return input[0].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            return input;
+        }
+
+        private void EvaluateInput()
+        {
+            IsEmpty = Content.Equals(string.Empty);
             IsMultiArgument = Arguments.Count > 1;
 
             if (IsMultiArgument) return;
@@ -38,32 +51,21 @@ namespace AutoUIConsole.Components.DataTypes
             if (!IsCommand) IsNumber = Regex.IsMatch(Content, @"\b\d+$");
         }
 
-        private void ExtractArguments(string[] userInput)
+        private LinkedList<UserInput> ExtractArguments(string[] userInput)
         {
-            Arguments = new List<UserInput>();
-
-            if (userInput.Length == 1)
+            if (userInput.Length <= 1)
             {
-                var arguements = userInput[0].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                if (arguements.Length == 1)
-                {
-                    Arguments.Add(this);
-                    return;
-                }
-
-
-                foreach (string arguement in arguements)
-                {
-                    Arguments.Add(new UserInput(arguement));
-                }
-                return;
+                return new LinkedList<UserInput>();
             }
 
-            foreach (string argument in userInput)
-            {
-                Arguments.Add(new UserInput(argument));
-            }
+            string[] subArray = new string[userInput.Length - 1];
+            Array.Copy(userInput, 1, subArray, 0, subArray.Length);
+
+            var userIn = new UserInput(subArray);
+            Arguments = ExtractArguments(subArray);
+
+            Arguments.AddFirst(userIn);
+            return Arguments;
         }
 
 
