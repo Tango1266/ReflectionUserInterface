@@ -4,13 +4,12 @@ using System.Threading.Tasks;
 
 namespace AutoUIConsole.Components.Commands
 {
-    public partial class SaveMethodsOfCurrentOptions : SuperCommand
+    public class SaveMethodsOfCurrentOptions : SuperCommand
     {
         private Task _savingTask;
         private CancellationTokenSource _cts;
 
         //TODO: Filename durch UserInput bestimmen
-
 
         public void save() => Execute();
 

@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUIConsole", "AutoUIConsole\AutoUIConsole.csproj", "{C2048B08-73D1-42A8-8CF8-8793B2AC9767}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternTestProject", "ExternApp\ExternTestProject.csproj", "{022C0B5E-8661-40D5-80F0-44CA030A3010}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{9A51E1D8-0820-4529-B51E-0C2D69209F53}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SubProject", "SubProject", "{0A4CB2B4-9EE2-46EC-BBE1-71BE7DF9653E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +32,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{022C0B5E-8661-40D5-80F0-44CA030A3010} = {0A4CB2B4-9EE2-46EC-BBE1-71BE7DF9653E}
+		{9A51E1D8-0820-4529-B51E-0C2D69209F53} = {0A4CB2B4-9EE2-46EC-BBE1-71BE7DF9653E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4604DC34-2272-4A7E-9712-8E912E6D6DBF}
 	EndGlobalSection
 EndGlobal

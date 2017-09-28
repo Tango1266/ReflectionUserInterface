@@ -24,7 +24,7 @@ namespace AutoUIConsole.Components.Commands
 
         }
 
-        public static void init()
+        public static void Init()
         {
             var commandTypes = Assembly.GetExecutingAssembly().GetTypes().Where(x =>
                 Regex.IsMatch(x.Namespace, ".*Commands") && typeof(SuperCommand).IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface);

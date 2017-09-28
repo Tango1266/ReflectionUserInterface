@@ -1,15 +1,12 @@
-﻿using AutoUIConsole.Components.DataTypes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using static AutoUIConsole.Helper;
+using AutoUIConsole.Components.DataTypes;
 
-
-namespace AutoUIConsole.Components.Abstracts
+namespace AutoUIConsole.Components
 {
     public class Menu
     {
-
         public Menu PreviousMenu { get; set; }
         public SortedSet<string> MenuItems { get; set; }
 
@@ -19,7 +16,7 @@ namespace AutoUIConsole.Components.Abstracts
         {
             PreviousMenu = previousMenu;
             MenuItems = CreateMenuItems(selection.Options, selection.Content);
-            PrintMenu();
+            Display();
         }
 
         public static SortedSet<string> CreateMenuItems(Options options, string selectionContent)
@@ -41,28 +38,28 @@ namespace AutoUIConsole.Components.Abstracts
             return menuItems;
         }
 
-        public void PrintMenu()
+        public void Display()
         {
             if (MenuItems == null) return;
             Console.Clear();
 
             if (MenuItems.Count == 0)
             {
-                WriteLine(Environment.NewLine + $"Deine Auswahl erzielte keine Treffer. " +
+                Helper.WriteLine(Environment.NewLine + $"Deine Auswahl erzielte keine Treffer. " +
                                   Environment.NewLine + $"Gebe {Config.Commands.GoToMainMenu.ToText()} ein und bestätige mit <Enter> um in das Hauptmenu zu gelangen." +
                                   Environment.NewLine + $"Oder bestätige jetzt mit <Enter> um zurück zu gelanden");
                 return;
             }
 
-            WriteLine(Environment.NewLine + $"{ "Startet alle untergeordnete Methoden mit: \t" + Config.Commands.StartAllMethods.ToText()}");
+            Helper.WriteLine(Environment.NewLine + $"{ "Startet alle untergeordnete Methoden mit: \t" + Config.Commands.StartAllMethods.ToText()}");
 
             int pos = 1;
             foreach (var item in MenuItems)
             {
-                WriteLine($"  {pos++} \t : " + item);
+                Helper.WriteLine($"  {pos++} \t : " + item);
             }
 
-            WriteLine(Config.MenuTexts.InputNotefication);
+            Helper.WriteLine(Config.MenuTexts.InputNotefication);
         }
 
     }

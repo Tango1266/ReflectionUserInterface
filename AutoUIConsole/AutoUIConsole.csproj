@@ -57,13 +57,15 @@
   <ItemGroup>
     <Compile Include="Components\Commands\SwitchAssembly.cs" />
     <Compile Include="Components\Commands\ShowManual.cs" />
+    <Compile Include="Components\Table.cs" />
+    <Compile Include="Components\ConsoleUtilities.cs" />
     <Compile Include="Components\CSVFile.cs" />
     <Compile Include="Components\Commands\ExitApplication.cs" />
     <Compile Include="Components\Commands\SaveMethodsOfCurrentOptions.cs" />
     <Compile Include="Components\Commands\GoBack.cs" />
     <Compile Include="Components\Commands\GoHelpMenu.cs" />
     <Compile Include="Components\DataTypes\PathLevel.cs" />
-    <Compile Include="Components\DataTypes\Options.cs" />
+    <Compile Include="Components\Options.cs" />
     <Compile Include="Components\DataTypes\UserInput.cs" />
     <Compile Include="Components\Menu.cs" />
     <Compile Include="Components\Commands\StartAll.cs" />

@@ -1,9 +1,8 @@
-using AutoUIConsole.Components;
+using System;
 using AutoUIConsole.Components.Commands;
 using AutoUIConsole.Components.DataTypes;
-using System;
 
-namespace AutoUIConsole
+namespace AutoUIConsole.Components
 {
     public class Session
     {
@@ -29,7 +28,7 @@ namespace AutoUIConsole
         {
             var startUpSelectionOption = new Selection(null, Config.DirLevel0);
 
-            SuperCommand.init();
+            SuperCommand.Init();
             UserInterface = new UserInterface(startUpSelectionOption);
         }
 
@@ -38,7 +37,7 @@ namespace AutoUIConsole
             while (true)
             {
                 var userInput = new UserInput(Console.ReadLine());
-                UserInterface.ExecuteSelection(userInput);
+                UserInterface.HandleUserInput(userInput);
             }
         }
 

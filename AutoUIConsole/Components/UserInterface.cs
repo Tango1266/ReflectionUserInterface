@@ -1,5 +1,4 @@
-﻿using AutoUIConsole.Components.Abstracts;
-using AutoUIConsole.Components.Commands;
+﻿using AutoUIConsole.Components.Commands;
 using AutoUIConsole.Components.DataTypes;
 using System;
 using System.Linq;
@@ -11,7 +10,6 @@ namespace AutoUIConsole.Components
         public Menu CurrentMenu { get; set; }
         public Selection currentSelection { get; set; }
 
-
         public UserInterface(Selection selection)
         {
             currentSelection = selection;
@@ -22,7 +20,7 @@ namespace AutoUIConsole.Components
             CurrentMenu = new Menu(CurrentMenu, currentSelection);
         }
 
-        public void ExecuteSelection(UserInput input)
+        public void HandleUserInput(UserInput input)
         {
             if (input.IsEmpty) Helper.InvokeCommand("GoBack");
 

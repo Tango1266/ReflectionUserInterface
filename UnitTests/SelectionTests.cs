@@ -47,7 +47,7 @@ namespace UnitTests
 
             PathLevel path = new PathLevel(fullPath, targetLevel);
 
-            Assert.AreEqual("lev1", path.previousLevel);
+            Assert.AreEqual("lev1", path.PreviousLevel);
         }
 
         [TestMethod]
@@ -58,7 +58,7 @@ namespace UnitTests
 
             PathLevel path = new PathLevel(fullPath, targetLevel);
 
-            Assert.IsNull(path.previousLevel);
+            Assert.IsNull(path.PreviousLevel);
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace UnitTests
 
             PathLevel path = new PathLevel(fullPath, targetLevel);
 
-            Assert.AreEqual("lev2", path.previousLevel);
+            Assert.AreEqual("lev2", path.PreviousLevel);
 
         }
 

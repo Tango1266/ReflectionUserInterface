@@ -14,7 +14,7 @@
 
             if (userInterface.CurrentMenu?.IsMain ?? false)
             {
-                userInterface.CurrentMenu.PrintMenu();
+                userInterface.CurrentMenu.Display();
                 return;
             }
 

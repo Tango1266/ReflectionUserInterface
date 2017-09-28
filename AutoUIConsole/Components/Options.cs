@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace AutoUIConsole.Components.DataTypes
+namespace AutoUIConsole.Components
 {
     public class Options
     {
@@ -12,9 +12,6 @@ namespace AutoUIConsole.Components.DataTypes
         public List<MethodInfo> Methods { get; set; }
 
         public bool IsEmpty { get; set; }
-
-
-
 
         public Options(Selection selection)
         {
