@@ -4,6 +4,7 @@ using AutoUIConsole.Components.DataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace UnitTests
 {
@@ -69,12 +70,15 @@ namespace UnitTests
         public void TestMenuItemsSpezialKF1()
         {
             string selection = "Spezial.*KF1";
+            string querrySpaceSeperated = "Spezial KF1";
+
             string[] expTargetLevel = new[]
             {
                 "KF1EinSpeziellesFeature",
             };
 
             TestMenuItemInstances(selection, expTargetLevel);
+            TestMenuItemInstances(querrySpaceSeperated, expTargetLevel);
         }
 
         [TestMethod]
@@ -106,7 +110,9 @@ namespace UnitTests
         [TestMethod]
         public void TestMenuItemsSpezialKF3UC_TCs()
         {
-            string selection = "Spezial.*KF3.*TC";
+            string querryWhole = "Spezial.*KF3.*TC";
+            string querrySpaceSeperated= "Spezial KF3 TC";
+
             string[] expTargetLevel = new[]
             {
                 "TC1",
@@ -114,18 +120,19 @@ namespace UnitTests
                 "TC3",
             };
 
-            TestMenuItemInstances(selection, expTargetLevel);
+            //TestMenuItemInstances(querryWhole, expTargetLevel);
+            TestMenuItemInstances(querrySpaceSeperated, expTargetLevel);
         }
 
-        private void TestMenuItemInstances(string selection, params string[] expTargetLevels)
+        private void TestMenuItemInstances(string querry, params string[] expTargetLevels)
         {
-            _userInterface.HandleCustomeInput(new UserInput(selection));
+            _userInterface.HandleCustomeInput(new UserInput(querry));
 
             foreach (string expTargetLevel in expTargetLevels)
             {
-                Assert.IsTrue(_userInterface.CurrentMenu.MenuItems.Any(x => Regex.IsMatch(x, expTargetLevel)));
+                var currentMenu = _userInterface.CurrentMenu;
+                Assert.IsTrue(currentMenu.MenuItems.Any(x => Regex.IsMatch(x, expTargetLevel)), $"Expected level {expTargetLevel} was not found for querry {querry} in menu \n {Helper.ToText(currentMenu.MenuItems.ToArray())}");
             }
-
         }
     }
 }

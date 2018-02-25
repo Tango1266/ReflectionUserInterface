@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using AutoUIConsole;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Helper = AutoUIConsole.Helper;
 
 namespace UnitTests
 {
@@ -47,7 +48,7 @@ namespace UnitTests
 
             foreach (var s in content)
             {
-                Assert.IsTrue(consoleOut.Contains(s), $"{s} was not present in consoleOut: \n {consoleOut.ToText()}");
+                Assert.IsTrue(consoleOut.Contains(s), $"{s} was not present in consoleOut: \n {Helper.ToText(consoleOut)}");
             }
         }
 
