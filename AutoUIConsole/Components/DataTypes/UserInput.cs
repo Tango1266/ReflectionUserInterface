@@ -1,31 +1,36 @@
 ﻿using AutoUIConsole.Components.Commands;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace AutoUIConsole.Components.DataTypes
 {
-    public class UserInput
+    public class UserInput:IEnumerable<UserInput>
     {
         public LinkedList<UserInput> Arguments { get; set; }
+
         public UserInput RootArgument { get; set; }
 
         public string Content { get; set; }
 
         public bool IsEmpty { get; private set; }
-        public bool IsMultiArgument { get; private set; }
+
+        public bool IsMultiInput { get; private set; }
+
         public bool IsCommand { get; private set; }
+
         public bool IsNumber { get; private set; }
 
-        private bool _firstCall = true;
+        public string OriginQuerry { get; set; }
 
         public UserInput(params string[] input)
         {
             input = SplitInput(input);
             Content = input.Length > 0 ? input[0] : string.Empty;
-
+            OriginQuerry = input.ToText();
             InitUserInput(this, input);
         }
+
 
         public UserInput(UserInput rootArgument, params string[] input)
         {
@@ -41,10 +46,7 @@ namespace AutoUIConsole.Components.DataTypes
 
             Arguments = ExtractArguments(rootArgument, input);
 
-            if (!_firstCall && !IsEmpty && !IsCommand) Arguments.AddFirst(this);
             EvaluateInput();
-
-            if (_firstCall) _firstCall = false;
         }
 
         private string[] SplitInput(string[] input)
@@ -54,26 +56,11 @@ namespace AutoUIConsole.Components.DataTypes
             return input;
         }
 
-        private void EvaluateInput()
-        {
-            IsEmpty = Content.Equals(string.Empty);
-            IsMultiArgument = Arguments.Count > 1;
-
-            // Only RootArgument is allowed to be a command
-            if (this != RootArgument) return;
-
-            IsCommand = CheckIsCommand(Content);
-
-            if (!IsCommand) IsNumber = Regex.IsMatch(Content, @"\b\d+$");
-        }
-
         private LinkedList<UserInput> ExtractArguments(UserInput parent, string[] userInput)
         {
             if (userInput.Length <= 1)
             {
-                var args = new LinkedList<UserInput>();
-                args.AddFirst(this);
-                return args;
+                return new LinkedList<UserInput>();
             }
 
             string[] subArray = new string[userInput.Length - 1];
@@ -86,10 +73,46 @@ namespace AutoUIConsole.Components.DataTypes
             return Arguments;
         }
 
-
-        private bool CheckIsCommand(string content)
+        private void EvaluateInput()
         {
-            return SuperCommand.AvailableCommands.Contains(content);
+            IsEmpty = Content.Equals(string.Empty);
+            IsMultiInput = Arguments.Count > 0;
+
+            // Only RootArgument is allowed to be a command
+            if (this != RootArgument) return;
+
+            IsCommand = Command.IsCommand(Content);
+
+            if (!IsCommand) IsNumber = Content.IsNumber();
         }
+
+        #region Ovverrides
+        public override string ToString()
+        {
+            return $"{RootArgument.OriginQuerry}: {Content}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ToString().Equals(ToString());
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+
+        public IEnumerator<UserInput> GetEnumerator()
+        {
+            Arguments.AddFirst(RootArgument);
+            return Arguments.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
     }
 }

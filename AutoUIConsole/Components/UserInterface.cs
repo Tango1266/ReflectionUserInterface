@@ -24,9 +24,9 @@ namespace AutoUIConsole.Components
         {
             if (input.IsEmpty) Helper.InvokeCommand("GoBack");
 
-            else if (input.IsCommand && input.IsMultiArgument)
+            else if (input.IsCommand && input.IsMultiInput)
             {
-                UserInput remainingArgs = input.Arguments.First.Value;
+                UserInput remainingArgs = input;
                 Session.IsDirectStart = true;
                 DirectStart(remainingArgs);
                 Session.IsDirectStart = false;
@@ -42,7 +42,7 @@ namespace AutoUIConsole.Components
 
         public void HandleCustomeInput(UserInput userInput)
         {
-            foreach (UserInput userInputArgument in userInput.Arguments)
+            foreach (UserInput userInputArgument in userInput)
             {
                 CurrentSelection = new Selection(CurrentSelection, userInputArgument.Content);
 
@@ -89,7 +89,7 @@ namespace AutoUIConsole.Components
         public void DirectStart(UserInput input, bool showMenu=false)
         {
 
-            foreach (UserInput argument in input.Arguments)
+            foreach (UserInput argument in input)
             {
                 if (argument.IsEmpty) continue;
 

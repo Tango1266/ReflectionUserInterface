@@ -40,9 +40,9 @@ namespace AutoUIConsole.Components
 
         public void InitializeStartUpConfiguration()
         {
-            var startUpSelectionOption = new Selection(null, Config.DirLevel0);
+            var startUpSelectionOption = new Selection(null, AppConfig.DirLevel0);
 
-            SuperCommand.Init();
+            Command.Init();
             UserInterface = new UserInterface(startUpSelectionOption);
         }
 
@@ -64,7 +64,7 @@ namespace AutoUIConsole.Components
                 throw new ExitApplicationException("Direct Start reached its end.");
             }
         
-            Helper.Log(Config.MenuTexts.Introduction);
+            Helper.Log(AppConfig.MenuTexts.Introduction);
             Console.Read();
             IsConsoleSession = true;
             UserInterface.ShowConsoleMenu();
