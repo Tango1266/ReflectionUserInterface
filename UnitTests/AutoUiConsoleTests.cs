@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace UnitTests
 {
+    //TODO: Tests ueberarbeiten, funktionieren nicht mehr
     [TestClass]
     public class AutoUiConsoleTest
     {
@@ -15,6 +16,7 @@ namespace UnitTests
         [TestInitialize]
         public void Testinit()
         {
+            Program.CurrentSession = new Session();
             Program.CurrentSession.InitializeStartUpConfiguration();
 
             _userInterface = Session.UserInterface;
@@ -30,7 +32,7 @@ namespace UnitTests
 
             Assert.IsNull(uiInterface.CurrentMenu.PreviousMenu);
 
-            Assert.AreEqual(".*" + level, uiInterface.currentSelection.Query);
+            Assert.AreEqual(".*" + level, uiInterface.CurrentSelection.Query);
         }
 
         [TestMethod]

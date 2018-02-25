@@ -14,7 +14,7 @@ namespace UnitTests
 
             PathLevel path = new PathLevel(fullPath, targetLevel);
 
-            Assert.AreEqual("leaf", path.nextLevel);
+            Assert.AreEqual("leaf", path.NextLevel);
         }
 
         [TestMethod]
@@ -25,7 +25,7 @@ namespace UnitTests
 
             PathLevel path = new PathLevel(fullPath, targetLevel);
 
-            Assert.AreEqual("lev1", path.nextLevel);
+            Assert.AreEqual("lev1", path.NextLevel);
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace UnitTests
 
             PathLevel path = new PathLevel(fullPath, targetLevel);
 
-            Assert.AreEqual("lev2", path.baseLevel);
+            Assert.AreEqual("lev2", path.BaseLevel);
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace UnitTests
 
             PathLevel path = new PathLevel(fullPath, targetLevel);
 
-            Assert.IsNull(path.nextLevel);
+            Assert.IsNull(path.NextLevel);
         }
     }
 }
