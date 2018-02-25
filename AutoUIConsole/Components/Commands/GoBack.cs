@@ -8,19 +8,13 @@
 
         public override void Execute(object parameter = null)
         {
-            var showMenu = parameter is null ? true : (bool)parameter;
-
             var userInterface = Session.UserInterface;
-
-            if (userInterface.CurrentMenu?.IsMain ?? false)
-            {
-                userInterface.CurrentMenu.Display();
-                return;
-            }
 
             userInterface.StepBack();
 
-            if (showMenu) userInterface.ShowConsoleMenu();
+            if(Session.IsDirectStart)return;
+
+            userInterface.ShowConsoleMenu();
         }
     }
 }
