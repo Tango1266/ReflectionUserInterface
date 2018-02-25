@@ -12,7 +12,7 @@
         {
             Session.UserInterface = new UserInterface(new Selection(null, Config.DirLevel0));
 
-            Helper.WriteLine("Wechsle zu Main Menu");
+            Helper.Log("Wechsle zu Main Menu");
 
             Session.UserInterface.ShowConsoleMenu();
         }

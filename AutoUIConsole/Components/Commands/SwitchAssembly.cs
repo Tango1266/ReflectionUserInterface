@@ -21,7 +21,7 @@ namespace AutoUIConsole.Components.Commands
 
             if (!fileExists)
             {
-                Helper.WriteLine("Die Assembly wurde nicht unter dem Pfad gefunden. Pfad:" + location);
+                Helper.Log("Die Assembly wurde nicht unter dem Pfad gefunden. Pfad:" + location);
                 return;
             }
 
@@ -29,7 +29,7 @@ namespace AutoUIConsole.Components.Commands
             Config.DirLevel0 = Config.AssemblyWhereToLookUp.GetName().Name;
 
             new GoToMainMenu().Execute();
-            Helper.WriteLine(Environment.NewLine + $"Die Assembly {Config.DirLevel0} wurde eingebund");
+            Helper.Log(Environment.NewLine + $"Die Assembly {Config.DirLevel0} wurde eingebund");
         }
     }
 }

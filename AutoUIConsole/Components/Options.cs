@@ -22,9 +22,7 @@ namespace AutoUIConsole.Components
 
         private void GenerateOptions(Selection selection)
         {
-            Classes = new List<Type>();
-            Classes = Helper.GetTypesFromFullName(selection);
-
+            Classes = GetClasses(selection);
             Methods = new List<MethodInfo>();
 
             if (Classes.Count > 0)
@@ -36,10 +34,16 @@ namespace AutoUIConsole.Components
             }
             else
             {
-                Methods = Helper.GetMethodsFiltered(selection.Query, selection.previousSelection?.Options?.Classes.ToArray());
+                Methods = Helper.GetMethodsFiltered(selection.Query, selection.PreviousSelection?.Options?.Classes.ToArray());
             }
 
             IsEmpty = Classes.Count == 0 && Methods.Count == 0;
+        }
+
+        private List<Type> GetClasses(Selection selection)
+        {
+            Classes = new List<Type>();
+            return Helper.GetTypesFromFullName(selection);
         }
     }
 }

@@ -25,9 +25,9 @@ namespace AutoUIConsole.Components
 
         public void Save()
         {
-            Helper.WriteLine(Environment.NewLine + $"Die Datei {Name} wird erstellt in {Directory}");
+            Helper.Log(Environment.NewLine + $"Die Datei {Name} wird erstellt in {Directory}");
 
-            generateCsv();
+            GenerateCsv();
 
             try
             {
@@ -35,11 +35,11 @@ namespace AutoUIConsole.Components
             }
             catch (IOException)
             {
-                Helper.WriteLine(Environment.NewLine + "(Fehler) Die zu speichernde Datei ist möglicherweise geöffnet. Bitte schliesse die Datei und versuche es erneut.");
+                Helper.Log(Environment.NewLine + "(Fehler) Die zu speichernde Datei ist möglicherweise geöffnet. Bitte schliesse die Datei und versuche es erneut.");
                 return;
             }
 
-            Helper.WriteLine("Datei wurde erfolgreich gespeichert.");
+            Helper.Log("Datei wurde erfolgreich gespeichert.");
         }
 
         public void CreateHeaderLine(params string[] titles)
@@ -47,7 +47,7 @@ namespace AutoUIConsole.Components
             HeaderLine = GenerateLine(titles);
         }
 
-        private void generateCsv()
+        private void GenerateCsv()
         {
             AddLine(HeaderLine);
 
@@ -61,7 +61,7 @@ namespace AutoUIConsole.Components
                     AddLine(menuItem, methodInfo.Name, methodInfo.DeclaringType?.FullName);
                 }
 
-                _selection = _selection.previousSelection;
+                _selection = _selection.PreviousSelection;
             }
         }
 

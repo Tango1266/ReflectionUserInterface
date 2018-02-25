@@ -26,18 +26,18 @@ namespace AutoUIConsole.Components.Commands
             _cts = new CancellationTokenSource();
             _savingTask = Task.Factory.StartNew(csvFile.Save, _cts.Token);
 
-            Helper.Write(Environment.NewLine + "Es wird gespeichert");
+            Helper.LogInLine(Environment.NewLine + "Es wird gespeichert");
             while (!_savingTask.IsCompleted)
             {
-                Helper.Write(". ");
+                Helper.LogInLine(". ");
                 Task.Delay(1000).Wait();
             }
-            Helper.Write(Environment.NewLine);
+            Helper.LogInLine(Environment.NewLine);
         }
 
         public override void Execute(object parameter = null)
         {
-            CSVFile csvFile = new CSVFile(Session.UserInterface.currentSelection, "AvailableMethods.csv");
+            CSVFile csvFile = new CSVFile(Session.UserInterface.CurrentSelection, "AvailableMethods.csv");
             csvFile.CreateHeaderLine("Menu Item", "Method Name", "Namespace");
             SaveInNewTask(csvFile);
         }

@@ -16,7 +16,7 @@ namespace AutoUIConsole.Components.Commands
 
             WriteTitle(header, tableLines);
 
-            tableLines.ForEach(x => Helper.WriteLine(x));
+            tableLines.ForEach(x => Helper.Log(x));
         }
 
         //TODO: Just Proof of work, need massive refactoring
@@ -55,9 +55,9 @@ namespace AutoUIConsole.Components.Commands
             string innerOffset = string.Format($"{"".PadLeft(lengthHeaderBox / 2)}");
             string outerOffset = string.Format($"{"".PadLeft((lines[0].Length - (lengthHeaderBox + header.Length)) / 2)}");
 
-            Helper.WriteLine(string.Format(outerOffset + $"*{"".PadLeft(innerOffset.Length * 2 + header.Length, '*')}*"));
-            Helper.WriteLine(string.Format(outerOffset + "|" + innerOffset + $"{header}" + innerOffset + "|"));
-            Helper.WriteLine(string.Format(outerOffset + $"*{"".PadLeft(innerOffset.Length * 2 + header.Length, '*')}*" +
+            Helper.Log(string.Format(outerOffset + $"*{"".PadLeft(innerOffset.Length * 2 + header.Length, '*')}*"));
+            Helper.Log(string.Format(outerOffset + "|" + innerOffset + $"{header}" + innerOffset + "|"));
+            Helper.Log(string.Format(outerOffset + $"*{"".PadLeft(innerOffset.Length * 2 + header.Length, '*')}*" +
                                            Environment.NewLine));
         }
 

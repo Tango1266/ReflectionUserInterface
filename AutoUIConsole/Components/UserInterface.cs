@@ -8,16 +8,16 @@ namespace AutoUIConsole.Components
     public class UserInterface
     {
         public Menu CurrentMenu { get; set; }
-        public Selection currentSelection { get; set; }
+        public Selection CurrentSelection { get; set; }
 
         public UserInterface(Selection selection)
         {
-            currentSelection = selection;
+            CurrentSelection = selection;
         }
 
         public void ShowConsoleMenu()
         {
-            CurrentMenu = new Menu(CurrentMenu, currentSelection);
+            CurrentMenu = new Menu(CurrentMenu, CurrentSelection);
         }
 
         public void HandleUserInput(UserInput input)
@@ -34,18 +34,16 @@ namespace AutoUIConsole.Components
 
         public void HandleCustomeInput(UserInput userInput)
         {
-            //userInput.Arguments.AddFirst(userInput);
-
             foreach (UserInput userInputArgument in userInput.Arguments)
             {
-                currentSelection = new Selection(currentSelection, userInputArgument.Content);
+                CurrentSelection = new Selection(CurrentSelection, userInputArgument.Content);
 
-                if (currentSelection.HasJustOneOption) Helper.InvokeMethod(currentSelection);
+                if (CurrentSelection.HasJustOneOption) Helper.InvokeMethod(CurrentSelection);
 
-                else if (currentSelection.HasOptions)
+                else if (CurrentSelection.HasOptions)
                 {
                     ShowConsoleMenu();
-                    currentSelection.Query = "";
+                    CurrentSelection.Query = "";
                 }
                 else
                 {
@@ -62,16 +60,16 @@ namespace AutoUIConsole.Components
                 if (key >= CurrentMenu.MenuItems.Count)
                 {
                     ShowConsoleMenu();
-                    Helper.WriteLine(Environment.NewLine + $"Der Wert \"{key + 1}\" stellt keine Option dar.");
+                    Helper.Log(Environment.NewLine + $"Der Wert \"{key + 1}\" stellt keine Option dar.");
                     return;
                 }
 
                 var currentItem = CurrentMenu.MenuItems.ElementAt(key);
-                currentSelection = new Selection(currentSelection, currentItem);
+                CurrentSelection = new Selection(CurrentSelection, currentItem);
 
-                if (currentSelection.Options.Classes.Count == 0)
+                if (CurrentSelection.Options.Classes.Count == 0)
                 {
-                    Helper.InvokeMethod(currentSelection);
+                    Helper.InvokeMethod(CurrentSelection);
                 }
                 else
                 {
@@ -82,18 +80,17 @@ namespace AutoUIConsole.Components
 
         public void DirectStart(UserInput input)
         {
-            //input.Arguments.AddFirst(input);
 
             foreach (UserInput argument in input.Arguments)
             {
                 if (argument.IsEmpty) continue;
 
-                currentSelection = new Selection(currentSelection, argument.Content);
+                CurrentSelection = new Selection(CurrentSelection, argument.Content);
 
                 //TODO: Evaluieren ob notwendig
                 if (argument.IsCommand) Helper.InvokeCommand(argument.Content);
 
-                Helper.InvokeMethod(currentSelection);
+                Helper.InvokeMethod(CurrentSelection);
 
                 new GoBack().Execute(false);
             }
@@ -102,7 +99,7 @@ namespace AutoUIConsole.Components
         public void StepBack()
         {
             CurrentMenu = CurrentMenu?.PreviousMenu;
-            currentSelection = currentSelection?.previousSelection;
+            CurrentSelection = CurrentSelection?.PreviousSelection;
         }
     }
 }

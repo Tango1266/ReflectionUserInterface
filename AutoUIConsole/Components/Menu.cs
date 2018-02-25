@@ -30,9 +30,9 @@ namespace AutoUIConsole.Components
                 string fullPathMethodName = methodInfo.DeclaringType?.FullName + "." + methodInfo.Name;
                 PathLevel pathLevel = new PathLevel(fullPathMethodName, selectionContent);
 
-                if (pathLevel.IsLeafOrIncomplete) menuItems.Add(pathLevel.baseLevel);
+                if (pathLevel.IsLeaf || pathLevel.IsIncomplete) menuItems.Add(pathLevel.BaseLevel);
 
-                else if (pathLevel.IsValidOrTop) menuItems.Add(pathLevel.nextLevel);
+                else if (pathLevel.IsValid || pathLevel.IsTop) menuItems.Add(pathLevel.NextLevel);
             }
 
             return menuItems;
@@ -45,21 +45,21 @@ namespace AutoUIConsole.Components
 
             if (MenuItems.Count == 0)
             {
-                Helper.WriteLine(Environment.NewLine + $"Deine Auswahl erzielte keine Treffer. " +
+                Helper.Log(Environment.NewLine + $"Deine Auswahl erzielte keine Treffer. " +
                                   Environment.NewLine + $"Gebe {Config.Commands.GoToMainMenu.ToText()} ein und bestätige mit <Enter> um in das Hauptmenu zu gelangen." +
                                   Environment.NewLine + $"Oder bestätige jetzt mit <Enter> um zurück zu gelanden");
                 return;
             }
 
-            Helper.WriteLine(Environment.NewLine + $"{ "Startet alle untergeordnete Methoden mit: \t" + Config.Commands.StartAllMethods.ToText()}");
+            Helper.Log(Environment.NewLine + $"{ "Startet alle untergeordnete Methoden mit: \t" + Config.Commands.StartAllMethods.ToText()}");
 
             int pos = 1;
             foreach (var item in MenuItems)
             {
-                Helper.WriteLine($"  {pos++} \t : " + item);
+                Helper.Log($"  {pos++} \t : " + item);
             }
 
-            Helper.WriteLine(Config.MenuTexts.InputNotefication);
+            Helper.Log(Config.MenuTexts.InputNotefication);
         }
 
     }

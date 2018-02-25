@@ -6,24 +6,38 @@ namespace AutoUIConsole.Components
 {
     public class Session
     {
+        private UserInput _userInput;
         public static UserInterface UserInterface { get; set; }
+        public static bool IsConsoleSession { get; set; }
+        public static bool IsDirectStart { get; set; }
 
         public Session(params string[] args)
         {
             try
             {
-                var userInput = new UserInput(args);
-
+                _userInput = new UserInput(args);
                 InitializeStartUpConfiguration();
-                StartDirectOrMenu(userInput);
-                HandleUserInput();
+            }
+            catch (ExitApplicationException exit)
+            {
+                Helper.Log(exit.Message);
+            }
+        }
+
+        public void Start()
+        {
+            try
+            {
+                StartDirectOrMenu(_userInput);
+                if (IsConsoleSession) HandleUserInput();
             }
             catch (Exception ae)
             {
-                Helper.WriteLine(ae.ToString());
-                HandleUserInput();
+                Helper.Log(ae.ToString());
+                if (IsConsoleSession) HandleUserInput();
             }
         }
+
         public void InitializeStartUpConfiguration()
         {
             var startUpSelectionOption = new Selection(null, Config.DirLevel0);
@@ -45,16 +59,22 @@ namespace AutoUIConsole.Components
         {
             if (!userInput.IsEmpty)
             {
+                IsDirectStart = true;
                 UserInterface.DirectStart(userInput);
-                new ExitApplication().Execute();
+                throw new ExitApplicationException("Direct Start reached its end.");
             }
-            else
-            {
-                Helper.WriteLine(Config.MenuTexts.Introduction);
-                Console.Read();
+        
+            Helper.Log(Config.MenuTexts.Introduction);
+            Console.Read();
+            IsConsoleSession = true;
+            UserInterface.ShowConsoleMenu();
+    }
+    }
 
-                UserInterface.ShowConsoleMenu();
-            }
+    public class ExitApplicationException : Exception
+    {
+        public ExitApplicationException(string message) : base(message)
+        {
         }
     }
 }

@@ -5,7 +5,7 @@
         public void manual() => Execute();
         public override void Execute(object parameter = null)
         {
-            Helper.WriteLine(Config.MenuTexts.Manual);
+            Helper.Log(Config.MenuTexts.Manual);
         }
     }
 }

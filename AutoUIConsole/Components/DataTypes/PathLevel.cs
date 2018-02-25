@@ -10,15 +10,13 @@ namespace AutoUIConsole.Components.DataTypes
         private readonly string _targetLevel;
 
         public string PreviousLevel { get; set; }
-        public string nextLevel { get; set; }
-        public string baseLevel { get; set; }
+        public string NextLevel { get; set; }
+        public string BaseLevel { get; set; }
 
         public bool IsValid { get; private set; }
         public bool IsIncomplete { get; set; }
         public bool IsTop { get; private set; }
         public bool IsLeaf { get; private set; }
-        public bool IsLeafOrIncomplete => IsLeaf || IsIncomplete;
-        public bool IsValidOrTop => IsValid || IsTop;
 
         public static bool LastIsTop { get; set; }
 
@@ -44,15 +42,15 @@ namespace AutoUIConsole.Components.DataTypes
         private void EvaluateLevel(List<string> levels, string[] levelsWithBase, string[] levelsUntilBase)
         {
             IsValid = levels.Count > 0;
-            if (IsValid) baseLevel = levelsWithBase[0];
+            if (IsValid) BaseLevel = levelsWithBase[0];
 
-            IsTop = levelsUntilBase.Length <= 0 || (IsValid && !IsLeaf && baseLevel.Equals(Config.DirLevel0));
+            IsTop = levelsUntilBase.Length <= 0 || (IsValid && !IsLeaf && BaseLevel.Equals(Config.DirLevel0));
             if (!IsTop) PreviousLevel = levelsUntilBase[levelsUntilBase.Length - 1];
 
             IsLeaf = levelsWithBase.Length <= 1;
-            if (!IsLeaf) nextLevel = levelsWithBase[1];
+            if (!IsLeaf) NextLevel = levelsWithBase[1];
 
-            IsIncomplete = IsValid && (!baseLevel.Equals(_targetLevel) && Regex.IsMatch(baseLevel, ".*" + _targetLevel + ".*"));
+            IsIncomplete = IsValid && (!BaseLevel.Equals(_targetLevel) && Regex.IsMatch(BaseLevel, ".*" + _targetLevel + ".*"));
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using AutoUIConsole.Components;
+﻿using System;
+using AutoUIConsole.Components;
 using AutoUIConsole.Components.Commands;
 using AutoUIConsole.OSS;
 
@@ -12,8 +13,16 @@ namespace AutoUIConsole
 
         public static void Main(string[] args)
         {
-            var xml = new XMLDocComment(typeof(ExitApplication), "q");
-            CurrentSession = new Session(args);
+           // var xml = new XMLDocComment(typeof(ExitApplication), "q");
+            try
+            {
+                CurrentSession = new Session(args);
+                CurrentSession.Start();
+            }
+            catch (Exception ex)
+            {
+                Helper.Log("AutoUIConsole ran into some issues", ex);
+            }
         }
     }
 }

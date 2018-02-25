@@ -14,9 +14,14 @@ namespace AutoUIConsole
     {
         internal static List<Type> GetTypesFromFullName(Selection selection)
         {
-            List<Type> typeList = selection?.previousSelection?.Options?.Classes ?? GetTypeFromAssembly(selection);
+            List<Type> typeList = selection?.PreviousSelection?.Options?.Classes ?? GetTypeFromAssembly(selection);
 
-            return typeList.Where(x => x.FullName != null && Regex.IsMatch(x.FullName, ".*" + selection?.Query + ".*")).ToList();
+            return typeList.Where(x 
+                => x.FullName != null 
+                   && Regex.IsMatch(x.FullName, ".*"
+                                                + 
+                                                selection?.Query + ".*"))
+                .ToList();
         }
 
         internal static List<MethodInfo> GetMethods(params Type[] classes)
@@ -28,14 +33,26 @@ namespace AutoUIConsole
             return methods;
         }
 
+        public static List<MethodInfo> GetMethodsFiltered(string querry)
+        {
+            var classes = GetTypeFromAssembly(new Selection(null, querry));
+            return GetMethods(classes.ToArray());
+        }
+
         internal static List<MethodInfo> GetMethodsFiltered(string selection, params Type[] classes)
         {
-            return GetMethods(classes).Where(x => Regex.IsMatch(x.DeclaringType + "." + x.Name, selection)).ToList();
+            return GetMethods(classes).Where(
+                x => 
+                    Regex.IsMatch(
+                        x.DeclaringType + "." + x.Name,
+                        selection
+                        )).ToList();
         }
 
         public static void InvokeMethod(Selection selection)
         {
-            List<MethodInfo> methods = selection.previousSelection.Options.Methods
+            //TODO:Evaluieren ob benoetig, da bereits schon in GetMethodsFiltered
+            List<MethodInfo> methods = selection.PreviousSelection.Options.Methods
                 .Where(x => Regex.IsMatch(x.DeclaringType?.FullName + "." + x.Name, selection.Query)).ToList();
             foreach (MethodInfo method in methods)
             {
@@ -95,12 +112,12 @@ namespace AutoUIConsole
             return res.Substring(0, res.Length - 2) + "";
         }
 
-        public static void WriteLine(string message, Exception ex = null)
+        public static void Log(string message, Exception ex = null)
         {
-            Write(message, true, ex);
+            LogInLine(message, true, ex);
         }
 
-        public static void Write(string message, bool newLine = false, Exception ex = null)
+        public static void LogInLine(string message, bool newLine = false, Exception ex = null)
         {
 
             if (newLine) Console.WriteLine(message);

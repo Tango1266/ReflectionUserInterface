@@ -4,7 +4,7 @@ namespace AutoUIConsole.Components
 {
     public class Selection
     {
-        public Selection previousSelection { get; set; }
+        public Selection PreviousSelection { get; set; }
         public Options Options { get; set; }
 
         public string Content { get; set; }
@@ -15,16 +15,16 @@ namespace AutoUIConsole.Components
 
         public Selection(Selection selection, string input)
         {
-            previousSelection = selection;
+            PreviousSelection = selection;
             Content = input;
-            Query = previousSelection?.Query + ".*" + input;
+            Query = PreviousSelection?.Query + ".*" + input;
             Options = new Options(this);
         }
 
         public Selection Clone()
         {
             var cloneSelection = new Selection(null, "");
-            cloneSelection.previousSelection = this.previousSelection;
+            cloneSelection.PreviousSelection = this.PreviousSelection;
             cloneSelection.Options = this.Options;
             cloneSelection.Content = this.Content;
             cloneSelection.Query = this.Query;
