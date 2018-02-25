@@ -24,15 +24,18 @@ namespace AutoUIConsole.Components.Commands
             }
 
             _cts = new CancellationTokenSource();
-            _savingTask = Task.Factory.StartNew(csvFile.Save, _cts.Token);
-
-            Helper.LogInLine(Environment.NewLine + "Es wird gespeichert");
-            while (!_savingTask.IsCompleted)
+            lock (csvFile)
             {
-                Helper.LogInLine(". ");
-                Task.Delay(1000).Wait();
+                _savingTask = Task.Factory.StartNew(csvFile.Save, _cts.Token);
+
+                Helper.LogInLine(Environment.NewLine + "Es wird gespeichert");
+                while (!_savingTask.IsCompleted)
+                {
+                    Helper.LogInLine(". ");
+                    Task.Delay(1000).Wait();
+                }
+                Helper.LogInLine(Environment.NewLine);
             }
-            Helper.LogInLine(Environment.NewLine);
         }
 
         public override void Execute(object parameter = null)

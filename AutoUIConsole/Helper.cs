@@ -93,7 +93,7 @@ namespace AutoUIConsole
                 .Where(x => Regex.IsMatch(x.FullName, selection?.Query + ".*")).ToList();
         }
 
-        public static string ToText(this object[] array)
+        public static string ToText(this IEnumerable<object> array)
         {
             string res = "";
 

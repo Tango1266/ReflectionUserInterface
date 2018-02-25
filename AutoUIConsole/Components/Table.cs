@@ -9,6 +9,9 @@ namespace AutoUIConsole.Components
         public List<Column> Columns { get; set; } = new List<Column>();
         public List<Row> Rows { get; set; } = new List<Row>();
 
+        public static string DefaultSeperator = ";";
+        public string Seperator { get; set; } = DefaultSeperator;
+
         public void AddColumn(params string[] columnNames)
         {
             foreach (string columnNmae in columnNames)
@@ -19,7 +22,8 @@ namespace AutoUIConsole.Components
 
         public void AddRow(params string[] rowContent)
         {
-            Rows.Add(new Row(rowContent));
+            if(rowContent.Length == 1) Rows.Add(new Row(rowContent[0]));
+            else Rows.Add(new Row(rowContent));
         }
 
         public bool AddItem(Column column, Row row, string content)
@@ -40,8 +44,8 @@ namespace AutoUIConsole.Components
     {
         public List<string> Content;
         public int CountItems => Content.Count;
-
-        public string[] Seperator { get; set; } = { ";" };
+        public Table Table { get; set; }
+        public static string[] Seperator { get; set; } = { ";" };
 
         public Row(string content)
         {
@@ -97,6 +101,11 @@ namespace AutoUIConsole.Components
             }
         }
 
+        public override string ToString()
+        {
+            return Content.ToText();
+        }
+
         #endregion
     }
 
@@ -110,6 +119,11 @@ namespace AutoUIConsole.Components
         }
 
         #region EquatableMember
+
+        public override string ToString()
+        {
+            return Name;
+        }
 
         public bool Equals(Column other)
         {
