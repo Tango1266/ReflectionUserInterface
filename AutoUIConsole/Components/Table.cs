@@ -9,71 +9,113 @@ namespace AutoUIConsole.Components
         public List<Column> Columns { get; set; } = new List<Column>();
         public List<Row> Rows { get; set; } = new List<Row>();
 
-        public static string DefaultSeperator = ";";
-        public string Seperator { get; set; } = DefaultSeperator;
+        public static readonly string[] DefaultSeperator =  { ";" };
+        public string[] Seperator { get; set; } = DefaultSeperator;
 
         public void AddColumn(params string[] columnNames)
         {
             foreach (string columnNmae in columnNames)
             {
-                Columns.Add(new Column(columnNmae));
+                if(!Columns.Any(x => x.Name.Equals(columnNmae))) Columns.Add(new Column(this, columnNmae));
+                else Helper.Log("Tried to add an existing column.");
             }
         }
 
         public void AddRow(params string[] rowContent)
         {
-            if(rowContent.Length == 1) Rows.Add(new Row(rowContent[0]));
-            else Rows.Add(new Row(rowContent));
+            if(rowContent.Length == 1) Rows.Add(new Row(this, rowContent[0]));
+            else Rows.Add(new Row(this, rowContent));
         }
 
         public bool AddItem(Column column, Row row, string content)
         {
-            if (!Columns.Contains(column) || !Rows.Contains(row)) return false;
+            if (!Columns.Contains(column) ) return false;
+            var currentRow = row;
 
-            int columnIndex = Columns.IndexOf(column);
-            int rowIndex = Rows.IndexOf(row);
+            if (!Rows.Contains(row)) Rows.Add(row);
+            else currentRow = Rows.Find(x => x.Equals(row));
 
-
-            Rows[rowIndex] = row;
-
+            currentRow.AddItem(column, content);
             return true;
+        }
+
+        public void Draw()
+        {
+            Columns.ForEach(x => Helper.LogInLine(x.ToString()));
+            Helper.Log("\n------------------------");
+            Rows.ForEach(x => Helper.Log(x.ToString()));
         }
     }
 
     public class Row : IEquatable<Row>
     {
         public List<string> Content;
+        private Dictionary<Column,string> ContentDict { get; set; } =new Dictionary<Column, string>();
+
         public int CountItems => Content.Count;
         public Table Table { get; set; }
-        public static string[] Seperator { get; set; } = { ";" };
+        public string[] Seperator { get; set; }// = Table.DefaultSeperator;
 
-        public Row(string content)
+        public Row(Table table, string content)
         {
-            Content = content.Split(Seperator, StringSplitOptions.None).ToList();
+            Content = content.Split(table.Seperator, StringSplitOptions.None).ToList();
+            InitializeTableInfo(table);
         }
 
-        public Row(string[] content)
+        public Row(Table table, string[] content)
         {
             Content = content.ToList();
+            InitializeTableInfo(table);
         }
 
-        public void AddItem(string content, int pos = -1)
+        public Row(Table table)
         {
-            if (pos.Equals(-1))
-                Content.Add(content);
-            else
+            InitializeTableInfo(table);
+        }
+
+        private void InitializeTableInfo(Table table)
+        {
+            List<string> rowContent = Content ?? ContentDict.Values.ToList();
+            Seperator = Seperator ?? table.Seperator;
+            Table = table;
+
+            if(rowContent.Count <= 0) return;
+
+            //Fill rows in alignment to columns from table
+            int colRow = 0;
+            foreach (var column in table.Columns)
             {
-                if (pos >= CountItems) ExtendRow(pos - CountItems);
-                Content.Insert(pos, content);
+                if(colRow >= table.Columns.Count) break;
+
+                AddItem(column, rowContent[colRow++]);
+            }
+
+            //Extend columns when row content exeeds columns
+            for (int i = colRow; i < rowContent.Count; i++)
+            {
+                AddItem(new Column(table,$"Spalte {i}"), rowContent[colRow++]);
             }
         }
 
-        private void ExtendRow(int desiredExtension)
+        internal bool AddItem(Column column, string content)
         {
-            for (int j = 0; j < desiredExtension; j++)
+            try
             {
-                Content.Add(string.Empty);
+                if (!ContentDict.ContainsKey(column))
+                {
+                    ContentDict.Add(column, content);
+                    return true;
+                }
+
+                ContentDict[column] = content;
             }
+            catch (Exception e)
+            {
+                Helper.Log("Zeile konnte nicht befuellt werden", e);
+                return false;
+            }
+
+            return true;
         }
 
         #region EquatableMember
@@ -103,7 +145,13 @@ namespace AutoUIConsole.Components
 
         public override string ToString()
         {
-            return Content.ToText();
+            List<string> rowContent = Content ?? ContentDict.Values.ToList();
+            var res = string.Empty;
+            foreach (var column in rowContent)
+            {
+                res += column + Seperator[0];
+            }
+            return res.TrimEnd(char.Parse(Seperator[0]));
         }
 
         #endregion
@@ -111,10 +159,12 @@ namespace AutoUIConsole.Components
 
     public class Column : IEquatable<Column>
     {
+        public Table Table { get; }
         public string Name { get; set; }
 
-        public Column(string name)
+        public Column(Table table, string name)
         {
+            Table = table;
             Name = name;
         }
 

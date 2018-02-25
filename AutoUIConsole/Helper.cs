@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -93,16 +94,16 @@ namespace AutoUIConsole
                 .Where(x => Regex.IsMatch(x.FullName, selection?.Query + ".*")).ToList();
         }
 
-        public static string ToText(this IEnumerable<object> array)
+        public static string ToText(this IEnumerable<object> array, string[] seperator=null)
         {
             string res = "";
-
+            var sep = seperator ?? new[] {" "};
             foreach (object userInput in array)
             {
-                res = res + userInput + " ";
+                res = res + userInput + sep[0];
             }
 
-            return res.TrimEnd();
+            return res.TrimEnd(char.Parse(sep[0]));
         }
 
         public static string ToText(this List<string> list)
@@ -120,8 +121,17 @@ namespace AutoUIConsole
         public static void LogInLine(string message, bool newLine = false, Exception ex = null)
         {
 
-            if (newLine) Console.WriteLine(message);
-            else Console.Write(message);
+            if (newLine)
+            {
+                Console.WriteLine(message);
+                Debug.WriteLine(message);
+            }
+            else
+            {
+                Console.Write(message);
+                Debug.Write(message);
+
+            }
 
             if (!(ex is null))
             {
