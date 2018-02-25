@@ -55,7 +55,9 @@ namespace AutoUIConsole.Components.DataTypes
         {
             if (userInput.Length <= 1)
             {
-                return new LinkedList<UserInput>();
+                var args = new LinkedList<UserInput>();
+                args.AddFirst(this);
+                return args;
             }
 
             string[] subArray = new string[userInput.Length - 1];
