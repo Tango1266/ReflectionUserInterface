@@ -18,9 +18,10 @@ namespace AutoUIConsole.Components
                 _userInput = new UserInput(args);
                 InitializeStartUpConfiguration();
             }
-            catch (ExitApplicationException exit)
+            catch (Exception ae)
             {
-                Helper.Log(exit.Message);
+                Helper.Log(ae.ToString());
+                if (IsConsoleSession) HandleUserInput();
             }
         }
 
@@ -31,10 +32,9 @@ namespace AutoUIConsole.Components
                 StartDirectOrMenu(_userInput);
                 if (IsConsoleSession) HandleUserInput();
             }
-            catch (Exception ae)
+            catch (ExitApplicationException exit)
             {
-                Helper.Log(ae.ToString());
-                if (IsConsoleSession) HandleUserInput();
+                Helper.Log(exit.Message);
             }
         }
 
