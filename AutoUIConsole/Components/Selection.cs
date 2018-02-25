@@ -1,6 +1,4 @@
-﻿using AutoUIConsole.Components.DataTypes;
-
-namespace AutoUIConsole.Components
+﻿namespace AutoUIConsole.Components
 {
     public class Selection
     {
@@ -24,10 +22,10 @@ namespace AutoUIConsole.Components
         public Selection Clone()
         {
             var cloneSelection = new Selection(null, "");
-            cloneSelection.PreviousSelection = this.PreviousSelection;
-            cloneSelection.Options = this.Options;
-            cloneSelection.Content = this.Content;
-            cloneSelection.Query = this.Query;
+            cloneSelection.PreviousSelection = PreviousSelection;
+            cloneSelection.Options = Options;
+            cloneSelection.Content = Content;
+            cloneSelection.Query = Query;
 
             return cloneSelection;
         }
