@@ -24,6 +24,14 @@ namespace AutoUIConsole.Components
         {
             if (input.IsEmpty) Helper.InvokeCommand("GoBack");
 
+            else if (input.IsCommand && input.IsMultiArgument)
+            {
+                UserInput remainingArgs = input.Arguments.First.Value;
+                Session.IsDirectStart = true;
+                DirectStart(remainingArgs);
+                Session.IsDirectStart = false;
+            }
+
             else if (input.IsCommand) Helper.InvokeCommand(input);
 
             else if (input.IsNumber) HandleMenuSelection(input.Content);
@@ -78,7 +86,7 @@ namespace AutoUIConsole.Components
             }
         }
 
-        public void DirectStart(UserInput input)
+        public void DirectStart(UserInput input, bool showMenu=false)
         {
 
             foreach (UserInput argument in input.Arguments)
@@ -92,14 +100,14 @@ namespace AutoUIConsole.Components
 
                 Helper.InvokeMethod(CurrentSelection);
 
-                new GoBack().Execute(false);
+                new GoBack().Execute(showMenu);
             }
         }
 
         public void StepBack()
         {
-            CurrentMenu = CurrentMenu?.PreviousMenu;
-            CurrentSelection = CurrentSelection?.PreviousSelection;
+            CurrentMenu = CurrentMenu?.PreviousMenu ?? CurrentMenu;
+            CurrentSelection = CurrentSelection?.PreviousSelection ?? CurrentSelection;
         }
     }
 }
