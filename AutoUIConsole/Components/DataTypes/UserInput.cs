@@ -8,6 +8,7 @@ namespace AutoUIConsole.Components.DataTypes
     public class UserInput
     {
         public LinkedList<UserInput> Arguments { get; set; }
+        public UserInput RootArgument { get; set; }
 
         public string Content { get; set; }
 
@@ -23,13 +24,27 @@ namespace AutoUIConsole.Components.DataTypes
             input = SplitInput(input);
             Content = input.Length > 0 ? input[0] : string.Empty;
 
-            Arguments = ExtractArguments(input);
+            InitUserInput(this, input);
+        }
+
+        public UserInput(UserInput rootArgument, params string[] input)
+        {
+            input = SplitInput(input);
+            Content = input.Length > 0 ? input[0] : string.Empty;
+
+            InitUserInput(rootArgument, input);
+        }
+
+        private void InitUserInput(UserInput rootArgument, string[] input)
+        {
+            RootArgument = rootArgument;
+
+            Arguments = ExtractArguments(rootArgument, input);
 
             if (!_firstCall && !IsEmpty && !IsCommand) Arguments.AddFirst(this);
             EvaluateInput();
 
             if (_firstCall) _firstCall = false;
-
         }
 
         private string[] SplitInput(string[] input)
@@ -44,14 +59,15 @@ namespace AutoUIConsole.Components.DataTypes
             IsEmpty = Content.Equals(string.Empty);
             IsMultiArgument = Arguments.Count > 1;
 
-            if (IsMultiArgument) return;
+            // Only RootArgument is allowed to be a command
+            if (this != RootArgument) return;
 
             IsCommand = CheckIsCommand(Content);
 
             if (!IsCommand) IsNumber = Regex.IsMatch(Content, @"\b\d+$");
         }
 
-        private LinkedList<UserInput> ExtractArguments(string[] userInput)
+        private LinkedList<UserInput> ExtractArguments(UserInput parent, string[] userInput)
         {
             if (userInput.Length <= 1)
             {
@@ -63,8 +79,8 @@ namespace AutoUIConsole.Components.DataTypes
             string[] subArray = new string[userInput.Length - 1];
             Array.Copy(userInput, 1, subArray, 0, subArray.Length);
 
-            var userIn = new UserInput(subArray);
-            Arguments = ExtractArguments(subArray);
+            var userIn = new UserInput(parent,subArray);
+            Arguments = ExtractArguments(parent, subArray);
 
             Arguments.AddFirst(userIn);
             return Arguments;
