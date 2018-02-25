@@ -52,8 +52,7 @@ namespace AutoUIConsole
         public static void InvokeMethod(Selection selection)
         {
             //TODO:Evaluieren ob benoetig, da bereits schon in GetMethodsFiltered
-            List<MethodInfo> methods = selection.PreviousSelection.Options.Methods
-                .Where(x => Regex.IsMatch(x.DeclaringType?.FullName + "." + x.Name, selection.Query)).ToList();
+            List<MethodInfo> methods = selection.PreviousSelection.Options.Methods.Where(x => Regex.IsMatch(x.DeclaringType?.FullName + "." + x.Name, selection.Query)).ToList();
             foreach (MethodInfo method in methods)
             {
                 Type classType = method.DeclaringType;

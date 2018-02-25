@@ -68,7 +68,7 @@ namespace AutoUIConsole.Components
             Console.Read();
             IsConsoleSession = true;
             UserInterface.ShowConsoleMenu();
-    }
+        }
     }
 
     public class ExitApplicationException : Exception
