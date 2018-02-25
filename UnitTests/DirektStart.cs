@@ -14,30 +14,33 @@ namespace UnitTests
     [TestClass]
     public class DirektStart
     {
-
-        private const string SpezKF3Tc1 =
+        protected const string SpezKF3Tc1 =
             "ExternApp.TestSuiten.Spezial.KF3EinWeiteresSpeziellesFeature.KF3EinWeiteresSpeziellesFeature - TC1";
 
-        private const string SpezKF3Tc2 =
+        protected const string SpezKF3Tc2 =
             "ExternApp.TestSuiten.Spezial.KF3EinWeiteresSpeziellesFeature.KF3EinWeiteresSpeziellesFeature - TC2";
 
-        private const string SpezKF3Tc3 =
+        protected const string SpezKF3Tc3 =
             "ExternApp.TestSuiten.Spezial.KF3EinWeiteresSpeziellesFeature.KF3EinWeiteresSpeziellesFeature - TC3";
 
         private const string SpezKF3TcTCdefiniert =
             "ExternApp.TestSuiten.Spezial.KF3EinWeiteresSpeziellesFeature.KF3EinWeiteresSpeziellesFeature - TCDasSollEineEindeutigDefinierteMethodeSein";
 
-        public StringWriter StringWriter { get; private set; }
+        public static List<string> AlleTcs { get; set; }
+        public static List<string> ZentraleTcs { get; set; }
+        public static List<string> SpezialTcs { get; set; }
+
+        public StringWriter StringWriter { get; set; }
 
         public string[] ConsoleOut => StringWriter?.ToString()
             .Split(new[] {StringWriter.NewLine}, StringSplitOptions.RemoveEmptyEntries);
 
-        private void AssertOutputContainesOnly(IEnumerable<string> collection)
+        protected void AssertOutputContainesOnly(IEnumerable<string> collection)
         {
             AssertOutputContainesOnly(collection.ToArray());
         }
 
-        private void AssertOutputContainesOnly(params string[] content)
+        protected void AssertOutputContainesOnly(params string[] content)
         {
             var consoleOut = ConsoleOut.ToList();
 
@@ -51,18 +54,16 @@ namespace UnitTests
                 Assert.IsTrue(consoleOut.Contains(s), $"{s} was not present in consoleOut: \n {Helper.ToText(consoleOut)}");
             }
         }
-
-        private void AssertTestCaseExecutionWithOneArgument(string querry)
+        protected void AssertTestCaseExecutionWithOneArgument(string querry)
         {
-            Program.Main(new[] {querry});
+            Program.Main(new[] { querry });
             AssertOutputContainesOnly(AlleTcs.Where(x => Regex.IsMatch(x, querry)));
         }
 
-        [TestInitialize]
-        public void SetUP()
+        [ClassInitialize]
+        public static void SetUpClass(TestContext testContext)
         {
-            StringWriter = new StringWriter();
-            Console.SetOut(StringWriter);
+
             var spezialMethoden = Helper.GetMethodsFiltered(".*Spezial.*");
             var zentralMethoden = Helper.GetMethodsFiltered(".*Zentral.*");
             var alleMethoden = Helper.GetMethodsFiltered(".*TestSuiten.*");
@@ -77,11 +78,15 @@ namespace UnitTests
             alleMethoden.ForEach(x => AlleTcs.Add(x.DeclaringType?.FullName + " - " + x.Name));
         }
 
-        public List<string> AlleTcs { get; set; }
+        [TestInitialize]
+        public void SetUpMethod()
+        {
+            StringWriter = new StringWriter();
+            Console.SetOut(StringWriter);
+        }
 
-        public List<string> ZentraleTcs { get; set; }
 
-        public List<string> SpezialTcs { get; set; }
+       
 
         [TestMethod]
         public void StartKF3TC3()
@@ -155,7 +160,7 @@ namespace UnitTests
             AssertOutputContainesOnly(expectedOutput);
         }
 
-        private List<string> ConcatQuerry(params string[] args)
+        protected List<string> ConcatQuerry(params string[] args)
         {
             var res = new List<string>();
 

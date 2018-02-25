@@ -7,7 +7,7 @@ namespace UnitTests
     [TestClass]
     public class TableTest
     {
-        [TestMethod]
+     //   [TestMethod]
         public void SpalteHinzufuegen()
         {
             Table tabelle = new Table();

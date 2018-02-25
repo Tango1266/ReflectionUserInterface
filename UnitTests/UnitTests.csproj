@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoUiConsoleTests.cs" />
+    <Compile Include="DirektStartFromConsole.cs" />
     <Compile Include="DirektStart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectionTests.cs" />

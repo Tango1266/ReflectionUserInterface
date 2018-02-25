@@ -37,7 +37,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestMenuItemsInstance()
+        public void TestMenuItemsOnStartup()
         {
             string dirLevel0 = "TestSuiten";
             string[] expTargetLevel = new[]
@@ -48,22 +48,6 @@ namespace UnitTests
             TestMenuItemInstances(dirLevel0, expTargetLevel);
         }
 
-
-        [TestMethod]
-        public void TestAvailableCommandsMainMenu()
-        {
-            var expected = "GoToMainMenu";
-
-
-        }
-
-        [TestMethod]
-        public void TestAvailableCommandsStartAll()
-        {
-            var expected = "StartAll";
-
-
-        }
 
 
         [TestMethod]
@@ -111,7 +95,6 @@ namespace UnitTests
         public void TestMenuItemsSpezialKF3UC_TCs()
         {
             string querryWhole = "Spezial.*KF3.*TC";
-            string querrySpaceSeperated= "Spezial KF3 TC";
 
             string[] expTargetLevel = new[]
             {
@@ -119,10 +102,24 @@ namespace UnitTests
                 "TC2",
                 "TC3",
             };
+            TestMenuItemInstances(querryWhole, expTargetLevel);
+        }
 
-            //TestMenuItemInstances(querryWhole, expTargetLevel);
+        [TestMethod]
+        public void TestMenuItemsSpezialKF3UC_TCs_SpaceSeperated()
+        {
+            string querrySpaceSeperated = "Spezial KF3 TC";
+
+            string[] expTargetLevel = new[]
+            {
+                "TC1",
+                "TC2",
+                "TC3",
+            };
             TestMenuItemInstances(querrySpaceSeperated, expTargetLevel);
         }
+
+
 
         private void TestMenuItemInstances(string querry, params string[] expTargetLevels)
         {
