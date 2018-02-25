@@ -44,7 +44,11 @@ namespace AutoUIConsole.Components
         {
             foreach (UserInput userInputArgument in userInput)
             {
-                CurrentSelection = new Selection(CurrentSelection, userInputArgument.Content);
+                if ( !(!userInput.IsMultiInput && userInput.Content.Equals(AppConfig.DirLevel0)))
+                {
+                    // change CurrentSelection only if it is new Selection different from Dir0
+                    CurrentSelection = new Selection(CurrentSelection, userInputArgument.Content);
+                }
 
                 if (CurrentSelection.HasJustOneOption) Helper.InvokeMethod(CurrentSelection);
 
@@ -88,16 +92,12 @@ namespace AutoUIConsole.Components
 
         public void DirectStart(UserInput input, bool showMenu=false)
         {
-
             foreach (UserInput argument in input)
             {
                 if (argument.IsEmpty) continue;
+                if (argument.IsCommand) continue;
 
                 CurrentSelection = new Selection(CurrentSelection, argument.Content);
-
-                //TODO: Evaluieren ob notwendig
-                if (argument.IsCommand) Helper.InvokeCommand(argument.Content);
-
                 Helper.InvokeMethod(CurrentSelection);
 
                 new GoBack().Execute(showMenu);

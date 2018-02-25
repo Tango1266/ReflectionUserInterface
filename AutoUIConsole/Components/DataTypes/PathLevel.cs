@@ -55,7 +55,7 @@ namespace AutoUIConsole.Components.DataTypes
             IsLeaf = RemainingLevels.Length <= 0;
             if (!IsLeaf) NextLevel = RemainingLevels[0];
 
-            IsIncomplete = IsValid && (!TargetLevel.Equals(_targetLevel) && Regex.IsMatch(TargetLevel, ".*" + _targetLevel + ".*"));
+            IsIncomplete = IsValid && !(TargetLevel.Equals(_targetLevel) && Regex.IsMatch(TargetLevel, ".*" + _targetLevel + ".*"));
         }
 
     }

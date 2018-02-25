@@ -31,8 +31,7 @@ namespace AutoUIConsole.Components
                 PathLevel pathLevel = new PathLevel(fullPathMethodName, selectionContent);
 
                 if (pathLevel.IsLeaf || pathLevel.IsIncomplete) menuItems.Add(pathLevel.TargetLevel);
-
-                else if (pathLevel.IsValid || pathLevel.IsTop) menuItems.Add(pathLevel.NextLevel);
+                else if (pathLevel.IsTop || pathLevel.IsValid) menuItems.Add(pathLevel.NextLevel);
             }
 
             return menuItems;
