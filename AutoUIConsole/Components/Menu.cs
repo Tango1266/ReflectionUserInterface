@@ -30,7 +30,7 @@ namespace AutoUIConsole.Components
                 string fullPathMethodName = methodInfo.DeclaringType?.FullName + "." + methodInfo.Name;
                 PathLevel pathLevel = new PathLevel(fullPathMethodName, selectionContent);
 
-                if (pathLevel.IsLeaf || pathLevel.IsIncomplete) menuItems.Add(pathLevel.BaseLevel);
+                if (pathLevel.IsLeaf || pathLevel.IsIncomplete) menuItems.Add(pathLevel.TargetLevel);
 
                 else if (pathLevel.IsValid || pathLevel.IsTop) menuItems.Add(pathLevel.NextLevel);
             }

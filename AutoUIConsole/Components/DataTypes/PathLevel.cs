@@ -11,7 +11,7 @@ namespace AutoUIConsole.Components.DataTypes
 
         public string PreviousLevel { get; set; }
         public string NextLevel { get; set; }
-        public string BaseLevel { get; set; }
+        public string TargetLevel { get; set; }
 
         public bool IsValid { get; private set; }
         public bool IsIncomplete { get; set; }
@@ -31,26 +31,31 @@ namespace AutoUIConsole.Components.DataTypes
         public void InspectLevel()
         {
             var levels = _fullPath.Split('.').ToList();
-            string pathWithBaseLevel = Regex.Replace(_fullPath, @".*?(?=\." + _targetLevel + ")", "");
-            string[] levelsWithBase = pathWithBaseLevel.Split('.').Where(x => x.Length > 1).ToArray();
-            string[] levelsUntilBase = levels.Except(levelsWithBase).ToArray();
+            //var targetLevel = Regex.Replace(_fullPath, @".*(?=." + _targetLevel + ")", "");
+            var targetLevel = Regex.Replace(_fullPath, @"(?<=.*" + _targetLevel + @"\d*\w*)\..*", "");
 
-            EvaluateLevel(levels, levelsWithBase, levelsUntilBase);
+            //string pathWithBaseLevel = Regex.Replace(_fullPath, @".*?(?=." + _targetLevel + ")", "");
+            string pathWithBaseLevel = targetLevel;
+
+            string[] levelsWithTarget = pathWithBaseLevel.Split('.').Where(x => x.Length > 1).ToArray();
+            string[] remainingLevels = levels.Except(levelsWithTarget).ToArray();
+
+            EvaluateLevel(levels, levelsWithTarget, remainingLevels);
             LastIsTop = IsTop;
         }
 
-        private void EvaluateLevel(List<string> levels, string[] levelsWithBase, string[] levelsUntilBase)
+        private void EvaluateLevel(List<string> levels, string[] levelsWithTarget, string[] RemainingLevels)
         {
             IsValid = levels.Count > 0;
-            if (IsValid) BaseLevel = levelsWithBase[0];
+            if (IsValid) TargetLevel = levelsWithTarget.Last();
 
-            IsTop = levelsUntilBase.Length <= 0 || (IsValid && !IsLeaf && BaseLevel.Equals(AppConfig.DirLevel0));
-            if (!IsTop) PreviousLevel = levelsUntilBase[levelsUntilBase.Length - 1];
+            IsTop = levelsWithTarget.Length <= 1 || (IsValid && !IsLeaf && TargetLevel.Equals(AppConfig.DirLevel0));
+            if (!IsTop) PreviousLevel = levelsWithTarget[levelsWithTarget.Length - 2];
 
-            IsLeaf = levelsWithBase.Length <= 1;
-            if (!IsLeaf) NextLevel = levelsWithBase[1];
+            IsLeaf = RemainingLevels.Length <= 0;
+            if (!IsLeaf) NextLevel = RemainingLevels[0];
 
-            IsIncomplete = IsValid && (!BaseLevel.Equals(_targetLevel) && Regex.IsMatch(BaseLevel, ".*" + _targetLevel + ".*"));
+            IsIncomplete = IsValid && (!TargetLevel.Equals(_targetLevel) && Regex.IsMatch(TargetLevel, ".*" + _targetLevel + ".*"));
         }
 
     }
