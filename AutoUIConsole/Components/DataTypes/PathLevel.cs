@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using static AutoUIConsole.AppConfig;
 
 namespace AutoUIConsole.Components.DataTypes
 {
@@ -45,7 +44,7 @@ namespace AutoUIConsole.Components.DataTypes
             IsValid = levels.Count > 0;
             if (IsValid) BaseLevel = levelsWithBase[0];
 
-            IsTop = levelsUntilBase.Length <= 0 || (IsValid && !IsLeaf && BaseLevel.Equals(DirLevel0));
+            IsTop = levelsUntilBase.Length <= 0 || (IsValid && !IsLeaf && BaseLevel.Equals(AppConfig.DirLevel0));
             if (!IsTop) PreviousLevel = levelsUntilBase[levelsUntilBase.Length - 1];
 
             IsLeaf = levelsWithBase.Length <= 1;

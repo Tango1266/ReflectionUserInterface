@@ -1,6 +1,4 @@
-﻿using AutoUIConsole.Utils;
-
-namespace AutoUIConsole.Components.Commands
+﻿namespace AutoUIConsole.Components.Commands
 {
     public class GoToMainMenu : Command
     {
@@ -12,7 +10,7 @@ namespace AutoUIConsole.Components.Commands
         public void m() => Execute();
         public override void Execute(object parameter = null)
         {
-            Session.UserInterface = new UserInterface(new Selection(null, AutoUIConsole.AppConfig.DirLevel0));
+            Session.UserInterface = new UserInterface(new Selection(null, AppConfig.DirLevel0));
 
             Helper.Log("Wechsle zu Main Menu");
 

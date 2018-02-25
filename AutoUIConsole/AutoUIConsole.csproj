@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utils\Assert.cs" />
     <Compile Include="Components\Commands\SwitchAssembly.cs" />
     <Compile Include="Components\Commands\ShowManual.cs" />
     <Compile Include="Components\Table.cs" />
@@ -72,9 +73,9 @@
     <Compile Include="Components\Menu.cs" />
     <Compile Include="Components\Commands\StartAll.cs" />
     <Compile Include="Components\Commands\GoToMainMenu.cs" />
-    <Compile Include="Components\Commands\SuperCommand.cs" />
+    <Compile Include="Components\Commands\Command.cs" />
     <Compile Include="Components\UserInterface.cs" />
-    <Compile Include="Config\Config.cs" />
+    <Compile Include="Config\AppConfig.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Components\Session.cs" />
     <Compile Include="OSS\XMLDocComment.cs" />

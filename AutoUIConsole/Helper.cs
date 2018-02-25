@@ -1,12 +1,13 @@
-using AutoUIConsole.Components;
-using AutoUIConsole.Components.Commands;
-using AutoUIConsole.Components.DataTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using AutoUIConsole.Components;
+using AutoUIConsole.Components.Commands;
+using AutoUIConsole.Components.DataTypes;
+using AutoUIConsole.Utils;
 
 namespace AutoUIConsole
 {
@@ -64,12 +65,12 @@ namespace AutoUIConsole
         }
         public static void InvokeCommand(string requestedCommand, UserInput[] parameter = null)
         {
-            var filteredCommandTypes = SuperCommand.CommandTypeMethods.Keys.Where(x => x.GetType().Name.Equals(requestedCommand)).ToList();
+            var filteredCommandTypes = Command.CommandTypeMethods.Keys.Where(x => x.GetType().Name.Equals(requestedCommand)).ToList();
             if (filteredCommandTypes.Count < 1)
             {
-                foreach (ICommand command in SuperCommand.CommandTypeMethods.Keys)
+                foreach (ICommand command in Command.CommandTypeMethods.Keys)
                 {
-                    var isMatch = SuperCommand.CommandTypeMethods[command].Any(x => x.Name.Equals(requestedCommand));
+                    var isMatch = Command.CommandTypeMethods[command].Any(x => x.Name.Equals(requestedCommand));
 
                     if (isMatch)
                     {
@@ -83,12 +84,12 @@ namespace AutoUIConsole
 
         public static void InvokeCommand(UserInput userInput)
         {
-            InvokeCommand(userInput.Content, userInput.Arguments.ToArray());
+            InvokeCommand(userInput.Content, userInput.ToArray());
         }
 
         private static List<Type> GetTypeFromAssembly(Selection selection)
         {
-            return Config.AssemblyWhereToLookUp.GetTypes()
+            return AppConfig.AssemblyWhereToLookUp.GetTypes()
                 .Where(x => Regex.IsMatch(x.FullName, selection?.Query + ".*")).ToList();
         }
 
@@ -137,6 +138,12 @@ namespace AutoUIConsole
                     + Environment.NewLine
                     );
             }
+        }
+
+        public static bool IsNumber(this String stringToValidate)
+        {
+            Assert.IsNotNull(stringToValidate,$"{stringToValidate} was null");
+            return Regex.IsMatch(stringToValidate, @"\b\d+$");
         }
     }
 }

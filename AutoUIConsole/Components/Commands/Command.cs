@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
-using AutoUIConsole.Utils;
+
 
 #pragma warning disable 1591
 
@@ -54,7 +54,7 @@ namespace AutoUIConsole.Components.Commands
 
         public static bool IsCommand(string name)
         {
-            return Command.AvailableCommands.Contains(name);
+            return AvailableCommands.Contains(name);
         }
     }
 }

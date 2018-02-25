@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using AutoUIConsole.Components.DataTypes;
-using AutoUIConsole.Utils;
-using static AutoUIConsole.AppConfig;
 
 namespace AutoUIConsole.Components
 {
@@ -63,7 +61,7 @@ namespace AutoUIConsole.Components
                 Helper.Log($"  {pos++} \t : " + item);
             }
 
-            Helper.Log(MenuTexts.InputNotefication);
+            Helper.Log(AppConfig.MenuTexts.InputNotefication);
         }
 
     }

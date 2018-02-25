@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using AutoUIConsole.Utils;
 
 namespace AutoUIConsole.Components.Commands
 {
@@ -26,11 +25,11 @@ namespace AutoUIConsole.Components.Commands
                 return;
             }
 
-            AutoUIConsole.AppConfig.AssemblyWhereToLookUp = Assembly.LoadFrom(location);
-            AutoUIConsole.AppConfig.DirLevel0 = AutoUIConsole.AppConfig.AssemblyWhereToLookUp.GetName().Name;
+            AppConfig.AssemblyWhereToLookUp = Assembly.LoadFrom(location);
+            AppConfig.DirLevel0 = AppConfig.AssemblyWhereToLookUp.GetName().Name;
 
             new GoToMainMenu().Execute();
-            Helper.Log(Environment.NewLine + $"Die Assembly {AutoUIConsole.AppConfig.DirLevel0} wurde eingebund");
+            Helper.Log(Environment.NewLine + $"Die Assembly {AppConfig.DirLevel0} wurde eingebund");
         }
     }
 }

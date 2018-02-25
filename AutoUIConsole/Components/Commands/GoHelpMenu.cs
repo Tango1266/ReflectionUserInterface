@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using AutoUIConsole.Utils;
 
 namespace AutoUIConsole.Components.Commands
 {
@@ -24,7 +23,7 @@ namespace AutoUIConsole.Components.Commands
         private List<string> GenerateTable()
         {
             XmlDocument helpDoc = new XmlDocument();
-            helpDoc.Load(AutoUIConsole.AppConfig.MenuTexts.Storage("help.xml"));
+            helpDoc.Load(AppConfig.MenuTexts.Storage("help.xml"));
 
             var tableRows = new List<List<string>>();
             var headerItems = RowItems(helpDoc, "header", "Name");
@@ -37,7 +36,7 @@ namespace AutoUIConsole.Components.Commands
 
             foreach (List<string> tableRow in tableRows)
             {
-                var firstColumn = ((List<string>)typeof(AutoUIConsole.AppConfig.Commands).GetField(tableRow.First()).GetValue(null)).ToText();
+                var firstColumn = ((List<string>)typeof(AppConfig.Commands).GetField(tableRow.First()).GetValue(null)).ToText();
                 var secondColumn = tableRow[1];
 
                 columns.Add((firstColumn, secondColumn));
