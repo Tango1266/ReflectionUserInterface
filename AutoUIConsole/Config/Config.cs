@@ -27,7 +27,7 @@ namespace AutoUIConsole
 
         public struct MenuTexts
         {
-            public static string Storage(string filename = "") => Path.Combine(@"Config\MenuText", filename);
+            public static string Storage(string filename = "") => Path.Combine(@"Ressources\MenuText", filename);
 
             public static string Introduction = File.ReadAllText(Storage("Introduction.txt"));
             public static string InputNotefication = File.ReadAllText(Storage("InputNotefication.txt"));
