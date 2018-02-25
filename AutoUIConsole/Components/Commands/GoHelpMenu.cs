@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using AutoUIConsole.Utils;
 
 namespace AutoUIConsole.Components.Commands
 {
-    public class GoHelpMenu : SuperCommand
+    public class GoHelpMenu : Command
     {
         public override void Execute(object parameter = null)
         {
@@ -23,7 +24,7 @@ namespace AutoUIConsole.Components.Commands
         private List<string> GenerateTable()
         {
             XmlDocument helpDoc = new XmlDocument();
-            helpDoc.Load(Config.MenuTexts.Storage("help.xml"));
+            helpDoc.Load(AutoUIConsole.AppConfig.MenuTexts.Storage("help.xml"));
 
             var tableRows = new List<List<string>>();
             var headerItems = RowItems(helpDoc, "header", "Name");
@@ -36,7 +37,7 @@ namespace AutoUIConsole.Components.Commands
 
             foreach (List<string> tableRow in tableRows)
             {
-                var firstColumn = ((List<string>)typeof(Config.Commands).GetField(tableRow.First()).GetValue(null)).ToText();
+                var firstColumn = ((List<string>)typeof(AutoUIConsole.AppConfig.Commands).GetField(tableRow.First()).GetValue(null)).ToText();
                 var secondColumn = tableRow[1];
 
                 columns.Add((firstColumn, secondColumn));

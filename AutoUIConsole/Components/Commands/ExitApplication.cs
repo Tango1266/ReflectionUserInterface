@@ -5,7 +5,7 @@ namespace AutoUIConsole.Components.Commands
     /// <summary>
     /// This is a command
     /// </summary>
-    public class ExitApplication : SuperCommand
+    public class ExitApplication : Command
     {
         /// <summary>
         /// Anwendung wird verlassen

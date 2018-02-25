@@ -2,10 +2,11 @@
 using System;
 using System.IO;
 using System.Reflection;
+using AutoUIConsole.Utils;
 
 namespace AutoUIConsole.Components.Commands
 {
-    public class SwitchAssembly : SuperCommand
+    public class SwitchAssembly : Command
     {
         public void b() => Execute();
 
@@ -25,11 +26,11 @@ namespace AutoUIConsole.Components.Commands
                 return;
             }
 
-            Config.AssemblyWhereToLookUp = Assembly.LoadFrom(location);
-            Config.DirLevel0 = Config.AssemblyWhereToLookUp.GetName().Name;
+            AutoUIConsole.AppConfig.AssemblyWhereToLookUp = Assembly.LoadFrom(location);
+            AutoUIConsole.AppConfig.DirLevel0 = AutoUIConsole.AppConfig.AssemblyWhereToLookUp.GetName().Name;
 
             new GoToMainMenu().Execute();
-            Helper.Log(Environment.NewLine + $"Die Assembly {Config.DirLevel0} wurde eingebund");
+            Helper.Log(Environment.NewLine + $"Die Assembly {AutoUIConsole.AppConfig.DirLevel0} wurde eingebund");
         }
     }
 }

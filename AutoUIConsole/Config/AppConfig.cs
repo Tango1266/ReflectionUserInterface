@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace AutoUIConsole
 {
-    public static class Config
+    public static class AppConfig
     {
         //public static Assembly AssemblyWhereToLookUp = Helper.GetLookUpAssembly(typeof(TS1EineTestSuite));
         public static Assembly AssemblyWhereToLookUp = LoadAssemblyFromConfig();
@@ -39,18 +39,18 @@ namespace AutoUIConsole
             //    NewLine +
             //    "  Beschreibung \t\t\t" + "Befehl(e)" +
             //    NewLine +
-            //    "Main Menu \t\t\t" + Commands.GoToMainMenu.ToText() +
+            //    "Main Menu \t\t\t" + Command.GoToMainMenu.ToText() +
             //    NewLine +
-            //    "Anleitung anzeigen \t\t\t" + Commands.ShowManual.ToText() +
+            //    "Anleitung anzeigen \t\t\t" + Command.ShowManual.ToText() +
             //    NewLine +
-            //    "Previous Menu \t\t\t" + Commands.GoToPreviousnMenu.ToText() +
+            //    "Previous Menu \t\t\t" + Command.GoToPreviousnMenu.ToText() +
             //    NewLine +
-            //    "Start all Methods on this level \t" + Commands.StartAllMethods.ToText() +
+            //    "Start all Methods on this level \t" + Command.StartAllMethods.ToText() +
             //    NewLine +
-            //    "Exit Apllication \t\t\t" + Commands.ExitApplication.ToText() +
+            //    "Exit Apllication \t\t\t" + Command.ExitApplication.ToText() +
             //    NewLine +
             //    NewLine +
-            //    "Beispiel:" + Commands.GoToMainMenu.First() + " <Enter>";
+            //    "Beispiel:" + Command.GoToMainMenu.First() + " <Enter>";
         }
 
         public static string GetValueFromAppConfig(string key)

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Reflection;
 using AutoUIConsole.Components.DataTypes;
+using AutoUIConsole.Utils;
+using static AutoUIConsole.AppConfig;
 
 namespace AutoUIConsole.Components
 {
@@ -41,17 +43,19 @@ namespace AutoUIConsole.Components
         public void Display()
         {
             if (MenuItems == null) return;
+            if (!Session.IsConsoleSession) return;
+
             Console.Clear();
 
             if (MenuItems.Count == 0)
             {
                 Helper.Log(Environment.NewLine + $"Deine Auswahl erzielte keine Treffer. " +
-                                  Environment.NewLine + $"Gebe {Config.Commands.GoToMainMenu.ToText()} ein und bestätige mit <Enter> um in das Hauptmenu zu gelangen." +
+                                  Environment.NewLine + $"Gebe {AppConfig.Commands.GoToMainMenu.ToText()} ein und bestätige mit <Enter> um in das Hauptmenu zu gelangen." +
                                   Environment.NewLine + $"Oder bestätige jetzt mit <Enter> um zurück zu gelanden");
                 return;
             }
 
-            Helper.Log(Environment.NewLine + $"{ "Startet alle untergeordnete Methoden mit: \t" + Config.Commands.StartAllMethods.ToText()}");
+            Helper.Log(Environment.NewLine + $"{ "Startet alle untergeordnete Methoden mit: \t" + AppConfig.Commands.StartAllMethods.ToText()}");
 
             int pos = 1;
             foreach (var item in MenuItems)
@@ -59,7 +63,7 @@ namespace AutoUIConsole.Components
                 Helper.Log($"  {pos++} \t : " + item);
             }
 
-            Helper.Log(Config.MenuTexts.InputNotefication);
+            Helper.Log(MenuTexts.InputNotefication);
         }
 
     }

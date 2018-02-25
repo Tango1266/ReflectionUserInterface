@@ -1,10 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoUIConsole.Utils;
 
 namespace AutoUIConsole.Components.Commands
 {
-    public class SaveMethodsOfCurrentOptions : SuperCommand
+    public class SaveMethodsOfCurrentOptions : Command
     {
         private Task _savingTask;
         private CancellationTokenSource _cts;

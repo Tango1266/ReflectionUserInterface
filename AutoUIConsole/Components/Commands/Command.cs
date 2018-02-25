@@ -4,12 +4,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using AutoUIConsole.Utils;
 
 #pragma warning disable 1591
 
 namespace AutoUIConsole.Components.Commands
 {
-    public abstract class SuperCommand : ICommand
+    public abstract class Command : ICommand
     {
         public static List<ICommand> ExecutedCommands { get; set; } = new List<ICommand>();
         public static Dictionary<ICommand, List<MethodInfo>> CommandTypeMethods { get; set; } = new Dictionary<ICommand, List<MethodInfo>>();
@@ -18,7 +19,7 @@ namespace AutoUIConsole.Components.Commands
         public event EventHandler CanExecuteChanged;
 
 
-        public SuperCommand()
+        public Command()
         {
             if (!ExecutedCommands.Contains(this)) ExecutedCommands.Add(this);
 
@@ -27,7 +28,7 @@ namespace AutoUIConsole.Components.Commands
         public static void Init()
         {
             var commandTypes = Assembly.GetExecutingAssembly().GetTypes().Where(x =>
-                Regex.IsMatch(x.Namespace, ".*Commands") && typeof(SuperCommand).IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface);
+                Regex.IsMatch(x.Namespace, ".*Command") && typeof(Command).IsAssignableFrom(x) && !x.IsAbstract && !x.IsInterface);
 
             foreach (Type commandType in commandTypes)
             {
@@ -50,5 +51,10 @@ namespace AutoUIConsole.Components.Commands
         }
 
         public abstract void Execute(object parameter = null);
+
+        public static bool IsCommand(string name)
+        {
+            return Command.AvailableCommands.Contains(name);
+        }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Reflection;
+using AutoUIConsole.Utils;
 
 namespace AutoUIConsole.Components.Commands
 {
-    public partial class StartAll : SuperCommand
+    public partial class StartAll : Command
     {
         public void s() => Execute();
 

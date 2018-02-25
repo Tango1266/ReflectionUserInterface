@@ -1,6 +1,6 @@
 ﻿namespace AutoUIConsole.Components.Commands
 {
-    public class GoBack : SuperCommand
+    public class GoBack : Command
     {
         public void b() => Execute();
 
